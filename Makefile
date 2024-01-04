@@ -1,12 +1,14 @@
 NAME		=	minishell
 CC			=	cc
-CFLAGS		=	-Wall -Wextra -Werror
+CFLAGS		=	-Wall -Wextra
 RFLAGS		=	-lreadline
 
 LIB_DIR		=	srcs/libft
 LIB			=	-L$(LIB_DIR) -lft
 
 SRCS		=	main.c 	\
+				srcs/utils/set.c\
+				srcs/utils/print.c\
 
 OBJS		=	$(SRCS:.c=.o)
 
