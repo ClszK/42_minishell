@@ -1,6 +1,8 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# define EXIT_FAILURE 1
+
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h> //readline add_history 등 
@@ -28,5 +30,21 @@ typedef struct s_parse
 	/* data */
 	char	**cmd_argv;
 }	t_parse;
+
+typedef struct s_envp
+{
+	/* data */
+	char	**path;
+	char	*home;
+	char	*pwd;
+	char	*oldpwd;
+}	t_envp;
+
+/* set.c */
+void	set_envp(char *envp[], t_envp *shell);
+
+/* print.c */
+void	perror_exit(char *progname);
+
 
 #endif
