@@ -21,6 +21,12 @@
 # include <curses.h> 
 # include <term.h>	//tgetent tgetflag tgetnum tgetstr tgoto tputs
 
-# include "libft/libft.h"
+# include "srcs/libft/libft.h"
+
+typedef struct s_parse
+{
+	/* data */
+	char	**cmd_argv;
+}	t_parse;
 
 #endif
