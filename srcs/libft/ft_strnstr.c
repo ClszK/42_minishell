@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 19:03:01 by jeholee           #+#    #+#             */
-/*   Updated: 2023/11/15 18:42:01 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/05 04:36:07 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 size_t	ft_strlen(const char *s);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 
+/* haystack 안에 needle 문자열을 찾는 함수. len 길이 만큼 찾는다.  */
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
 	size_t	n_len;
