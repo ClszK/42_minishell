@@ -6,13 +6,13 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 01:39:21 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/05 00:05:36 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/05 04:04:02 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	builtin_exit(char **cmd_arg)
+void	builtin_exit(t_parse *parse)
 {
-	int	cmd_argc;
+
 }
