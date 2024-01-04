@@ -21,6 +21,6 @@
 # include <curses.h> 
 # include <term.h>	//tgetent tgetflag tgetnum tgetstr tgoto tputs
 
-// # include "libft/libft.h"
+# include "libft/libft.h"
 
 #endif

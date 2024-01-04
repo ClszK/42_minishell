@@ -2,7 +2,7 @@ NAME		=	minishell
 CC			=	cc
 CFLAGS		=	-Wall -Wextra -Werror
 RFLAGS		=	-lreadline
-# LIB			=	-Llibft -lft
+LIB			=	-Llibft -lft
 
 SRCS		=	main.c 	\
 
@@ -14,7 +14,7 @@ all:	$(NAME)
 
 $(NAME)	:	$(OBJS) $(HEADER)
 	make -C ./libft/
-	$(CC) $(CFLAGS) $(RFLAGS) $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(RFLAGS) $(LIB) $(OBJS) -o $(NAME)
 
 %.o	:	%.c
 	$(CC) $(CFLAGS) -c $< -o $@ -I$(HEADER)
