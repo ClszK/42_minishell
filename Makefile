@@ -9,6 +9,8 @@ LIB			=	-L$(LIB_DIR) -lft
 SRCS		=	main.c 	\
 				srcs/utils/set.c\
 				srcs/utils/print.c\
+				builtin/echo.c\
+				builtin/pwd.c
 
 OBJS		=	$(SRCS:.c=.o)
 
@@ -18,7 +20,7 @@ all:	$(NAME)
 
 $(NAME)	:	$(OBJS) $(HEADER)
 	make -C $(LIB_DIR)
-	$(CC) $(CFLAGS) $(RFLAGS) $(LIB) $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(RFLAGS) $(LIB) $(OBJS) -o $(NAME) -fsanitize=address
 
 %.o	:	%.c
 	$(CC) $(CFLAGS) -c $< -o $@ -I$(HEADER)

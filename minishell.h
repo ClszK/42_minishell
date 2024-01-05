@@ -46,8 +46,9 @@ void	set_envp(char *envp[], t_envp *shell);
 /* print.c */
 void	perror_exit(char *progname);
 
-/* echo.c */
+/* builtin */
 int		builtin_echo(t_parse *parse);
+int		builtin_pwd(void);
 
 
 #endif
