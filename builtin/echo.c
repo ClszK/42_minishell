@@ -29,14 +29,18 @@ int	builtin_echo(t_parse *parse)
 	int	n_flag;
 
 	n_flag = 0;
+	errno = 0;
 	i = check_option(parse, &n_flag);
 	while (parse->cmd_argv[i])
 	{
-		printf("%s", parse->cmd_argv[i++]);
+		if (printf("%s", parse->cmd_argv[i++]) < 0)
+			return (errno);
 		if (parse->cmd_argv[i])
-			printf(" ");
+			if (printf(" ") < 0)
+				return (errno);
 	}
 	if (!n_flag)
-		printf("\n");
+		if (printf("\n") < 0)
+			return (errno);
 	return (0);
 }

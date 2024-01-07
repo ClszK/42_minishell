@@ -8,11 +8,14 @@ int	builtin_pwd(void)
 	pwd = getcwd(NULL, 0);
 	if (pwd == NULL)
 	{
-		if (printf("minishell: %s\n", strerror(errno)) < 0)
-			perror("minishell: "); // printf 예외처리하기
+		printf("minishell: %s\n", strerror(errno));
 		return (errno);
 	}
-	printf("%s\n", pwd);
+	if (printf("%s\n", pwd) < 0)
+	{
+		free(pwd);
+		return (errno);
+	}
 	free(pwd);
 	return (0);
 }
