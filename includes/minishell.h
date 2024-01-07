@@ -23,7 +23,7 @@
 # include <curses.h> 
 # include <term.h>	//tgetent tgetflag tgetnum tgetstr tgoto tputs
 
-# include "srcs/libft/libft.h"
+# include "double_lst.h"
 
 typedef struct s_parse
 {
@@ -33,11 +33,8 @@ typedef struct s_parse
 
 typedef struct s_envp
 {
-	/* data */
-	char	**path;
-	char	*home;
-	char	*pwd;
-	char	*oldpwd;
+	char	*name;
+	char	*value;
 }	t_envp;
 
 /* set.c */
@@ -49,6 +46,5 @@ void	perror_exit(char *progname);
 /* builtin */
 int		builtin_echo(t_parse *parse);
 int		builtin_pwd(void);
-
 
 #endif

@@ -6,11 +6,11 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 04:10:53 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/05 04:43:25 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/08 05:03:02 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "minishell.h"
 
 /* envp 안의 PATH 문자열을 찾고, PATH= 이후 문자열부터 :를 기준으로 Split한 PATH를 반환. */
 char	**find_path(char *envp[])
