@@ -3,65 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   set.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: suminpar <suminpar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 04:10:53 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/08 05:03:02 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/08 06:19:12 by suminpar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* envp 안의 PATH 문자열을 찾고, PATH= 이후 문자열부터 :를 기준으로 Split한 PATH를 반환. */
-char	**find_path(char *envp[])
+void	envp_init(char **envp, t_envp *env_c)
 {
+	t_map	*map;
+	int		equal;
 	int		i;
-	char	**path;
 
-	i = -1;
 	errno = 0;
-	path = NULL;
+	if (dlst_init(&env_c->head, &env_c->tail))
+		exit(errno);
+	i = -1;
 	while (envp[++i])
 	{
-		if (ft_strnstr(envp[i], "PATH", 4))
-		{
-			path = ft_split(envp[i] + 5, ':');
-			if (path == NULL && errno != 0)
-				perror_exit("minishell");
-			return (path);
-		}
+		map = (t_map*)malloc(sizeof(t_map));
+		if (map == NULL)
+			exit(errno);
+		equal = (int)(ft_strchr(envp[i], '=') - envp[i]);
+		map->key = ft_substr(envp[i], 0, equal);
+		map->val = ft_strdup(envp[i] + equal + 1);
+		if (map->key == NULL || map->val == NULL)
+			exit(errno);
+		dlst_add_last(env_c->tail, (t_map*)map);
 	}
-	return (path);
-}
-
-/* envp 안의 name을 찾고 name= 이후 문자열을 strdup을 담은 PATH를 반환.  */
-char	*find_envp(char *envp[], char *name)
-{
-	int		i;
-	int		name_len;
-	char	*path;
-
-	i = -1;
-	name_len = ft_strlen(name);
-	errno = 0;
-	path = NULL;
-	while (envp[++i])
-	{
-		if (ft_strnstr(envp[i], name, name_len))
-		{
-			path = ft_strdup(envp[i] + name_len + 1);
-			if (path == NULL && errno != 0)
-				perror_exit("minishell");
-			return (path);
-		}
-	}
-	return (path);
-}
-
-void	set_envp(char *envp[], t_envp *shell)
-{
-	shell->path = find_path(envp);
-	shell->home = find_envp(envp, "HOME");
-	shell->pwd = find_envp(envp, "PWD");
-	shell->oldpwd = NULL;
 }
