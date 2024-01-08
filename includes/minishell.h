@@ -27,18 +27,25 @@
 
 typedef struct s_parse
 {
-	/* data */
 	char	**cmd_argv;
 }	t_parse;
 
+typedef struct s_map
+{
+	char	*key;
+	char	*val;
+}	t_map;
+
 typedef struct s_envp
 {
-	char	*name;
-	char	*value;
+	t_node	*head;
+	t_node	*tail;
 }	t_envp;
 
+
 /* set.c */
-void	set_envp(char *envp[], t_envp *shell);
+void	envp_init(char **envp, t_envp *env_c);
+
 
 /* print.c */
 void	perror_exit(char *progname);
@@ -46,5 +53,6 @@ void	perror_exit(char *progname);
 /* builtin */
 int		builtin_echo(t_parse *parse);
 int		builtin_pwd(void);
+int		builtin_env(t_envp *env_c);
 
 #endif
