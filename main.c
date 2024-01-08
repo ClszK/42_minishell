@@ -1,18 +1,22 @@
 #include "minishell.h"
 
-int main(int argc, char **argv, char* envp[])
+int main(int argc, char **argv, char **envp)
 {
 	char	*cmdline;
 	pid_t	child_pid;
-	t_envp	shell;
+	t_envp	env_c;
 	t_parse	cmd;
 
-	set_envp(envp, &shell);
-
+	envp_init(envp, &env_c);
+	for (int i = 0; envp[i];i++)
+		printf("%p %s\n", &envp[i], envp[i]);
 	while (1)
 	{
 		cmdline = readline("minishell$ ");
 		cmd.cmd_argv = ft_split(cmdline, ' ');
+		// builtin_echo(&cmd);s
+		// builtin_pwd();
+		builtin_env(&env_c);
 		free(cmdline);
     }
 	return (0);

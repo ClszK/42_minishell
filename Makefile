@@ -12,7 +12,8 @@ SRCS_UTILS		=	set.c\
 					print.c
 
 SRCS_BUILTIN	=	echo.c\
-					pwd.c
+					pwd.c\
+					env.c
 
 SRCS_DOUBLE		=	double_lst.c\
 					double_lst2.c
@@ -31,7 +32,7 @@ all:	$(NAME)
 
 $(NAME)	:	$(OBJS) $(addprefix includes/, ${HEADERS})
 	make -C $(LIB_DIR)
-	$(CC) $(CFLAGS) $(RFLAGS) $(LIB) $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(RFLAGS) $(LIB) $(OBJS) -o $(NAME) 
 
 %.o	:	%.c
 	$(CC) $(CFLAGS) -c $< -o $@ -I$(HEADERS_PATH)
