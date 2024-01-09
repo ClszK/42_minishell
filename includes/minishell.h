@@ -25,22 +25,17 @@
 
 # include "double_lst.h"
 
-typedef struct s_parse
+typedef struct s_cmd
 {
 	char	**cmd_argv;
-}	t_parse;
+	int		cmd_argc;
+}	t_cmd;
 
 typedef struct s_map
 {
 	char	*key;
 	char	*val;
 }	t_map;
-
-typedef struct s_cmdline
-{
-	char	**cmd_argv;
-	int		cmd_argc;
-}	t_cmdline;
 
 struct s_lst
 {
@@ -49,6 +44,7 @@ struct s_lst
 };
 
 typedef struct s_lst t_envp;
+typedef struct s_lst t_parse;
 
 /* utils.c*/
 long	ft_atol(char *str, int *flag);
@@ -60,9 +56,9 @@ void	envp_init(char **envp, t_envp *env_c);
 void	perror_exit(char *progname);
 
 /* builtin */
-int		builtin_echo(t_parse *parse);
+int		builtin_echo(t_cmd *parse);
 int		builtin_pwd(void);
 int		builtin_env(t_envp *env_c);
-int		builtin_exit(t_parse *parse);
+int		builtin_exit(t_cmd *parse);
 
 #endif

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 05:03:19 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/08 05:03:20 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/10 04:33:41 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	check_option(t_parse *parse, int *n_flag)
+int	check_option(t_cmd *parse, int *n_flag)
 {
 	int	i;
 	int	j;
@@ -35,7 +35,7 @@ int	check_option(t_parse *parse, int *n_flag)
 	return (i);
 }
 
-int	builtin_echo(t_parse *parse)
+int	builtin_echo(t_cmd *parse)
 {
 	int	i;
 	int	n_flag;

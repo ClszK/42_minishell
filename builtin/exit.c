@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	builtin_exit(t_parse *parse)
+int	builtin_exit(t_cmd *parse)
 {
 	int	flag;
 	int	exit_num;
