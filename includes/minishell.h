@@ -36,13 +36,13 @@ typedef struct s_map
 	char	*val;
 }	t_map;
 
-struct s_list
+struct s_lst
 {
 	t_node	*head;
 	t_node	*tail;
 };
 
-typedef struct s_list t_envp;
+typedef struct s_lst t_envp;
 
 /* set.c */
 void	envp_init(char **envp, t_envp *env_c);
