@@ -36,6 +36,11 @@ typedef struct s_map
 	char	*val;
 }	t_map;
 
+// typedef struct s_
+// {
+// 	/* data */
+// };
+
 struct s_lst
 {
 	t_node	*head;

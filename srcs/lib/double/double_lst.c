@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   double_lst.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 23:57:30 by ljh               #+#    #+#             */
-/*   Updated: 2023/11/01 21:28:24 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/08 23:16:45 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ int	dlst_init(t_node **head, t_node **tail)
 	*head = dlst_node_generate(NULL);
 	*tail = dlst_node_generate(NULL);
 	if (*head == NULL || *tail == NULL)
-		return (-1);
+		return (1);
 	(*head)->next = *tail;
 	(*tail)->prev = *head;
-	return (1);
+	return (0);
 }
 
 int	dlst_add_last(t_node *tail, void *element)

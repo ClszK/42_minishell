@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   double_lst2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 21:28:15 by jeholee           #+#    #+#             */
-/*   Updated: 2023/11/01 21:29:24 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/08 23:12:32 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,18 @@ void	*dlst_last_elem(t_node *tail)
 	return (tail->prev->elem);
 }
 
-void	dlst_print(t_node *head, void (*print)(void*))
+int	dlst_print(t_node *head, int (*print)(void*))
 {
 	t_node	*node;
 
 	node = head->next;
 	while (node->next)
 	{
-		print(node->elem);
+		if (print(node->elem))
+			return (1);
 		node = node->next;
 	}
+	return (0);
 }
 
 void	dlst_rev_print(t_node *tail, void (*print)(void*))
