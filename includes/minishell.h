@@ -36,10 +36,11 @@ typedef struct s_map
 	char	*val;
 }	t_map;
 
-// typedef struct s_
-// {
-// 	/* data */
-// };
+typedef struct s_cmdline
+{
+	char	**cmd_argv;
+	int		cmd_argc;
+}	t_cmdline;
 
 struct s_lst
 {

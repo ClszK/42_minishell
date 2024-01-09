@@ -8,11 +8,13 @@ int main(int argc, char **argv, char **envp)
 	t_parse	cmd;
 
 	envp_init(envp, &env_c);
-	// for (int i = 0; envp[i];i++)
-	// 	printf("%p %s\n", &envp[i], envp[i]);
+	for (int i = 0; envp[i];i++)
+		printf("%p %s\n", &envp[i], envp[i]);
 	while (1)
 	{
 		cmdline = readline("minishell$ ");
+		if (cmdline == NULL)
+			perror("minishell : ");
 		// cmd.cmd_argv = ft_split(cmdline, ' ');
 		// builtin_echo(&cmd);s
 		// builtin_pwd();
