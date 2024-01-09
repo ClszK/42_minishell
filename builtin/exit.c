@@ -7,17 +7,13 @@ int	builtin_exit(t_parse *parse)
 
 	errno = 0;
 	flag = 0;
+	if (printf("exit\n") < 0)
+		return (errno);
 	if (parse->cmd_argv[1] == NULL)
-	{
-		if (printf("exit\n") < 0)
-			return (errno);
 		exit(0);
-	}
 	exit_num = ft_atol(parse->cmd_argv[1], &flag);
 	if (flag == 1)
 	{
-		if (printf("exit\n") < 0)
-			return (errno);
 		if (printf("minishell: exit: %s: numeric argument required\n", parse->cmd_argv[1]) < 0)
 			return (errno);
 		exit(255);

@@ -34,9 +34,12 @@ long	ft_atol(char *str, int *flag)
 			*flag = 1;
 		tmp = result;
 		result = (result * 10) + (str[i] - '0');
-		if (tmp > result)
-			*flag = 1;
 	}
+	if (tmp > result)
+		*flag = 1;
+	if (sign == -1)
+		if (result < 0)
+			*flag = 1;
 	result *= sign;
 	return (result);
 }
