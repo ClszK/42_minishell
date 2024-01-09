@@ -36,16 +36,16 @@ typedef struct s_map
 	char	*val;
 }	t_map;
 
-typedef struct s_envp
+struct s_list
 {
 	t_node	*head;
 	t_node	*tail;
-}	t_envp;
+};
 
+typedef struct s_list t_envp;
 
 /* set.c */
 void	envp_init(char **envp, t_envp *env_c);
-
 
 /* print.c */
 void	perror_exit(char *progname);
