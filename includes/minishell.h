@@ -49,6 +49,9 @@ struct s_lst
 
 typedef struct s_lst t_envp;
 
+/* utils.c*/
+long	ft_atol(char *str, int *flag);
+
 /* set.c */
 void	envp_init(char **envp, t_envp *env_c);
 
@@ -59,5 +62,6 @@ void	perror_exit(char *progname);
 int		builtin_echo(t_parse *parse);
 int		builtin_pwd(void);
 int		builtin_env(t_envp *env_c);
+int		builtin_exit(t_parse *parse);
 
 #endif

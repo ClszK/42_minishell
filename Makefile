@@ -8,12 +8,14 @@ LIB				=	-L$(LIB_DIR) -lft
 
 SRCS			=	main.c 	\
 
-SRCS_UTILS		=	set.c\
+SRCS_UTILS		=	utils.c\
+					set.c\
 					print.c
 
 SRCS_BUILTIN	=	echo.c\
 					pwd.c\
-					env.c
+					env.c\
+					exit.c
 
 SRCS_DOUBLE		=	double_lst.c\
 					double_lst2.c

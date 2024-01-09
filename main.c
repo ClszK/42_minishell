@@ -13,10 +13,11 @@ int main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		cmdline = readline("minishell$ ");
-		// cmd.cmd_argv = ft_split(cmdline, ' ');
+		cmd.cmd_argv = ft_split(cmdline, ' ');
 		// builtin_echo(&cmd);s
 		// builtin_pwd();
-		builtin_env(&env_c);
+		// builtin_env(&env_c);
+		builtin_exit(&cmd);
 		free(cmdline);
     }
 	return (0);
