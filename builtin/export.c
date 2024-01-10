@@ -20,14 +20,16 @@ int	builtin_export(t_parse *parse, t_envp *env_c)
 {
 	int	i;
 
+	errno = 0;
 	if (parse->cmd_argv[1] == NULL)
-		return (builtin_env(env_c));
+		//print export
 	i = 1;
 	while (parse->cmd_argv[i])
 	{
 		if (check_key(parse->cmd_argv[i]))
 		{
-			printf("\n여기\n");
+			if (printf("minishell: export: `%s': not a valid identifier\n", parse->cmd_argv[i]) < 0)
+				return (errno);
 		}
 		i++;
 	}
