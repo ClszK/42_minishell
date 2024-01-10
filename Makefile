@@ -15,7 +15,8 @@ SRCS_UTILS		=	utils.c\
 SRCS_BUILTIN	=	echo.c\
 					pwd.c\
 					env.c\
-					exit.c
+					exit.c\
+					export.c
 
 SRCS_DOUBLE		=	double_lst.c\
 					double_lst2.c

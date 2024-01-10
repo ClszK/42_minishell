@@ -16,13 +16,18 @@ int	check_key(char *key)
 	return (0);
 }
 
+int	export_print(t_envp *env_c)
+{
+	
+}
+
 int	builtin_export(t_parse *parse, t_envp *env_c)
 {
 	int	i;
 
 	errno = 0;
 	if (parse->cmd_argv[1] == NULL)
-		//print export
+		return(export_print(env_c));
 	i = 1;
 	while (parse->cmd_argv[i])
 	{

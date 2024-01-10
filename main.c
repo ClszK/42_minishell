@@ -17,7 +17,8 @@ int main(int argc, char **argv, char **envp)
 		// builtin_echo(&cmd);s
 		// builtin_pwd();
 		// builtin_env(&env_c);
-		builtin_exit(&cmd);
+		// builtin_exit(&cmd);
+		builtin_export(&cmd, &env_c);
 		free(cmdline);
     }
 	return (0);
