@@ -6,22 +6,22 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 21:28:15 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/08 23:12:32 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/11 01:35:59 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "double_lst.h"
 
-void	*dlst_last_elem(t_node *tail)
+void	*dlst_last_elem(struct s_lst *lst)
 {
-	return (tail->prev->elem);
+	return (lst->tail->prev->elem);
 }
 
-int	dlst_print(t_node *head, int (*print)(void*))
+int	dlst_print(struct s_lst *lst, int (*print)(void*))
 {
 	t_node	*node;
 
-	node = head->next;
+	node = lst->head->next;
 	while (node->next)
 	{
 		if (print(node->elem))
@@ -31,11 +31,11 @@ int	dlst_print(t_node *head, int (*print)(void*))
 	return (0);
 }
 
-void	dlst_rev_print(t_node *tail, void (*print)(void*))
+void	dlst_rev_print(struct s_lst *lst, void (*print)(void*))
 {
 	t_node	*node;
 
-	node = tail->prev;
+	node = lst->tail->prev;
 	while (node->prev)
 	{
 		print(node->elem);

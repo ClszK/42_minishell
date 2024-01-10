@@ -2,23 +2,21 @@
 
 int main(int argc, char **argv, char **envp)
 {
-	char	*cmdline;
-	pid_t	child_pid;
-	t_envp	env_c;
-	t_parse	cmd;
+	char		*rline;
+	t_envp		env_c;
+	t_cmdline	cmdline;
 
 	envp_init(envp, &env_c);
-	for (int i = 0; envp[i];i++)
-		printf("%p %s\n", &envp[i], envp[i]);
+	cmdline_init(&cmdline);
 	while (1)
 	{
-		cmdline = readline("minishell$ ");
-		cmd.cmd_argv = ft_split(cmdline, ' ');
+		rline = readline("minishell$ ");
+		// cmd.cmd_argv = ft_split(cmdline, ' ');
 		// builtin_echo(&cmd);s
 		// builtin_pwd();
-		// builtin_env(&env_c);
-		builtin_exit(&cmd);
-		free(cmdline);
+		builtin_env(&env_c);
+		// builtin_exit(&cmd);
+		free(rline);
     }
 	return (0);
 }

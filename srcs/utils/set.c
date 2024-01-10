@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 04:10:53 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/09 23:46:11 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/11 01:39:59 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	envp_init(char **envp, t_envp *env_c)
 	int		i;
 
 	errno = 0;
-	if (dlst_init(&env_c->head, &env_c->tail))
+	if (dlst_init(env_c))
 		exit(errno);
 	i = -1;
 	while (envp[++i])
@@ -30,8 +30,15 @@ void	envp_init(char **envp, t_envp *env_c)
 		equal = (int)(ft_strchr(envp[i], '=') - envp[i]);
 		map->key = ft_substr(envp[i], 0, equal);
 		map->val = ft_strdup(envp[i] + equal + 1);
-		if (map->key == NULL || map->val == NULL)
+		if (map->key == NULL || map->val == NULL || \
+			dlst_add_last(env_c, (t_map*)map))
 			exit(errno);
-		dlst_add_last(env_c->tail, (t_map*)map);
 	}
+}
+
+void	cmdline_init(t_cmdline *cmdline)
+{
+	errno = 0;
+	if (dlst_init(cmdline))
+		exit(errno);
 }

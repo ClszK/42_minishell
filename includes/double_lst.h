@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   double_lst.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suminpar <suminpar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 23:59:03 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/08 07:16:47 by suminpar         ###   ########.fr       */
+/*   Updated: 2024/01/11 01:36:06 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,20 @@ typedef struct s_node
 	void			*elem;
 }	t_node;
 
+struct s_lst
+{
+	t_node	*head;
+	t_node	*tail;
+	long	lst_size;
+};
+
 t_node	*dlst_node_generate(void *element);
-int		dlst_init(t_node **head, t_node **tail);
-int		dlst_add_last(t_node *tail, void *element);
-void	dlst_del_last(t_node *tail, void (*del)(void*));
-void	*dlst_last_elem(t_node *tail);
-int		dlst_print(t_node *head, int (*print)(void*));
-void	dlst_rev_print(t_node *tail, void (*print)(void*));
-void	dlst_del_all(t_node *head, void (*del)(void*));
+int		dlst_init(struct s_lst *lst);
+int		dlst_add_last(struct s_lst *lst, void *element);
+void	dlst_del_last(struct s_lst *lst, void (*del)(void*));
+void	dlst_del_all(struct s_lst *lst, void (*del)(void*));
+void	*dlst_last_elem(struct s_lst *lst);
+int		dlst_print(struct s_lst *lst, int (*print)(void*));
+void	dlst_rev_print(struct s_lst *lst, void (*print)(void*));
 
 #endif

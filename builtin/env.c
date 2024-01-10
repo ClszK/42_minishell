@@ -14,7 +14,7 @@ int	map_print(void *elem)
 
 int	builtin_env(t_envp *env_c)
 {
-	if (dlst_print(env_c->head, map_print))
+	if (dlst_print(env_c, map_print))
 		return (errno);
 	return (0);
 }

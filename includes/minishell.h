@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 08:10:11 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/10 08:47:35 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/11 01:37:38 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,6 @@ typedef struct s_map
 	char	*key;
 	char	*val;
 }	t_map;
-
-struct s_lst
-{
-	t_node	*head;
-	t_node	*tail;
-};
 
 typedef struct s_lst	t_envp;
 typedef struct s_lst	t_cmdline;
