@@ -102,6 +102,27 @@ int	find_char(char *str, char c)
 	return (0);
 }
 
+/*경우의수 생각하기*/
+int	check_dup(char	*key, char *val, t_envp *env_c)
+{
+	t_map	*cmp;
+	t_node	*node;
+
+	node = env_c->head->next;
+	while (node->next)
+	{
+		cmp = node->elem;
+		if (!ft_strcmp(key, cmp->key))
+		{
+			if (val == NULL && cmp->val)
+				return (1); //free(map) 필요
+			// if ((val && cmp->val) || 
+		}
+		node = node->next;
+	}
+	return (0);
+}
+
 int	builtin_export(t_parse *parse, t_envp *env_c)
 {
 	t_map	*map;
@@ -125,7 +146,6 @@ int	builtin_export(t_parse *parse, t_envp *env_c)
 			if (map == NULL)
 				exit(errno);
 			equal = find_char(parse->cmd_argv[i], '=');
-			printf("\n%d\n", equal);
 			if (equal)
 			{
 				map->key = ft_substr(parse->cmd_argv[i], 0, equal);
@@ -135,6 +155,10 @@ int	builtin_export(t_parse *parse, t_envp *env_c)
 			{
 				map->key = ft_strdup(parse->cmd_argv[i]);
 				map->val = NULL;
+			}
+			if (check_dup(map->key, map->val, env_c))
+			{
+				//어쩌지...
 			}
 			if (map->key == NULL || (map->val == NULL && errno != 0) \
 				|| dlst_add_last(env_c, (t_map*)map))
