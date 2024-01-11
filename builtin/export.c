@@ -24,6 +24,7 @@ void	copy_env(t_envp *env_c, t_map *export_c)
 
 	node = env_c->head->next;
 	i = 0;
+	errno = 0;
 	while (node->next)
 	{
 		map = node->elem;
@@ -99,7 +100,7 @@ int	find_char(char *str, char c)
 			return (i);
 		i++;
 	}
-	return (0);
+	return (i);
 }
 
 /*경우의수 생각하기*/
@@ -142,24 +143,19 @@ int	builtin_export(t_parse *parse, t_envp *env_c)
 		}
 		else
 		{
-			map = (t_map*)malloc(sizeof(t_map));
+			map = (t_map *)malloc(sizeof(t_map));
 			if (map == NULL)
 				exit(errno);
 			equal = find_char(parse->cmd_argv[i], '=');
-			if (equal)
-			{
-				map->key = ft_substr(parse->cmd_argv[i], 0, equal);
+			map->key = ft_substr(parse->cmd_argv[i], 0, equal);
+			if (equal != ft_strlen(parse->cmd_argv[i]))
 				map->val = ft_strdup(parse->cmd_argv[i] + equal + 1);
-			}
 			else
-			{
-				map->key = ft_strdup(parse->cmd_argv[i]);
 				map->val = NULL;
-			}
-			if (check_dup(map->key, map->val, env_c))
-			{
-				//어쩌지...
-			}
+			// if (check_dup(map->key, map->val, env_c))
+			// {
+			// 	//어쩌지...
+			// }
 			if (map->key == NULL || (map->val == NULL && errno != 0) \
 				|| dlst_add_last(env_c, (t_map*)map))
 				exit(errno);
