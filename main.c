@@ -5,7 +5,12 @@ int	test_printf(void *param)
 	t_token *token;
 
 	token = (t_token *)param;
-	printf("TYPE : %d%%\n", token->type);
+	if (token->type == WORD)
+		printf("TYPE : WORD\n");
+	else if (token->type == PIPE)
+		printf("TYPE : PIPE\n");
+	else if (token->type == REDIRECT)
+		printf("TYPE : REDIRECT\n");
 	printf("STR  : %s%%\n", token->str);
 	printf("\n");
 	return (0);
@@ -24,12 +29,15 @@ int main(int argc, char **argv, char **envp)
 	char		*rline;
 	t_envp		env_c;
 	t_cmdline	cmdline;
+	t_parse		cmd;
 
 	envp_init(envp, &env_c);
 	while (1)
 	{
 		rline = readline("minishell$ ");
+		cmd.cmd_argv = ft_split(rline, ' ');
 		cmdline_init(&cmdline);
+		// builtin_export(&cmd, &env_c);
 		token_cmdline(rline, &cmdline);
 		dlst_print(&cmdline, test_printf);
 		dlst_del_all(&cmdline, test_del);

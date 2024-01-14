@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 23:57:30 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/11 01:34:28 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/11 05:49:42 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ void	dlst_del_all(struct s_lst *lst, void (*del)(void*))
 	node = lst->head;
 	while (node)
 	{
-		del(node->elem);
+		if (node->elem)
+			del(node->elem);
 		next = node->next;
 		free(node);
 		node = next;

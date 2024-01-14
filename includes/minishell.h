@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 08:10:11 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/11 01:37:38 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/14 00:58:25 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,22 +44,22 @@
 
 enum e_type
 {
+	NONE,
 	WORD,
-	REDIRECT,
 	PIPE,
-	BQUOTE,
-	SQUOTE
+	REDIRECT
 };
 
 typedef struct s_parse
 {
-	char **cmd_argv;
+	char	*cmd_path;
+	char	**cmd_argv;
 }	t_parse;
 
 typedef struct s_token
 {
 	enum e_type	type;
-	char		*token;
+	char		*str;
 }	t_token;
 
 typedef struct s_map
@@ -70,6 +70,7 @@ typedef struct s_map
 
 typedef struct s_lst	t_envp;
 typedef struct s_lst	t_cmdline;
+typedef struct s_lst	t_analyzs;
 
 /* utils.c*/
 long	ft_atol(char *str, int *flag);
@@ -80,6 +81,14 @@ void	cmdline_init(t_cmdline *cmdline);
 
 /* print.c */
 void	perror_exit(char *progname);
+
+/* parse.c */
+void	token_cmdline(char *rline, t_cmdline *cmdline);
+
+/* generate.c */
+t_token	*token_elem_generate(void);
+
+/* analyze.c*/
 
 /* builtin */
 int		builtin_echo(t_parse *parse);
