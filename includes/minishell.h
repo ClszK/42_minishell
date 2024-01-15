@@ -96,5 +96,7 @@ int		builtin_pwd(void);
 int		builtin_env(t_envp *env_c);
 int		builtin_exit(t_parse *parse);
 int		builtin_export(t_parse *parse, t_envp *env_c);
+int		builtin_unset(t_parse *parse, t_envp *env_c);
+
 
 #endif
