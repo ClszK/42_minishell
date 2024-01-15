@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   double_lst.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 23:57:30 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/11 05:49:42 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/16 02:46:38 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ t_node	*dlst_node_generate(void *element)
 
 int	dlst_init(struct s_lst *lst)
 {
+	if (lst == NULL)
+		return (1);
 	lst->head = dlst_node_generate(NULL);
 	lst->tail = dlst_node_generate(NULL);
 	if (lst->head == NULL || lst->tail == NULL)
