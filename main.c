@@ -36,11 +36,14 @@ int main(int argc, char **argv, char **envp)
 	{
 		rline = readline("minishell$ ");
 		cmd.cmd_argv = ft_split(rline, ' ');
-		cmdline_init(&cmdline);
-		// builtin_export(&cmd, &env_c);
-		token_cmdline(rline, &cmdline);
-		dlst_print(&cmdline, test_printf);
-		dlst_del_all(&cmdline, test_del);
+		// cmdline_init(&cmdline);
+		builtin_export(&cmd, &env_c);
+		for(int x = 0;cmd.cmd_argv[x]; x++)
+			free(cmd.cmd_argv[x]);
+		free(cmd.cmd_argv);
+		// token_cmdline(rline, &cmdline);
+		// dlst_print(&cmdline, test_printf);
+		// dlst_del_all(&cmdline, test_del);
 		// cmd.cmd_argv = ft_split(cmdline, ' ');
 		// builtin_echo(&cmd);s
 		// builtin_pwd();
