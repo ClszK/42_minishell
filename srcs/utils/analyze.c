@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 01:46:42 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/16 02:56:10 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/16 06:44:52 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	analyze_token_size(t_node *token_node)
 		if (token->type == WORD)
 			cmd_argc++;
 		/* newline or pipe */
-		if (token_is_pipe_newline(token))
+		if (token_is_pipe(token))
 		{
 			printf("token_size : %d\n", token_size);
 			printf("cmd_size   : %d\n", cmd_argc);
@@ -78,9 +78,14 @@ void	analyze_parse_create(t_analyze *alz, t_node *token_node, int cmd_argc)
 			parse->cmd_argv[i] = ft_strdup(token->str);
 			if (parse->cmd_argv[i] == NULL)
 				exit(errno);
+			i++;
 		}
+		else if (token->type == OUTPUT || token->type == APPEND)
+			parse->stdout_token = token;
+		else if (token->type == INPUT || token->type == HEREDOC)
+			parse->stdin_token = token;
 		/* newline or pipe */
-		if (token_is_pipe_newline(token))
+		if (token_is_pipe(token))
 		{
 			break ;
 		}
