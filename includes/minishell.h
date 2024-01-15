@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 08:10:11 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/16 02:54:03 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/16 06:32:16 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,22 +98,12 @@ t_parse		*parse_elem_generate(int cmd_argc);
 
 /* analyze.c*/
 
-
 /* builtin */
-<<<<<<< HEAD
-int			builtin_echo(t_parse *parse);
-int			builtin_pwd(void);
-int			builtin_env(t_envp *env_c);
-int			builtin_exit(t_parse *parse);
-int			builtin_export(t_parse *parse, t_envp *env_c);
-=======
 int		builtin_echo(t_parse *parse);
 int		builtin_pwd(void);
 int		builtin_env(t_envp *env_c);
 int		builtin_exit(t_parse *parse);
 int		builtin_export(t_parse *parse, t_envp *env_c);
 int		builtin_unset(t_parse *parse, t_envp *env_c);
-
->>>>>>> 1050b7edbcbdebaaf595ba0036595dd4e37bb064
 
 #endif
