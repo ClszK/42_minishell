@@ -9,8 +9,14 @@ int	test_printf(void *param)
 		printf("TYPE : WORD\n");
 	else if (token->type == PIPE)
 		printf("TYPE : PIPE\n");
-	else if (token->type == REDIRECT)
-		printf("TYPE : REDIRECT\n");
+	else if (token->type == APPEND)
+		printf("TYPE : APPEND\n");
+	else if (token->type == OUTPUT)
+		printf("TYPE : OUTPUT\n");
+	else if (token->type == INPUT)
+		printf("TYPE : INPUT\n");
+	else if (token->type == HEREDOC)
+		printf("TYPE : HEREDOC\n");
 	printf("STR  : %s%%\n", token->str);
 	printf("\n");
 	return (0);
@@ -35,6 +41,7 @@ int main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		rline = readline("minishell$ ");
+		printf("%p\n", rline);
 		cmd.cmd_argv = ft_split(rline, ' ');
 		cmdline_init(&cmdline);
 		// builtin_export(&cmd, &env_c);

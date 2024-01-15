@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 04:21:16 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/14 00:27:56 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/16 00:38:49 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,7 @@ char	*token_split(char *rline, t_cmdline *cmdline, int i)
 			token_add_list(cmdline, rline, i, WORD);
 		rline += i;
 		i = 0;
-		if (rline[i] == '|')
-			type = PIPE;
-		else
-			type = REDIRECT;
+		type = token_type(rline);
 		if ((rline[i] == '<' && rline[i + 1] == '<') || \
 			(rline[i] == '>' && rline[i + 1] == '>'))
 			i++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 04:10:53 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/11 01:39:59 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/16 00:51:57 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,12 @@ void	cmdline_init(t_cmdline *cmdline)
 {
 	errno = 0;
 	if (dlst_init(cmdline))
+		exit(errno);
+}
+
+void	analyze_init(t_analyze *alz)
+{
+	errno = 0;
+	if (dlst_init(alz))
 		exit(errno);
 }

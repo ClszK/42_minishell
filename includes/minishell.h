@@ -100,10 +100,20 @@ t_parse		*parse_elem_generate(int cmd_argc);
 
 
 /* builtin */
+<<<<<<< HEAD
 int			builtin_echo(t_parse *parse);
 int			builtin_pwd(void);
 int			builtin_env(t_envp *env_c);
 int			builtin_exit(t_parse *parse);
 int			builtin_export(t_parse *parse, t_envp *env_c);
+=======
+int		builtin_echo(t_parse *parse);
+int		builtin_pwd(void);
+int		builtin_env(t_envp *env_c);
+int		builtin_exit(t_parse *parse);
+int		builtin_export(t_parse *parse, t_envp *env_c);
+int		builtin_unset(t_parse *parse, t_envp *env_c);
+
+>>>>>>> 1050b7edbcbdebaaf595ba0036595dd4e37bb064
 
 #endif

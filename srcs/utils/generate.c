@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   generate.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 01:43:32 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/13 01:44:24 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/16 02:53:40 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,23 @@ t_token	*token_elem_generate(void)
 		exit(errno);
 	node->str = NULL;
 	node->type = NONE;
+	return (node);
+}
+
+t_parse	*parse_elem_generate(int cmd_argc)
+{
+	t_parse	*node;
+
+	errno = 0;
+	node = (t_parse *)malloc(sizeof(t_parse));
+	if (node == NULL)
+		exit(errno);
+	node->cmd_argc = cmd_argc;
+	node->cmd_argv = (char **)malloc(sizeof(char *) * (cmd_argc + 1));
+	if (node->cmd_argv == NULL)
+		exit(errno);
+	node->cmd_path = NULL;
+	node->stdin_token = NULL;
+	node->stdout_token = NULL;
 	return (node);
 }
