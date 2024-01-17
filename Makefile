@@ -14,6 +14,7 @@ SRCS_UTILS		=	utils.c\
 					parse.c\
 					generate.c\
 					analyze.c\
+					analyze2.c\
 					free.c\
 					find.c
 

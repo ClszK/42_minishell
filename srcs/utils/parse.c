@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 04:21:16 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/17 22:14:08 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/18 01:51:55 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	*token_split(char *rline, t_cmdline *cmdline, int i)
 			token_add_list(cmdline, rline, i, WORD);
 		rline += i;
 		i = 0;
-		type = token_type(rline);
+		type = operate_type(rline);
 		if (type == APPEND || type == HEREDOC)
 			i++;
 		token_add_list(cmdline, rline, i + 1, type);

@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 00:42:59 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/16 00:43:43 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/18 02:43:15 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ long	ft_atol(char *str, int *flag)
 	return (result);
 }
 
-enum e_type	token_type(char *str)
+enum e_type	operate_type(char *str)
 {
 	if (*str == '|')
 		return (PIPE);
@@ -74,4 +74,11 @@ enum e_type	token_type(char *str)
 	}
 	else
 		return (NONE);
+}
+
+int	is_redirect(t_token *token)
+{
+	if (token->type == NONE || token->type == WORD || token->type == PIPE)
+		return (0);
+	return (1);
 }

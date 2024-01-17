@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 08:10:11 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/17 19:32:05 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/18 02:58:21 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ enum e_type
 	OUTPUT,
 	APPEND,
 	INPUT,
-	HEREDOC
+	HEREDOC,
+	NEWLN
 };
 
 typedef struct s_token
@@ -80,7 +81,8 @@ typedef struct s_lst	t_analyze;
 
 /* utils.c*/
 long		ft_atol(char *str, int *flag);
-enum e_type	token_type(char *str);
+enum e_type	operate_type(char *str);
+int			is_redirect(t_token *token);
 
 /* set.c */
 void		envp_init(char **envp, t_envp *env_c);
@@ -92,7 +94,6 @@ void		perror_exit(char *progname);
 int			print_strerror(char *progname, char *str);
 int			print_builtin_error(char *cmd, char *arg, char *error);
 
-
 /* parse.c */
 void		token_cmdline(char *rline, t_cmdline *cmdline);
 
@@ -100,9 +101,13 @@ void		token_cmdline(char *rline, t_cmdline *cmdline);
 t_token		*token_elem_generate(char *str, enum e_type type);
 t_parse		*parse_elem_generate(int cmd_argc);
 
-/* analyze.c*/
+/* analyze.c */
 int			analyze_start(t_analyze *alz, t_cmdline *cmdline);
-t_node		*analyze_parse_create(t_analyze *alz, t_node *token_node, int cmd_argc);
+t_node		*analyze_parse_create(t_analyze *alz, t_node *token_node, t_parse *parse);
+
+/* analyze2.c */
+int			is_pipe_node(t_node *node);
+void		token_redirection_type_change(t_node *node);
 
 /* builtin */
 int			builtin_echo(t_parse *parse);
