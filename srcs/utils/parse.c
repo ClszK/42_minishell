@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 04:21:16 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/16 00:38:49 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/17 12:48:11 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@ void	token_add_list(\
 	t_token	*token;
 
 	errno = 0;
-	token = token_elem_generate();
-	token->str = ft_substr(rline, 0, size);
+	token = token_elem_generate(ft_substr(rline, 0, size));
 	if (token->str == NULL && errno)
 		exit(errno);
 	token->type = type;

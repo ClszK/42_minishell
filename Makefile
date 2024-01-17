@@ -13,7 +13,8 @@ SRCS_UTILS		=	utils.c\
 					print.c\
 					parse.c\
 					generate.c\
-					analyze.c
+					analyze.c\
+					free.c
 
 SRCS_BUILTIN	=	echo.c\
 					pwd.c\
@@ -39,7 +40,7 @@ all:	$(NAME)
 
 $(NAME)	:	$(OBJS) $(addprefix includes/, ${HEADERS})
 	make -C $(LIB_DIR)
-	$(CC) $(CFLAGS) $(RFLAGS) $(LIB) $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(RFLAGS) $(LIB) $(OBJS) -o $(NAME) -fsanitize=address
 
 %.o	:	%.c
 	$(CC) $(CFLAGS) -c $< -o $@ -I$(HEADERS_PATH) -g
