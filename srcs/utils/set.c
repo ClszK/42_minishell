@@ -34,14 +34,7 @@ void	envp_init(char **envp, t_envp *env_c)
 			dlst_add_last(env_c, (t_map*)map))
 			exit(errno);
 	}
-	map = (t_map*)malloc(sizeof(t_map));
-	if (map == NULL)
-		exit(errno);
-	map->key = ft_strdup("OLDPWD"); //없으면 추가되게
-	map->val = NULL;
-	if (map->key == NULL || \
-		dlst_add_last(env_c, (t_map*)map))
-		exit(errno);
+	map_oldpwd_find(env_c);
 }
 
 void	cmdline_init(t_cmdline *cmdline)

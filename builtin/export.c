@@ -96,9 +96,9 @@ int	export_print(t_envp *env_c)
 			{
 				if (ft_putstr_fd("declare -x ", STDOUT_FILENO) || \
 					ft_putstr_fd(export_c[i].key, STDOUT_FILENO) || \
-					ft_putstr_fd("=", STDOUT_FILENO) || \
+					ft_putstr_fd("=\"", STDOUT_FILENO) || \
 					ft_putstr_fd(export_c[i].val, STDOUT_FILENO) || \
-					ft_putstr_fd("\n", STDOUT_FILENO))
+					ft_putstr_fd("\"\n", STDOUT_FILENO))
 					return (errno);
 			}
 			else if (ft_putstr_fd("declare -x ", STDOUT_FILENO) || \
