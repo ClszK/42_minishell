@@ -1,88 +1,71 @@
 #include "minishell.h"
 
-int	test_printf(void *param)
+int	test_printf_token(void *elem)
 {
-	t_token *token;
+	t_token	*token;
+	char	*str[] = {"NONE", "WORD", "PIPE", "OUTPUT", "APPEND", "INPUT", "HEREDOC"};
 
-	token = (t_token *)param;
-	if (token->type == WORD)
-		printf("TYPE : WORD\n");
-	else if (token->type == PIPE)
-		printf("TYPE : PIPE\n");
-	else if (token->type == REDIRECT)
-		printf("TYPE : REDIRECT\n");
+	token = (t_token *)elem;
+	if (token == NULL)
+		return (0);
+	printf("TYPE : %s%%\n", str[token->type]);
 	printf("STR  : %s%%\n", token->str);
 	printf("\n");
 	return (0);
 }
 
-void	test_del(void *param)
+int	test_printf_parse(void *elem)
 {
-	t_token	*token;
+	t_parse	*parse;
+	char	*str[] = {"NONE", "WORD", "PIPE", "OUTPUT", "APPEND", "INPUT", "HEREDOC"};
 
-	token = (t_token *)param;
-	free(token->str);
+	parse = (t_parse *)elem;
+	printf("\nParse\n");
+	for (int i = 0; parse->cmd_argv[i] ; i++)
+		printf("%d	%s\n", parse->cmd_argc, parse->cmd_argv[i]);
+	if (parse->stdin_token)
+	{
+		printf("	\nstdin_token\n");
+		printf("		TYPE : %s\n", str[parse->stdin_token->type]);
+		printf("		STR  : %s\n", parse->stdin_token->str);
+	}
+	if (parse->stdout_token)
+	{
+		printf("	\nstdout_token\n");
+		printf("		TYPE : %s\n", str[parse->stdout_token->type]);
+		printf("		STR  : %s\n", parse->stdout_token->str);
+	}
+	printf("\n");
+	return (0);
 }
 
 int main(int argc, char **argv, char **envp)
 {
-	char		*rline;
-	t_envp		env_c;
-	t_cmdline	cmdline;
-	t_parse		cmd;
+	char	*rline;
+	pid_t	child_pid;
+	t_envp	env_c;
+	t_parse	cmd;
+	t_cmdline cmdline;
+	t_analyze alz;
 
 	envp_init(envp, &env_c);
 	while (1)
 	{
+		cmdline_init(&cmdline);
+		analyze_init(&alz);
 		rline = readline("minishell$ ");
-		cmd.cmd_argv = ft_split(rline, ' ');
-		// cmdline_init(&cmdline);
-		builtin_export(&cmd, &env_c);
-		for(int x = 0;cmd.cmd_argv[x]; x++)
-			free(cmd.cmd_argv[x]);
-		free(cmd.cmd_argv);
-		// token_cmdline(rline, &cmdline);
-		// dlst_print(&cmdline, test_printf);
-		// dlst_del_all(&cmdline, test_del);
-		// cmd.cmd_argv = ft_split(cmdline, ' ');
+		token_cmdline(rline, &cmdline);
+		dlst_print(&cmdline, test_printf_token);
+		analyze_start(&alz, &cmdline);
+		dlst_print(&alz, test_printf_parse);
+		dlst_del_all(&cmdline, token_elem_free);
+		dlst_del_all(&alz, parse_elem_free);
 		// builtin_echo(&cmd);s
 		// builtin_pwd();
 		// builtin_env(&env_c);
 		// builtin_exit(&cmd);
+		// builtin_export(&cmd, &env_c);
 		free(rline);
     }
 	return (0);
 }
-
-    //  int 
-    //  main (int argc, char **argv)
-    //  {
-	// while (1){
-	// 	int childPid;
-	// 	char * cmdLine;
-
-	//         printPrompt();
-
-	//         cmdLine= readCommandLine(); //or GNU readline("");
-		
-	// 	cmd = parseCommand(cmdLine);
-
-	// 	record command in history list (GNU readline history ?)
- 
-	// 	if ( isBuiltInCommand(cmd)){
-	// 	    executeBuiltInCommand(cmd);
-	// 	} else {		
-	// 	     childPid = fork();
-	// 	     if (childPid == 0){
-	// 		executeCommand(cmd); //calls execvp  
-			
-	// 	     } else {
-	// 		if (isBackgroundJob(cmd)){
-	// 		        record in list of background jobs
-	// 		} else {
-	// 			waitpid (childPid);
-
-	// 		}		
-	// 	    }
-	//         }
-    //  }

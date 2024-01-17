@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   generate.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 01:43:32 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/16 06:40:21 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/17 12:47:47 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*token_elem_generate(void)
+t_token	*token_elem_generate(char *str)
 {
 	t_token	*node;
 
@@ -20,7 +20,7 @@ t_token	*token_elem_generate(void)
 	node = (t_token *)malloc(sizeof(t_token));
 	if (node == NULL)
 		exit(errno);
-	node->str = NULL;
+	node->str = str;
 	node->type = NONE;
 	return (node);
 }

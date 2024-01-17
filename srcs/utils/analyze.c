@@ -3,65 +3,58 @@
 /*                                                        :::      ::::::::   */
 /*   analyze.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 01:46:42 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/16 06:44:52 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/17 14:48:24 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	token_is_pipe(t_token *token)
+int	is_pipe_node(t_node *node)
 {
-	if (token->type == PIPE)
+	t_token	*token;
+
+	token = (t_token *)node->elem;
+	if (token && token->type == PIPE)
 		return (PIPE);
 	return (0);
 }
 
-int	analyze_token_size(t_node *token_node)
+int	analyze_cmd_argc(t_node *token_node)
 {
 	t_token	*token;
-	int		token_size;
+	t_token	*token_prev;
 	int		cmd_argc;
+	int		token_cnt;
 
-	token_size = 0;
 	cmd_argc = 0;
+	token_cnt = 0;
 	while (token_node->next)
 	{
 		token = token_node->elem;
+		token_prev = token_node->prev->elem;
 		if (token->type == WORD)
-			cmd_argc++;
-		/* newline or pipe */
-		if (token_is_pipe(token))
 		{
-			printf("token_size : %d\n", token_size);
-			printf("cmd_size   : %d\n", cmd_argc);
-			break ;
+			if (token_prev == NULL || token_prev->type == WORD)
+				cmd_argc++;
 		}
-		token_size++;
+		else if (token_prev->type != WORD)
+			return (-1);
+		if (token->type == PIPE)
+			break ;
+		token_cnt++;
 		token_node = token_node->next;
 	}
-	if (token_size == 0)
-		return (0);
+	printf("token_size : %d\n", token_cnt);
+	printf("cmd_size   : %d\n", cmd_argc);
+	if (token_cnt == 0)
+		return (-1);
 	return (cmd_argc);
 }
 
-int	analyze_start(t_analyze *alz, t_cmdline *cmdline)
-{
-	t_node	*node;
-	int		cmd_argc;
-
-	node = cmdline->head->next;
-	while (node->next)
-	{
-		cmd_argc = analyze_token_size(node);
-		if (!cmd_argc)
-			return (1);
-	}
-}
-
-void	analyze_parse_create(t_analyze *alz, t_node *token_node, int cmd_argc)
+t_node	*analyze_parse_create(t_analyze *alz, t_node *token_node, int cmd_argc)
 {
 	t_parse	*parse;
 	t_token	*token;
@@ -85,10 +78,33 @@ void	analyze_parse_create(t_analyze *alz, t_node *token_node, int cmd_argc)
 		else if (token->type == INPUT || token->type == HEREDOC)
 			parse->stdin_token = token;
 		/* newline or pipe */
-		if (token_is_pipe(token))
+		if (is_pipe_node(token))
 		{
-			break ;
+			dlst_add_last(alz, parse);
+			return (token_node);
 		}
 		token_node = token_node->next;
+	}
+}
+
+int	analyze_start(t_analyze *alz, t_cmdline *cmdline)
+{
+	t_node	*node;
+	int		cmd_argc;
+
+	node = cmdline->head->next;
+	while (node->next)
+	{
+		cmd_argc = analyze_cmd_argc(node);
+		if (cmd_argc < 0)
+		{
+			printf("Error\n");
+			return (1);
+		}
+		for (int x = 0; x < cmd_argc; x++)
+			node = node->next;
+		// if (((t_token *)node->elem)->type == PIPE)
+		// 	node = node->next;
+		// node = analyze_parse_create(alz, node->elem, cmd_argc);
 	}
 }

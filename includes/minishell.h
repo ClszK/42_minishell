@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 08:10:11 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/16 06:32:16 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/17 13:18:12 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ enum e_type	token_type(char *str);
 /* set.c */
 void		envp_init(char **envp, t_envp *env_c);
 void		cmdline_init(t_cmdline *cmdline);
+void		analyze_init(t_analyze *alz);
 
 /* print.c */
 void		perror_exit(char *progname);
@@ -93,10 +94,12 @@ void		perror_exit(char *progname);
 void		token_cmdline(char *rline, t_cmdline *cmdline);
 
 /* generate.c */
-t_token		*token_elem_generate(void);
+t_token		*token_elem_generate(char *str);
 t_parse		*parse_elem_generate(int cmd_argc);
 
 /* analyze.c*/
+int			analyze_start(t_analyze *alz, t_cmdline *cmdline);
+t_node		*analyze_parse_create(t_analyze *alz, t_node *token_node, int cmd_argc);
 
 /* builtin */
 int			builtin_echo(t_parse *parse);
@@ -105,5 +108,9 @@ int			builtin_env(t_envp *env_c);
 int			builtin_exit(t_parse *parse);
 int			builtin_export(t_parse *parse, t_envp *env_c);
 int			builtin_unset(t_parse *parse, t_envp *env_c);
+
+/* free.c */
+
+void		token_elem_free(void *elem);
 
 #endif
