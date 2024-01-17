@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/16 00:42:59 by jeholee           #+#    #+#             */
+/*   Updated: 2024/01/16 00:43:43 by jeholee          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	ps_move_sign(char *str, int *sign)
@@ -42,4 +54,24 @@ long	ft_atol(char *str, int *flag)
 			*flag = 1;
 	result *= sign;
 	return (result);
+}
+
+enum e_type	token_type(char *str)
+{
+	if (*str == '|')
+		return (PIPE);
+	else if (*str == '<')
+	{
+		if (*(str + 1) == '<')
+			return (HEREDOC);
+		return (INPUT);
+	}
+	else if (*str == '>')
+	{
+		if (*(str + 1) == '>')
+			return (APPEND);
+		return (OUTPUT);
+	}
+	else
+		return (NONE);
 }
