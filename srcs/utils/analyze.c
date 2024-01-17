@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 01:46:42 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/17 21:17:17 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/17 22:57:58 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ enum e_type	analyze_cmd_argc(t_node *token_node, int *cmd_argc)
 	*cmd_argc = 0;
 	if (is_pipe_node(token_node))
 	{
-		if (!token_node->prev->elem || token_node->prev->elem->type== PIPE)
-			return (PIPE);
+		// if (!token_node->prev->elem || token_node->prev->elem->type== PIPE)
+		// 	return (PIPE);
 		token_node = token_node->next;
 	}
 	while (token_node->elem)
