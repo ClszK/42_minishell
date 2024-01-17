@@ -19,20 +19,24 @@ int	check_unset_key(char *key)
 int	builtin_unset(t_parse *parse, t_envp *env_c)
 {
 	int	i;
+	int	unset_stat;
 
 	i = 1;
 	errno = 0;
+	unset_stat = 0;
 	while (parse->cmd_argv[i])
 	{
 		if (check_unset_key(parse->cmd_argv[i]))
 		{
-			if (printf("minishell: unset: `%s': not a valid identifier\n", parse->cmd_argv[i]) < 0)
+			if (print_builtin_error(parse->cmd_argv[0], parse->cmd_argv[i], \
+									"not a valid identifier\n"))
 				return (errno); //echo $? = 1
+			unset_stat = 1;
 		}
 		else
 			dlst_delete(env_c, map_elem_free, map_del_find, parse->cmd_argv[i]);
 		i++;
 		// builtin_env(env_c);
 	}
-	return (0);
+	return (unset_stat);
 }

@@ -20,7 +20,7 @@ void	copy_env(t_envp *env_c, t_map *export_c)
 {
 	t_map	*map;
 	t_node	*node;
-	int	i;
+	int		i;
 
 	node = env_c->head->next;
 	i = 0;
@@ -63,7 +63,7 @@ void	sort_env(t_map *export_c, long lst_size)
 	}
 }
 
-void	free_copy(t_map *export_c, long	lst_size)
+void	free_copy(t_map *export_c, long lst_size)
 {
 	long	i;
 
@@ -93,9 +93,18 @@ int	export_print(t_envp *env_c)
 		if (ft_strcmp(export_c[i].key, "_") != 0)
 		{
 			if (export_c[i].val)
-				printf("declare -x %s=\"%s\"\n", export_c[i].key, export_c[i].val);
-			else
-				printf("declare -x %s\n", export_c[i].key);
+			{
+				if (ft_putstr_fd("declare -x ", STDOUT_FILENO) || \
+					ft_putstr_fd(export_c[i].key, STDOUT_FILENO) || \
+					ft_putstr_fd("=", STDOUT_FILENO) || \
+					ft_putstr_fd(export_c[i].val, STDOUT_FILENO) || \
+					ft_putstr_fd("\n", STDOUT_FILENO))
+					return (errno);
+			}
+			else if (ft_putstr_fd("declare -x ", STDOUT_FILENO) || \
+					ft_putstr_fd(export_c[i].key, STDOUT_FILENO) || \
+					ft_putstr_fd("\n", STDOUT_FILENO))
+					return (errno);
 		}
 	}
 	free_copy(export_c, env_c->lst_size);
@@ -163,7 +172,7 @@ void	append_env(char *cmd_argv, t_envp *env_c, size_t equal)
 	else
 		map->val = NULL;
 	if (map->key == NULL || (map->val == NULL && errno != 0) \
-		|| dlst_add_last(env_c, (t_map*)map))
+		|| dlst_add_last(env_c, (t_map *)map))
 		exit(errno);
 }
 
@@ -171,17 +180,21 @@ int	builtin_export(t_parse *parse, t_envp *env_c)
 {
 	size_t	equal;
 	int		i;
+	int		export_stat;
 
 	errno = 0;
+	export_stat = 0;
 	if (parse->cmd_argv[1] == NULL)
-		return(export_print(env_c));
+		return (export_print(env_c));
 	i = 1;
 	while (parse->cmd_argv[i])
 	{
 		if (check_export_key(parse->cmd_argv[i]))
 		{
-			if (printf("minishell: export: `%s': not a valid identifier\n", parse->cmd_argv[i]) < 0)
+			if (print_builtin_error(parse->cmd_argv[0], parse->cmd_argv[i], \
+									"not a valid identifier\n"))
 				return (errno); //echo $? = 1
+			export_stat = 1;
 		}
 		else
 		{
@@ -192,5 +205,5 @@ int	builtin_export(t_parse *parse, t_envp *env_c)
 		}
 		i++;
 	}
-	return (0);
+	return (export_stat);
 }

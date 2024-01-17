@@ -7,8 +7,13 @@ int	map_print(void *elem)
 	map = (t_map *)elem;
 	errno = 0;
 	if (map->val)
-		if (printf("%s=%s\n", map->key, map->val) < 0)
+	{
+		if (ft_putstr_fd(map->key, STDOUT_FILENO) || \
+			ft_putstr_fd("=", STDOUT_FILENO) || \
+			ft_putstr_fd(map->val, STDOUT_FILENO) || \
+			ft_putstr_fd("\n", STDOUT_FILENO))
 			return (errno);
+	}
 	return (0);
 }
 

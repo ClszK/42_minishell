@@ -20,10 +20,11 @@ int	builtin_pwd(void)
 	pwd = getcwd(NULL, 0);
 	if (pwd == NULL)
 	{
-		printf("minishell: %s\n", strerror(errno));
+		print_strerror("minishell", "PWD");
 		return (errno);
 	}
-	if (printf("%s\n", pwd) < 0)
+	if (ft_putstr_fd(pwd, STDOUT_FILENO) || \
+		ft_putstr_fd("\n", STDOUT_FILENO))
 	{
 		free(pwd);
 		return (errno);

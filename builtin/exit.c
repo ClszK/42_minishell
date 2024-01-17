@@ -7,20 +7,23 @@ int	builtin_exit(t_parse *parse)
 
 	errno = 0;
 	flag = 0;
-	if (printf("exit\n") < 0)
+	if (ft_putstr_fd("exit", STDOUT_FILENO) || \
+		ft_putstr_fd("\n", STDOUT_FILENO))
 		return (errno);
 	if (parse->cmd_argv[1] == NULL)
 		exit(0);
 	exit_num = ft_atol(parse->cmd_argv[1], &flag);
 	if (flag == 1)
 	{
-		if (printf("minishell: exit: %s: numeric argument required\n", parse->cmd_argv[1]) < 0)
+		if (print_builtin_error(parse->cmd_argv[0], parse->cmd_argv[1], \
+								"numeric argument required\n"))
 			return (errno);
 		exit(255);
 	}
 	if (parse->cmd_argv[2] != NULL)
 	{
-		if (printf("minishell: exit: too many arguments\n") < 0)
+		if (print_builtin_error(parse->cmd_argv[0], NULL, \
+							"too many arguments\n"))
 			return (errno);
 		return (1);
 	}

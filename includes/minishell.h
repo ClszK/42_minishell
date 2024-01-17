@@ -89,6 +89,9 @@ void		analyze_init(t_analyze *alz);
 
 /* print.c */
 void		perror_exit(char *progname);
+int			print_strerror(char *progname, char *str);
+int			print_builtin_error(char *cmd, char *arg, char *error);
+
 
 /* parse.c */
 void		token_cmdline(char *rline, t_cmdline *cmdline);
