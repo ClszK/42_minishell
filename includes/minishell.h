@@ -123,7 +123,10 @@ void		map_elem_free(void *elem);
 void		parse_elem_free(void *elem);
 
 /* find.c */
-int			map_del_find(void *elem, void *cmp);
+int			map_key_find(void *elem, void *cmp);
+void		map_oldpwd_find(t_envp *env_c);
+
+
 
 /* builtin_utils.c */
 int			check_export_key(char *key);

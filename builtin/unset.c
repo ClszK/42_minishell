@@ -34,7 +34,7 @@ int	builtin_unset(t_parse *parse, t_envp *env_c)
 			unset_stat = 1;
 		}
 		else
-			dlst_delete(env_c, map_elem_free, map_del_find, parse->cmd_argv[i]);
+			dlst_delete(env_c, map_elem_free, map_key_find, parse->cmd_argv[i]);
 		i++;
 		// builtin_env(env_c);
 	}

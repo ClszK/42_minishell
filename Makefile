@@ -23,7 +23,8 @@ SRCS_BUILTIN	=	echo.c\
 					env.c\
 					exit.c\
 					export.c\
-					unset.c
+					unset.c\
+					cd.c
 
 SRCS_DOUBLE		=	double_lst.c\
 					double_lst2.c
