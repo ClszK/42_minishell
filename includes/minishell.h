@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 08:10:11 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/17 13:18:12 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/17 16:18:29 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void		perror_exit(char *progname);
 void		token_cmdline(char *rline, t_cmdline *cmdline);
 
 /* generate.c */
-t_token		*token_elem_generate(char *str);
+t_token		*token_elem_generate(char *str, enum e_type type);
 t_parse		*parse_elem_generate(int cmd_argc);
 
 /* analyze.c*/
@@ -110,7 +110,7 @@ int			builtin_export(t_parse *parse, t_envp *env_c);
 int			builtin_unset(t_parse *parse, t_envp *env_c);
 
 /* free.c */
-
 void		token_elem_free(void *elem);
+void		parse_elem_free(void *elem);
 
 #endif
