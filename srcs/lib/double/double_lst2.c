@@ -42,3 +42,26 @@ void	dlst_rev_print(struct s_lst *lst, void (*print)(void*))
 		node = node->prev;
 	}
 }
+
+int		dlst_delete(struct s_lst *lst, \
+					void (*del)(void*), int (*find)(void*, void*), void *cmp)
+{
+	t_node	*del_node;
+
+	del_node = lst->head->next;
+	while (del_node->next)
+	{
+		if (find(del_node->elem, cmp))
+		{
+			del(del_node->elem);
+			del_node->next->prev = del_node->prev;
+			del_node->prev->next = del_node->next;
+			free(del_node);
+			lst->lst_size--;
+			return (0);
+		}
+		del_node = del_node->next;
+	}
+	return (1);
+}
+

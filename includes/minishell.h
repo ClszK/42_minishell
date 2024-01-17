@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 08:10:11 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/17 16:18:29 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/17 19:32:05 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,10 @@ int			builtin_unset(t_parse *parse, t_envp *env_c);
 
 /* free.c */
 void		token_elem_free(void *elem);
+void		map_elem_free(void *elem);
 void		parse_elem_free(void *elem);
+
+/* find.c */
+int			map_del_find(void *elem, void *cmp);
 
 #endif

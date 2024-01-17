@@ -38,5 +38,7 @@ void	dlst_del_all(struct s_lst *lst, void (*del)(void*));
 void	*dlst_last_elem(struct s_lst *lst);
 int		dlst_print(struct s_lst *lst, int (*print)(void*));
 void	dlst_rev_print(struct s_lst *lst, void (*print)(void*));
+int		dlst_delete(struct s_lst *lst, \
+					void (*del)(void*), int (*find)(void*, void*), void *cmp);
 
 #endif

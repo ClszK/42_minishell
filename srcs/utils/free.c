@@ -18,7 +18,7 @@ void	token_elem_free(void *elem)
 
 	token = (t_token *)elem;
 	free(token->str);
-	free(elem);
+	free(token);
 }
 
 void	parse_elem_free(void *elem)
@@ -31,4 +31,15 @@ void	parse_elem_free(void *elem)
 	while (parse->cmd_argv[++i])
 		free(parse->cmd_argv[i]);
 	free(parse->cmd_argv);
+	free(parse);
+}
+
+void	map_elem_free(void *elem)
+{
+	t_map	*map;
+
+	map = (t_map *)elem;
+	free(map->key);
+	free(map->val);
+	free(map);
 }
