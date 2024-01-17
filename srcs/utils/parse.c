@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 04:21:16 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/17 12:48:11 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/17 22:14:08 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,9 @@ void	token_add_list(\
 	t_token	*token;
 
 	errno = 0;
-	token = token_elem_generate(ft_substr(rline, 0, size));
+	token = token_elem_generate(ft_substr(rline, 0, size), type);
 	if (token->str == NULL && errno)
 		exit(errno);
-	token->type = type;
 	if (dlst_add_last(cmdline, token))
 		exit(errno);
 }
@@ -51,8 +50,7 @@ char	*token_split(char *rline, t_cmdline *cmdline, int i)
 		rline += i;
 		i = 0;
 		type = token_type(rline);
-		if ((rline[i] == '<' && rline[i + 1] == '<') || \
-			(rline[i] == '>' && rline[i + 1] == '>'))
+		if (type == APPEND || type == HEREDOC)
 			i++;
 		token_add_list(cmdline, rline, i + 1, type);
 	}
@@ -82,7 +80,7 @@ void	token_cmdline(char *rline, t_cmdline *cmdline)
 			}
 			i++;
 		}
-		if (rline[i] == '\0')
+		if (i > 1 && rline[i] == '\0')
 			token_add_list(cmdline, rline, i, WORD);
 		rline = token_split(rline, cmdline, i);
 	}
