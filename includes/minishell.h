@@ -112,5 +112,10 @@ int			builtin_unset(t_parse *parse, t_envp *env_c);
 /* free.c */
 
 void		token_elem_free(void *elem);
+void		map_elem_free(void *elem);
+void		parse_elem_free(void *elem);
+
+/* find.c */
+int			map_del_find(void *elem, void *cmp);
 
 #endif

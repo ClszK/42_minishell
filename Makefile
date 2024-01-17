@@ -14,7 +14,8 @@ SRCS_UTILS		=	utils.c\
 					parse.c\
 					generate.c\
 					analyze.c\
-					free.c
+					free.c\
+					find.c
 
 SRCS_BUILTIN	=	echo.c\
 					pwd.c\

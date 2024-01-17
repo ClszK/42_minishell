@@ -54,17 +54,19 @@ int main(int argc, char **argv, char **envp)
 		cmdline_init(&cmdline);
 		analyze_init(&alz);
 		rline = readline("minishell$ ");
+		cmd.cmd_argv = ft_split(rline, ' ');
 		token_cmdline(rline, &cmdline);
 		dlst_print(&cmdline, test_printf_token);
-		analyze_start(&alz, &cmdline);
+		// analyze_start(&alz, &cmdline);
 		dlst_print(&alz, test_printf_parse);
 		dlst_del_all(&cmdline, token_elem_free);
-		dlst_del_all(&alz, parse_elem_free);
-		// builtin_echo(&cmd);s
+		// dlst_del_all(&alz, parse_elem_free);
+		// builtin_echo(&cmd);
 		// builtin_pwd();
 		// builtin_env(&env_c);
 		// builtin_exit(&cmd);
 		// builtin_export(&cmd, &env_c);
+		dlst_delete(&env_c, map_elem_free, map_del_find, "OLDPWD");
 		free(rline);
     }
 	return (0);
