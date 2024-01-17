@@ -118,4 +118,8 @@ void		parse_elem_free(void *elem);
 /* find.c */
 int			map_del_find(void *elem, void *cmp);
 
+/* builtin_utils.c */
+int			check_key(char *key);
+
+
 #endif

@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	check_key(char *key)
+int	check_export_key(char *key)
 {
 	int	i;
 
@@ -165,7 +165,6 @@ void	append_env(char *cmd_argv, t_envp *env_c, size_t equal)
 	if (map->key == NULL || (map->val == NULL && errno != 0) \
 		|| dlst_add_last(env_c, (t_map*)map))
 		exit(errno);
-
 }
 
 int	builtin_export(t_parse *parse, t_envp *env_c)
@@ -179,13 +178,13 @@ int	builtin_export(t_parse *parse, t_envp *env_c)
 	i = 1;
 	while (parse->cmd_argv[i])
 	{
-		if (check_key(parse->cmd_argv[i]))
+		if (check_export_key(parse->cmd_argv[i]))
 		{
 			if (printf("minishell: export: `%s': not a valid identifier\n", parse->cmd_argv[i]) < 0)
 				return (errno); //echo $? = 1
 		}
 		else
-		{	
+		{
 			equal = find_char(parse->cmd_argv[i], '=');
 			if (check_dup(parse->cmd_argv[i], env_c, equal))
 				append_env(parse->cmd_argv[i], env_c, equal);
