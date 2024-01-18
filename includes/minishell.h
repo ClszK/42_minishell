@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 08:10:11 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/18 02:58:21 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/18 10:33:40 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,9 @@ t_node		*analyze_parse_create(t_analyze *alz, t_node *token_node, t_parse *parse
 int			is_pipe_node(t_node *node);
 void		token_redirection_type_change(t_node *node);
 
+/* expand.c */
+char		expand_valid_quote(char *rline);
+
 /* builtin */
 int			builtin_echo(t_parse *parse);
 int			builtin_pwd(void);
@@ -125,8 +128,7 @@ void		parse_elem_free(void *elem);
 /* find.c */
 int			map_key_find(void *elem, void *cmp);
 void		map_oldpwd_find(t_envp *env_c);
-
-
+char		*expand_env_find(t_envp *env_c, char *str);
 
 /* builtin_utils.c */
 int			check_export_key(char *key);

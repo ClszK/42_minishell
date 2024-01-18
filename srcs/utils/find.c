@@ -38,3 +38,19 @@ void	map_oldpwd_find(t_envp *env_c)
 			exit(errno);
 	}
 }
+
+char	*expand_env_find(t_envp *env_c, char *str)
+{
+	t_map	*map;
+	t_node	*node;
+
+	node = env_c->head->next;
+	while (node->next)
+	{
+		map = node->elem;
+		if (map_key_find(node->elem, str))
+			return (map->val);
+		node = node->next;
+	}
+	return (NULL);
+}
