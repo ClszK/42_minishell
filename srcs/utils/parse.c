@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 04:21:16 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/18 01:51:55 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/19 05:29:30 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,6 @@ char	*str_push_space(char *str)
 	while (*str && *str == ' ')
 		str++;
 	return (str);
-}
-
-int	is_opertator(char ch)
-{
-	if (ch == '<' || ch == '>' || ch == '|')
-		return (1);
-	return (0);
 }
 
 char	*token_split(char *rline, t_cmdline *cmdline, int i)

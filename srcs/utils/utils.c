@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 00:42:59 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/18 02:43:15 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/19 06:26:07 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,45 @@ int	is_redirect(t_token *token)
 	if (token->type == NONE || token->type == WORD || token->type == PIPE)
 		return (0);
 	return (1);
+}
+
+int	is_opertator(char ch)
+{
+	if (ch == '<' || ch == '>' || ch == '|')
+		return (1);
+	return (0);
+}
+
+char	check_quote_type(char ch)
+{
+	if (ch == '\'' || ch == '"')
+		return (ch);
+	return (0);
+}
+
+int	is_dollar_sperator(char ch)
+{
+	if (is_opertator(ch) || ch == ' ' || ch == '\0' || check_quote_type(ch))
+		return (1);
+	return (0);
+}
+
+int	can_dollar_expand(char *str)
+{
+	if (*str == '$' && !is_dollar_sperator(*(str + 1)))
+		return (1);
+	return (0);
+}
+
+void	arr_one_left_shift(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i + 1])
+	{
+		str[i] = str[i + 1];
+		i++;
+	}
+	str[i] = '\0';
 }

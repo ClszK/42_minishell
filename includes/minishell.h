@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 08:10:11 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/18 10:33:40 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/19 09:30:14 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,12 @@ typedef struct s_lst	t_analyze;
 long		ft_atol(char *str, int *flag);
 enum e_type	operate_type(char *str);
 int			is_redirect(t_token *token);
+int			is_opertator(char ch);
+int			is_dollar_sperator(char ch);
+
+char		check_quote_type(char ch);
+int			can_dollar_expand(char *str);
+void		arr_one_left_shift(char *str);
 
 /* set.c */
 void		envp_init(char **envp, t_envp *env_c);
@@ -111,6 +117,8 @@ void		token_redirection_type_change(t_node *node);
 
 /* expand.c */
 char		expand_valid_quote(char *rline);
+char		*expand_str_alloc(char *start, t_envp *env_c);
+char		*expand_str_cpy(char *src, char *dst, t_envp *env_c);
 
 /* builtin */
 int			builtin_echo(t_parse *parse);
