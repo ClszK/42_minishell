@@ -6,7 +6,7 @@ RFLAGS			=	-lreadline
 LIB_DIR			=	srcs/lib/libft
 LIB				=	-L$(LIB_DIR) -lft
 
-SRCS			=	main.c 	\
+SRCS			=	main_j.c 	\
 
 SRCS_UTILS		=	utils.c\
 					set.c\

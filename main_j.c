@@ -9,7 +9,7 @@ int	test_printf_token(void *elem)
 	if (token == NULL)
 		return (0);
 	printf("TYPE : %s%%\n", str[token->type]);
-	printf("STR  : %s%%\n", token->str);
+	printf("STR  : %s%%\n", token->str);`
 	printf("\n");
 	return (0);
 }
