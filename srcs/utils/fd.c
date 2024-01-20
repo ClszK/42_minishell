@@ -1,42 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils3.c                                           :+:      :+:    :+:   */
+/*   fd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/20 13:19:39 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/20 17:19:27 by jeholee          ###   ########.fr       */
+/*   Created: 2024/01/20 21:18:12 by jeholee           #+#    #+#             */
+/*   Updated: 2024/01/20 21:19:40 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_builtin_command(char *cmd)
+int pipe_init(t_pinfo *pinfo, int cmd_argc)
 {
-	char	*builtincmd[8];
-	int		i;
-
-	i = -1;
-	builtincmd[0] = "cd";
-	builtincmd[1] = "echo";
-	builtincmd[2] = "env";
-	builtincmd[3] = "exit";
-	builtincmd[4] = "export";
-	builtincmd[5] = "pwd";
-	builtincmd[6] = "unset";
-	builtincmd[7] = NULL;
-	while (builtincmd[++i])
+	if (cmd_argc == 1)
 	{
-		if (!ft_strcmp(cmd, builtincmd[i]))
-			return (i);
+		pinfo->is_pipe = 0;
+		return (0);
 	}
-	return (0);
-}
-
-int	is_include_pipe(t_analyze *alz)
-{
-	if (alz->lst_size > 1)
-		return (1);
+	errno = 0;
+	pinfo->is_pipe = 1;
+	if (pipe(pinfo->pfd[0]) \
+		|| pipe(pinfo->pfd[1]))
+		return (errno);
 	return (0);
 }

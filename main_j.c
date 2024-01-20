@@ -1,4 +1,4 @@
-#include "/Users/jeholee/Documents/42_minishell/includes/minishell.h"
+#include "minishell.h"
 
 int	test_printf_token(void *elem)
 {
@@ -32,26 +32,35 @@ int	test_printf_parse(void *elem)
 }
 
 /* 임시 */
-int	commandline_preprocessing(t_shinfo *sh)
+int	command_preprocessing(t_shinfo *sh)
 {
+	int	error_token;
+
 	if (valid_quote(sh->rline))
 	{
 		printf("ERROR: sysntax\n");
 		shinfo_free(sh, NULL);
 		return  (1);
 	}
-	if (sh->rline && *(sh->rline) != '\n')
+	if (sh->rline && *(sh->rline) != '\0')
 	{
 		token_cmdline(sh->rline, &(sh->cmdline));
+		dlst_print(&sh->cmdline, test_printf_token);
 		if (sh->cmdline.lst_size != 0)
 		{
-			analyze_start(&sh->alz, &sh->cmdline);
+			error_token = analyze_start(&sh->alz, &sh->cmdline);
+			if (error_token)
+			{
+				printf("ERROR : %d\n", error_token);
+				return (1);
+			}
 			expand_start(&sh->alz, &sh->env_c);
 			path_insert_in_parse(&sh->alz, &sh->env_c);
 		}
-		// dlst_print(&sh->alz, test_printf_parse);
+		dlst_print(&sh->alz, test_printf_parse);
+		return (0);
 	}
-	return (0);
+	return (1);
 }
 
 int main(int argc, char **argv, char **envp)
@@ -66,9 +75,9 @@ int main(int argc, char **argv, char **envp)
 		shinfo_init(&sh);
 		sh.rline = readline("minishell$ ");
 		add_history(sh.rline);
-		if (commandline_preprocessing(&sh))
+		if (command_preprocessing(&sh))
 			continue ;
-		commandline_excute(&sh);
+		command_excute_temporary(&sh);
 		shinfo_free(&sh, NULL);
     }
 	return (0);

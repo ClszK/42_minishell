@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 08:10:11 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/20 14:40:29 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/20 21:00:18 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 # define EXIT_FAILURE 1
 
 # define SYNTAX_ERROR 1
+
+# define READ_FD 0
+# define WRITE_FD 1
 
 # include <stdio.h>
 # include <readline/readline.h>
@@ -83,11 +86,18 @@ typedef struct s_map
 typedef struct s_shinfo
 {
 	char		*rline;
-	pid_t		child_pid;
 	t_envp		env_c;
 	t_cmdline	cmdline;
 	t_analyze	alz;
 }	t_shinfo;
+
+typedef struct s_pinfo
+{
+	int		is_pipe;
+	int		pfd[2][2];
+	pid_t	pid;
+	pid_t	last_pid;
+}	t_pinfo;
 
 /* utils.c*/
 int			ps_move_sign(char *str, int *sign);
@@ -105,6 +115,7 @@ char		valid_quote(char *rline);
 
 /* utils3.c*/
 int			is_builtin_command(char *cmd);
+int			is_include_pipe(t_analyze *alz);
 
 /* set.c */
 void		envp_init(char **envp, t_envp *env_c);
@@ -151,7 +162,10 @@ void		expand_start(t_analyze *alz, t_envp *env_c);
 void		path_insert_in_parse(t_analyze *alz, t_envp *env_c);
 
 /* cmd.c */
-void		commandline_excute(t_shinfo *sh);
+void		command_excute_temporary(t_shinfo *sh);
+
+/* proc.c */
+int 		pipe_init(t_pinfo *pinfo, int cmd_argc);
 
 /* builtin */
 int			builtin_echo(t_parse *parse);

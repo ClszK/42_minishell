@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 04:21:16 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/20 12:53:47 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/20 15:08:42 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	token_cmdline(char *rline, t_cmdline *cmdline)
 			}
 			i++;
 		}
-		if (i > 1 && rline[i] == '\0')
+		if (i > 0 && rline[i] == '\0')
 			token_add_list(cmdline, rline, i, WORD);
 		if (!rline[i])
 			return ;

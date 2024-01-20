@@ -1,42 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils3.c                                           :+:      :+:    :+:   */
+/*   file.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/20 13:19:39 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/20 17:19:27 by jeholee          ###   ########.fr       */
+/*   Created: 2024/01/20 21:19:42 by jeholee           #+#    #+#             */
+/*   Updated: 2024/01/21 07:15:25 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_builtin_command(char *cmd)
+int	tmpfile_create(char **tmp_name)
 {
-	char	*builtincmd[8];
+	char	*itoa_str;
+	char	*tmp;
 	int		i;
+	int		fd;
 
-	i = -1;
-	builtincmd[0] = "cd";
-	builtincmd[1] = "echo";
-	builtincmd[2] = "env";
-	builtincmd[3] = "exit";
-	builtincmd[4] = "export";
-	builtincmd[5] = "pwd";
-	builtincmd[6] = "unset";
-	builtincmd[7] = NULL;
-	while (builtincmd[++i])
+	i = 0;
+	tmp = "here_doc_tmp";
+	errno = 0;
+	while (++i < 2147483647)
 	{
-		if (!ft_strcmp(cmd, builtincmd[i]))
-			return (i);
+		itoa_str = ft_itoa(i);
+		*tmp_name = ft_strjoin(tmp, itoa_str);
+		if (*tmp_name == NULL)
+			exit(EXIT_FAILURE);
+		free(itoa_str);
+		fd = open(*tmp_name, O_EXCL | O_CREAT | O_RDWR, 0644);
+		if (fd != -1)
+			return (fd);
+		free(*tmp_name);
+		if (errno != EEXIST)
+			perror_exit(progname);
 	}
-	return (0);
-}
-
-int	is_include_pipe(t_analyze *alz)
-{
-	if (alz->lst_size > 1)
-		return (1);
-	return (0);
+	return (-1);
 }
