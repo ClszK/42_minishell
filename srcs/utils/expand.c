@@ -3,33 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 04:22:38 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/20 06:34:33 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/20 12:50:44 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* need error process!! */
-char	expand_valid_quote(char *rline)
-{
-	char	type;
-
-	while (*rline)
-	{
-		type = check_quote_type(*rline);
-		if (type)
-		{
-			rline = ft_strchr(rline + 1, *rline);
-			if (rline == NULL)
-				return (type);
-		}
-		rline++;
-	}
-	return (0);
-}
 
 char	*expand_dollar(char *start, size_t *size, t_envp *env_c, char *dst)
 {
@@ -92,7 +73,6 @@ char	*expand_str_alloc(char *start, t_envp *env_c)
 	char	*rstr;
 
 	size = 0;
-	printf("start : %s%%\n", start);
 	while (*start)
 	{
 		if (*start == '\'')
@@ -106,7 +86,6 @@ char	*expand_str_alloc(char *start, t_envp *env_c)
 		start++;
 	}
 	errno = 0;
-	printf("malloc size : %zu\n", size);
 	rstr = ft_calloc(sizeof(char), size + 1);
 	if (rstr == NULL)
 		exit(errno);

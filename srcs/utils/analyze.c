@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   analyze.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 01:46:42 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/20 06:28:18 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/20 12:13:53 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ int	analyze_token_parse(t_node *token_node, t_parse *parse, int *i)
 	t_token		*token;
 
 	token = token_node->elem;
-	printf("%s\n", token->str);
 	if (token->type == WORD)
 	{
 		parse->cmd_argv[*i] = ft_strdup(token->str);
@@ -54,9 +53,11 @@ int	analyze_token_parse(t_node *token_node, t_parse *parse, int *i)
 		return (0);
 	}
 	if (token->type == OUTPUT || token->type == APPEND)
-		dlst_add_last(parse->stdout_lst, token_elem_cpy(token_node->next->elem));
+		dlst_add_last(parse->stdout_lst, \
+						token_elem_cpy(token_node->next->elem));
 	else if (token->type == INPUT || token->type == HEREDOC)
-		dlst_add_last(parse->stdin_lst, token_elem_cpy(token_node->next->elem));
+		dlst_add_last(parse->stdin_lst, \
+						token_elem_cpy(token_node->next->elem));
 	return (1);
 }
 

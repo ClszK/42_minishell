@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 08:10:11 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/20 14:36:38 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/20 14:40:29 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ void		expand_start(t_analyze *alz, t_envp *env_c);
 void		path_insert_in_parse(t_analyze *alz, t_envp *env_c);
 
 /* cmd.c */
-
+void		commandline_excute(t_shinfo *sh);
 
 /* builtin */
 int			builtin_echo(t_parse *parse);

@@ -11,6 +11,8 @@ SRCS_J			=	main_j.c
 SRCS_S			=	main_s.c
 
 SRCS_UTILS		=	utils.c\
+					utils2.c\
+					utils3.c\
 					set.c\
 					print.c\
 					parse.c\
@@ -20,7 +22,9 @@ SRCS_UTILS		=	utils.c\
 					free.c\
 					find.c\
 					expand.c\
-					expand2.c
+					expand2.c\
+					path.c\
+					cmd.c
 
 SRCS_BUILTIN	=	echo.c\
 					pwd.c\

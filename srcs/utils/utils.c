@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 00:42:59 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/19 14:07:43 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/20 13:18:27 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,39 +88,4 @@ int	is_opertator(char ch)
 	if (ch == '<' || ch == '>' || ch == '|')
 		return (1);
 	return (0);
-}
-
-char	check_quote_type(char ch)
-{
-	if (ch == '\'' || ch == '"')
-		return (ch);
-	return (0);
-}
-
-int	is_dollar_sperator(char ch)
-{
-	if (is_opertator(ch) || ch == ' ' || ch == '\0' || check_quote_type(ch) \
-		|| ch == '$')
-		return (1);
-	return (0);
-}
-
-int	can_dollar_expand(char *str)
-{
-	if (*str == '$' && !is_dollar_sperator(*(str + 1)))
-		return (1);
-	return (0);
-}
-
-void	arr_one_left_shift(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i + 1])
-	{
-		str[i] = str[i + 1];
-		i++;
-	}
-	str[i] = '\0';
 }

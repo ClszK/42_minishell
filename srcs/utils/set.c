@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 04:10:53 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/20 06:25:02 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/20 12:41:13 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,12 @@ t_stdio	*stdio_init(void)
 	lst = malloc(sizeof(t_stdio));
 	if (lst == NULL || dlst_init(lst))
 		exit(errno);
-	dlst_init(lst);
 	return (lst);
+}
+
+void	shinfo_init(t_shinfo *sh)
+{
+	sh->rline = NULL;
+	cmdline_init(&sh->cmdline);
+	analyze_init(&sh->alz);
 }

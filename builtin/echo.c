@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 05:03:19 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/10 08:24:32 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/20 14:48:07 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	builtin_echo(t_parse *parse)
 	{
 		if (ft_putstr_fd(parse->cmd_argv[i], STDOUT_FILENO))
 			return (errno);
-		if (parse->cmd_argv[i])
+		if (parse->cmd_argv[i + 1])
 			if (ft_putstr_fd(" ", STDOUT_FILENO))
 				return (errno);
 		i++;
