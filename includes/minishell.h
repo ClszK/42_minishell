@@ -148,10 +148,14 @@ void		parse_elem_free(void *elem);
 int			map_key_find(void *elem, void *cmp);
 void		map_oldpwd_find(t_envp *env_c);
 char		*expand_env_find(t_envp *env_c, char *str);
+int			find_char(char *str, char c);
 
 /* builtin_utils.c */
 int			check_export_key(char *key);
 int			check_unset_key(char *key);
+int			check_dup(char	*cmd_argv, t_envp *env_c, size_t equal);
+void		append_env(char *cmd_argv, t_envp *env_c, size_t equal);
+
 
 
 #endif

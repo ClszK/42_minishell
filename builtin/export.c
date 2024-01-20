@@ -111,20 +111,6 @@ int	export_print(t_envp *env_c)
 	return (0);
 }
 
-int	find_char(char *str, char c)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == c)
-			return (i);
-		i++;
-	}
-	return (i);
-}
-
 void	update_env(char *cmd_argv, t_map *cur, size_t equal)
 {
 	errno = 0;
@@ -201,7 +187,7 @@ int	builtin_export(t_parse *parse, t_envp *env_c)
 			equal = find_char(parse->cmd_argv[i], '=');
 			if (check_dup(parse->cmd_argv[i], env_c, equal))
 				append_env(parse->cmd_argv[i], env_c, equal);
-			builtin_env(env_c);
+			// builtin_env(env_c);
 		}
 		i++;
 	}
