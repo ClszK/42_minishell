@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 08:10:11 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/20 06:15:16 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/20 14:36:38 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct s_lst	t_envp;
 typedef struct s_lst	t_cmdline;
 typedef struct s_lst	t_analyze;
 typedef struct s_lst	t_stdio;
+
 typedef struct s_token
 {
 	enum e_type	type;
@@ -79,27 +80,44 @@ typedef struct s_map
 	char	*val;
 }	t_map;
 
+typedef struct s_shinfo
+{
+	char		*rline;
+	pid_t		child_pid;
+	t_envp		env_c;
+	t_cmdline	cmdline;
+	t_analyze	alz;
+}	t_shinfo;
+
 /* utils.c*/
+int			ps_move_sign(char *str, int *sign);
 long		ft_atol(char *str, int *flag);
 enum e_type	operate_type(char *str);
 int			is_redirect(t_token *token);
 int			is_opertator(char ch);
-int			is_dollar_sperator(char ch);
 
+/* utils2.c*/
+int			is_dollar_sperator(char ch);
 char		check_quote_type(char ch);
 int			can_dollar_expand(char *str);
 void		arr_one_left_shift(char *str);
+char		valid_quote(char *rline);
+
+/* utils3.c*/
+int			is_builtin_command(char *cmd);
 
 /* set.c */
 void		envp_init(char **envp, t_envp *env_c);
 void		cmdline_init(t_cmdline *cmdline);
 void		analyze_init(t_analyze *alz);
 t_stdio		*stdio_init(void);
+void		shinfo_init(t_shinfo *sh);
 
 /* print.c */
 void		perror_exit(char *progname);
 int			print_strerror(char *progname, char *str);
 int			print_builtin_error(char *cmd, char *arg, char *error);
+void		error_exit(char *progname, char *str, char *str2, int code);
 
 /* parse.c */
 void		token_cmdline(char *rline, t_cmdline *cmdline);
@@ -118,7 +136,6 @@ int			is_pipe_node(t_node *node);
 void		token_redirection_type_change(t_node *node);
 
 /* expand.c */
-char		expand_valid_quote(char *rline);
 char		*expand_squote(char *start, size_t *size, char *dst);
 char		*expand_dquote(char *start, size_t *size, t_envp *env_c, char *dst);
 char		*expand_dollar(char *start, size_t *size, t_envp *env_c, char *dst);
@@ -129,6 +146,12 @@ char		*expand_str_cpy(char *start, char *dst, t_envp *env_c);
 void		expand_cmd_argv(char **cmd_argv, t_envp *env_c);
 void		expand_stdio(t_stdio *std, t_envp *env_c);
 void		expand_start(t_analyze *alz, t_envp *env_c);
+
+/* path.c */
+void		path_insert_in_parse(t_analyze *alz, t_envp *env_c);
+
+/* cmd.c */
+
 
 /* builtin */
 int			builtin_echo(t_parse *parse);
@@ -142,6 +165,8 @@ int			builtin_unset(t_parse *parse, t_envp *env_c);
 void		token_elem_free(void *elem);
 void		map_elem_free(void *elem);
 void		parse_elem_free(void *elem);
+void		split_free(char **arr);
+void		shinfo_free(t_shinfo *sh, t_envp *env_c);
 
 /* find.c */
 int			map_key_find(void *elem, void *cmp);
@@ -151,6 +176,5 @@ char		*expand_env_find(t_envp *env_c, char *str);
 /* builtin_utils.c */
 int			check_export_key(char *key);
 int			check_unset_key(char *key);
-
 
 #endif
