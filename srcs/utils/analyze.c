@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   analyze.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 01:46:42 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/19 10:24:00 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/20 06:28:18 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,45 +39,47 @@ int	analyze_cmd_argc(t_node *token_node)
 	return (cmd_argc);
 }
 
-void	analyze_token_parse(t_token *token, t_parse *parse, int *i)
+int	analyze_token_parse(t_node *token_node, t_parse *parse, int *i)
 {
+	t_token		*token;
+
+	token = token_node->elem;
+	printf("%s\n", token->str);
 	if (token->type == WORD)
 	{
 		parse->cmd_argv[*i] = ft_strdup(token->str);
 		if (parse->cmd_argv[*i] == NULL)
 			exit(errno);
 		*i += 1;
+		return (0);
 	}
-	else
-	{
-		if (token->type == OUTPUT || token->type == APPEND)
-			parse->stdout_token = token;
-		else if (token->type == INPUT || token->type == HEREDOC)
-			parse->stdin_token = token;
-	}
+	if (token->type == OUTPUT || token->type == APPEND)
+		dlst_add_last(parse->stdout_lst, token_elem_cpy(token_node->next->elem));
+	else if (token->type == INPUT || token->type == HEREDOC)
+		dlst_add_last(parse->stdin_lst, token_elem_cpy(token_node->next->elem));
+	return (1);
 }
 
 t_node	*analyze_parse_create(t_analyze *alz, t_node *token_node, \
 								t_parse *parse)
 {
-	t_token		*token;
 	int			i;
 
 	i = 0;
 	errno = 0;
 	if (is_pipe_node(token_node))
 	{
-		parse->stdin_token = (t_token *)token_node->elem;
+		dlst_add_last(parse->stdin_lst, token_elem_cpy(token_node->elem));
 		token_node = token_node->next;
 	}
 	while (token_node->elem && !is_pipe_node(token_node))
 	{
-		token = token_node->elem;
-		analyze_token_parse(token, parse, &i);
+		if (analyze_token_parse(token_node, parse, &i))
+			token_node = token_node->next;
 		token_node = token_node->next;
 	}
-	if (is_pipe_node(token_node) && parse->stdout_token == NULL)
-		parse->stdout_token = (t_token *)token_node->elem;
+	if (is_pipe_node(token_node))
+		dlst_add_last(parse->stdout_lst, token_elem_cpy(token_node->elem));
 	dlst_add_last(alz, parse);
 	return (token_node);
 }

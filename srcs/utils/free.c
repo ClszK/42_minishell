@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:42:10 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/17 15:56:38 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/20 00:02:43 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void	parse_elem_free(void *elem)
 	i = -1;
 	while (parse->cmd_argv[++i])
 		free(parse->cmd_argv[i]);
+	dlst_del_all(parse->stdin_lst, token_elem_free);
+	dlst_del_all(parse->stdout_lst, token_elem_free);
 	free(parse->cmd_argv);
 	free(parse);
 }

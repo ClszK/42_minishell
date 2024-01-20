@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 04:10:53 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/16 00:51:57 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/20 06:25:02 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,16 @@ void	analyze_init(t_analyze *alz)
 	errno = 0;
 	if (dlst_init(alz))
 		exit(errno);
+}
+
+t_stdio	*stdio_init(void)
+{
+	t_stdio	*lst;
+
+	errno = 0;
+	lst = malloc(sizeof(t_stdio));
+	if (lst == NULL || dlst_init(lst))
+		exit(errno);
+	dlst_init(lst);
+	return (lst);
 }
