@@ -127,6 +127,7 @@ int			builtin_env(t_envp *env_c);
 int			builtin_exit(t_parse *parse);
 int			builtin_export(t_parse *parse, t_envp *env_c);
 int			builtin_unset(t_parse *parse, t_envp *env_c);
+int			builtin_cd(t_parse *parse, t_envp *env_c);
 
 /* free.c */
 void		token_elem_free(void *elem);
