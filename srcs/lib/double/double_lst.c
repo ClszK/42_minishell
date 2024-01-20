@@ -36,6 +36,7 @@ int	dlst_init(struct s_lst *lst)
 	lst->head->next = lst->tail;
 	lst->tail->prev = lst->head;
 	lst->lst_size = 0;
+	lst->pwd = NULL;
 	return (0);
 }
 

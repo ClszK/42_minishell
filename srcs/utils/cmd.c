@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:06:38 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/20 21:03:22 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/21 07:20:35 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ void	command_excute_builtin(t_parse *parse, t_envp *env_c, int builtin_idx)
 		builtin_exit(parse);
 	else if (builtin_idx == 4)
 		builtin_export(parse, env_c);
-	else if (builtin_idx == 5)
-		builtin_pwd();
-	else if (builtin_idx == 6)
+	else if (builtin_index == 5)
+		builtin_pwd(env_c);
+	else if (builtin_index == 6)
 		builtin_unset(parse, env_c);
 }
 

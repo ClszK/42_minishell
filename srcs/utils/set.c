@@ -34,6 +34,7 @@ void	envp_init(char **envp, t_envp *env_c)
 			dlst_add_last(env_c, (t_map*)map))
 			exit(errno);
 	}
+	env_c->pwd = ft_strdup(expand_env_find(env_c, "PWD"));
 	map_oldpwd_find(env_c);
 }
 
