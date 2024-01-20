@@ -30,7 +30,7 @@ int	builtin_unset(t_parse *parse, t_envp *env_c)
 		{
 			if (print_builtin_error(parse->cmd_argv[0], parse->cmd_argv[i], \
 									"not a valid identifier\n"))
-				return (errno); //echo $? = 1
+				return (1); //echo $? = 1
 			unset_stat = 1;
 		}
 		else

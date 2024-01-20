@@ -11,16 +11,19 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	builtin_pwd(void)
+//unset 후 pwd 할때 힙유즈에프터프리 //oldpwd가 없을 때 다시 만들어야 하나?
+int	builtin_pwd(t_envp *env_c)
 {
 	char	*pwd;
 
 	errno = 0;
+	if (env_c->pwd)
+		return (ft_putstr_fd(env_c->pwd, STDOUT_FILENO) || \
+			ft_putstr_fd("\n", STDOUT_FILENO));
 	pwd = getcwd(NULL, 0);
 	if (pwd == NULL)
 	{
-		print_strerror("minishell", "pwd");
+		print_strerror("pwd", NULL);
 		return (1);
 	}
 	if (ft_putstr_fd(pwd, STDOUT_FILENO) || \

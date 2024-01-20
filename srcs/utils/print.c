@@ -40,7 +40,7 @@ int	print_builtin_error(char *cmd, char *arg, char *error)
 		(arg != NULL && ft_putstr_fd(arg, STDERR_FILENO)) || \
 		(arg != NULL && ft_putstr_fd(": ", STDERR_FILENO)) || \
 		ft_putstr_fd(error, STDERR_FILENO))
-		return (errno);
+		return (1);
 	return (0);
 }
 
@@ -56,5 +56,4 @@ void	error_exit(char *progname, char *str, char *str2, int code)
 		ft_putstr_fd(str2, STDERR_FILENO);
 	}
 	ft_putchar_fd('\n', STDERR_FILENO);
-	exit(code);
 }

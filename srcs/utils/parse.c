@@ -73,7 +73,7 @@ void	token_cmdline(char *rline, t_cmdline *cmdline)
 			}
 			i++;
 		}
-		if (i > 1 && rline[i] == '\0')
+		if (i > 0 && rline[i] == '\0')
 			token_add_list(cmdline, rline, i, WORD);
 		if (!rline[i])
 			return ;

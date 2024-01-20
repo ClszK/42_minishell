@@ -32,7 +32,7 @@ void	commandline_excute(t_shinfo *sh)
 	else if (builtin_index == 4)
 		builtin_export(parse, env_c);
 	else if (builtin_index == 5)
-		builtin_pwd();
+		builtin_pwd(env_c);
 	else if (builtin_index == 6)
 		builtin_unset(parse, env_c);
 }

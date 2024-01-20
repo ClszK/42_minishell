@@ -1,4 +1,4 @@
-#include "/Users/jeholee/Documents/42_minishell/includes/minishell.h"
+#include "minishell.h"
 
 int	test_printf_token(void *elem)
 {
@@ -49,7 +49,7 @@ int	commandline_preprocessing(t_shinfo *sh)
 			expand_start(&sh->alz, &sh->env_c);
 			path_insert_in_parse(&sh->alz, &sh->env_c);
 		}
-		// dlst_print(&sh->alz, test_printf_parse);
+		dlst_print(&sh->alz, test_printf_parse);
 	}
 	return (0);
 }

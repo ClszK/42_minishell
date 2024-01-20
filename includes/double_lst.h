@@ -28,6 +28,7 @@ struct s_lst
 	t_node	*head;
 	t_node	*tail;
 	long	lst_size;
+	char	*pwd;
 };
 
 t_node	*dlst_node_generate(void *element);

@@ -45,12 +45,11 @@ int	builtin_echo(t_parse *parse)
 	i = check_option(parse, &n_flag);
 	while (parse->cmd_argv[i])
 	{
-		if (ft_putstr_fd(parse->cmd_argv[i], STDOUT_FILENO))
+		if (ft_putstr_fd(parse->cmd_argv[i++], STDOUT_FILENO))
 			return (errno);
-		if (parse->cmd_argv[i + 1])
+		if (parse->cmd_argv[i])
 			if (ft_putstr_fd(" ", STDOUT_FILENO))
 				return (errno);
-		i++;
 	}
 	if (!n_flag)
 		if (ft_putstr_fd("\n", STDOUT_FILENO))
