@@ -6,7 +6,9 @@ RFLAGS			=	-lreadline
 LIB_DIR			=	srcs/lib/libft
 LIB				=	-L$(LIB_DIR) -lft
 
-SRCS			=	main_j.c 	\
+SRCS_J			=	main_j.c
+
+SRCS_S			=	main_s.c
 
 SRCS_UTILS		=	utils.c\
 					set.c\
@@ -17,7 +19,8 @@ SRCS_UTILS		=	utils.c\
 					analyze2.c\
 					free.c\
 					find.c\
-					expand.c
+					expand.c\
+					expand2.c
 
 SRCS_BUILTIN	=	echo.c\
 					pwd.c\
@@ -30,8 +33,7 @@ SRCS_BUILTIN	=	echo.c\
 SRCS_DOUBLE		=	double_lst.c\
 					double_lst2.c
 
-OBJS			=	$(SRCS:.c=.o)\
-					$(addprefix srcs/utils/, ${SRCS_UTILS:.c=.o})\
+OBJS			=	$(addprefix srcs/utils/, ${SRCS_UTILS:.c=.o})\
 					$(addprefix builtin/, ${SRCS_BUILTIN:.c=.o})\
 					$(addprefix srcs/lib/double/, ${SRCS_DOUBLE:.c=.o})
 
@@ -40,17 +42,23 @@ HEADERS			=	double_lst.h\
 
 HEADERS_PATH	=	includes
 
+ifdef MY
+    OBJ = $(OBJS) $(SRCS_J:.c=.o)
+else
+    OBJ = $(OBJS) $(SRCS_S:.c=.o)
+endif
+
 all:	$(NAME)
 
-$(NAME)	:	$(OBJS) $(addprefix includes/, ${HEADERS})
+$(NAME)	:	$(OBJ) $(addprefix includes/, ${HEADERS})
 	make -C $(LIB_DIR)
-	$(CC) $(CFLAGS) $(RFLAGS) $(LIB) $(OBJS) -o $(NAME) -fsanitize=address
+	$(CC) $(CFLAGS) $(RFLAGS) $(LIB) $(OBJ) -o $(NAME) -fsanitize=address
 
 %.o	:	%.c
 	$(CC) $(CFLAGS) -c $< -o $@ -I$(HEADERS_PATH) -g
 
 clean:
-	rm -rf $(OBJS)
+	rm -rf $(OBJ)
 	make clean -C $(LIB_DIR)
 
 fclean: clean
