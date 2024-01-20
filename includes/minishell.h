@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 08:10:11 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/19 10:24:02 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/20 06:15:16 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,10 @@ enum e_type
 	NEWLN
 };
 
+typedef struct s_lst	t_envp;
+typedef struct s_lst	t_cmdline;
+typedef struct s_lst	t_analyze;
+typedef struct s_lst	t_stdio;
 typedef struct s_token
 {
 	enum e_type	type;
@@ -65,8 +69,8 @@ typedef struct s_parse
 	int		cmd_argc;
 	char	*cmd_path;
 	char	**cmd_argv;
-	t_token	*stdin_token;
-	t_token	*stdout_token;
+	t_stdio	*stdin_lst;
+	t_stdio	*stdout_lst;
 }	t_parse;
 
 typedef struct s_map
@@ -74,10 +78,6 @@ typedef struct s_map
 	char	*key;
 	char	*val;
 }	t_map;
-
-typedef struct s_lst	t_envp;
-typedef struct s_lst	t_cmdline;
-typedef struct s_lst	t_analyze;
 
 /* utils.c*/
 long		ft_atol(char *str, int *flag);
@@ -94,6 +94,7 @@ void		arr_one_left_shift(char *str);
 void		envp_init(char **envp, t_envp *env_c);
 void		cmdline_init(t_cmdline *cmdline);
 void		analyze_init(t_analyze *alz);
+t_stdio		*stdio_init(void);
 
 /* print.c */
 void		perror_exit(char *progname);
@@ -106,6 +107,7 @@ void		token_cmdline(char *rline, t_cmdline *cmdline);
 /* generate.c */
 t_token		*token_elem_generate(char *str, enum e_type type);
 t_parse		*parse_elem_generate(int cmd_argc);
+t_token		*token_elem_cpy(void *elem);
 
 /* analyze.c */
 int			analyze_start(t_analyze *alz, t_cmdline *cmdline);
@@ -117,8 +119,16 @@ void		token_redirection_type_change(t_node *node);
 
 /* expand.c */
 char		expand_valid_quote(char *rline);
+char		*expand_squote(char *start, size_t *size, char *dst);
+char		*expand_dquote(char *start, size_t *size, t_envp *env_c, char *dst);
+char		*expand_dollar(char *start, size_t *size, t_envp *env_c, char *dst);
 char		*expand_str_alloc(char *start, t_envp *env_c);
-char		*expand_str_cpy(char *src, char *dst, t_envp *env_c);
+
+/* expand2.c */
+char		*expand_str_cpy(char *start, char *dst, t_envp *env_c);
+void		expand_cmd_argv(char **cmd_argv, t_envp *env_c);
+void		expand_stdio(t_stdio *std, t_envp *env_c);
+void		expand_start(t_analyze *alz, t_envp *env_c);
 
 /* builtin */
 int			builtin_echo(t_parse *parse);
