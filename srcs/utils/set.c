@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 04:10:53 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/20 12:41:13 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/21 07:40:48 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ void	envp_init(char **envp, t_envp *env_c)
 			exit(errno);
 	}
 	env_c->pwd = ft_strdup(expand_env_find(env_c, "PWD"));
+	if (env_c->pwd == NULL)
+		exit(errno);
 	map_oldpwd_find(env_c);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 08:10:11 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/20 21:00:18 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/21 09:45:36 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,10 +93,11 @@ typedef struct s_shinfo
 
 typedef struct s_pinfo
 {
-	int		is_pipe;
+	int		pipe_cnt;
 	int		pfd[2][2];
 	pid_t	pid;
 	pid_t	last_pid;
+	int		last_status;
 }	t_pinfo;
 
 /* utils.c*/
@@ -163,9 +164,18 @@ void		path_insert_in_parse(t_analyze *alz, t_envp *env_c);
 
 /* cmd.c */
 void		command_excute_temporary(t_shinfo *sh);
+void		command_excute(t_shinfo *sh);
 
 /* proc.c */
+void		wait_child(t_pinfo *info, int cmd_cnt);
+void		child_process(t_parse *parse, t_envp *env_c, int i, t_pinfo *info);
+
+/* file.c */
+int			tmpfile_create(char **tmp_name);
+
+/* fd.c */
 int 		pipe_init(t_pinfo *pinfo, int cmd_argc);
+void		pipe_close(t_pinfo *info, int pos, int pipe_cnt);
 
 /* builtin */
 int			builtin_echo(t_parse *parse);

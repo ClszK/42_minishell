@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 21:19:42 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/21 07:15:25 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/21 07:56:56 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	tmpfile_create(char **tmp_name)
 			return (fd);
 		free(*tmp_name);
 		if (errno != EEXIST)
-			perror_exit(progname);
+			perror_exit("minishell");
 	}
 	return (-1);
 }
