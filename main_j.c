@@ -31,7 +31,8 @@ int	test_printf_parse(void *elem)
 	return (0);
 }
 
-/* 임시 */
+/* 명령어 전처리(token화, 구문 분석, 변수 확장, 파일 확장)
+	Error 처리 미구현 */
 int	command_preprocessing(t_shinfo *sh)
 {
 	int	error_token;

@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 23:57:30 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/17 13:05:37 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/22 16:53:00 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	dlst_init(struct s_lst *lst)
 	lst->head->next = lst->tail;
 	lst->tail->prev = lst->head;
 	lst->lst_size = 0;
+	lst->last_stat = 0;
 	lst->pwd = NULL;
 	return (0);
 }
