@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 21:18:12 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/22 15:30:56 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/22 19:44:56 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ int	std_to_fd(t_stdio *std_lst, int i, int std_fd, t_pinfo *info)
 			exit(EXIT_FAILURE);
 		std_node = std_node->next;
 	}
+	return (0);
 }
 
 void	dup_std_fd(t_pinfo *info, t_stdio *stdin_lst, t_stdio *stdout_lst, int i)

@@ -212,7 +212,6 @@ int			check_unset_key(char *key);
 int			check_dup(char	*cmd_argv, t_envp *env_c, size_t equal);
 void		append_env(char *cmd_argv, t_envp *env_c, size_t equal);
 
-/* signal.c */
-void		set_signal(void);
+
 
 #endif

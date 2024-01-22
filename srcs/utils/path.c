@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:31:07 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/20 17:24:08 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/22 19:52:00 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,15 @@ char	*path_cmd_path(char *cmd, t_envp *env_c)
 	if (cmd_path)
 		return (cmd_path);
 	if (errno == EACCES)
-		error_exit("minishell", cmd, strerror(errno), 126);
-	error_exit("minishell", cmd, "command not found", 127);
+	{
+		print_strerror(cmd, NULL);
+		env_c->last_stat = 126;
+	}
+	else
+	{
+		print_builtin_error(cmd, NULL, "command not found\n");
+		env_c->last_stat = 127;
+	}
 	return (NULL);
 }
 

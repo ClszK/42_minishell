@@ -46,7 +46,7 @@ int	command_preprocessing(t_shinfo *sh)
 	if (sh->rline && *(sh->rline) != '\0')
 	{
 		token_cmdline(sh->rline, &(sh->cmdline));
-		dlst_print(&sh->cmdline, test_printf_token);
+		// dlst_print(&sh->cmdline, test_printf_token);
 		if (sh->cmdline.lst_size != 0)
 		{
 			error_token = analyze_start(&sh->alz, &sh->cmdline);
@@ -58,9 +58,10 @@ int	command_preprocessing(t_shinfo *sh)
 			expand_start(&sh->alz, &sh->env_c);
 			path_insert_in_parse(&sh->alz, &sh->env_c);
 		}
-		dlst_print(&sh->alz, test_printf_parse);
+		// dlst_print(&sh->alz, test_printf_parse);
 		return (0);
 	}
+	shinfo_free(sh, NULL);
 	return (1);
 }
 
@@ -78,7 +79,7 @@ int main(int argc, char **argv, char **envp)
 		add_history(sh.rline);
 		if (command_preprocessing(&sh))
 			continue ;
-		// command_excute_temporary(&sh);
+		ft_putnbr_fd(&sh, 2);
 		command_excute(&sh);
 		shinfo_free(&sh, NULL);
     }
