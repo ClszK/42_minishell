@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 21:18:12 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/22 13:56:19 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/22 15:30:56 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ int pipe_init(t_pinfo *pinfo, int cmd_argc)
 	}
 	errno = 0;
 	pinfo->pipe_cnt = cmd_argc - 1;
-	if (pipe(pinfo->pfd[0]) \
-		|| pipe(pinfo->pfd[1]))
+	if (pipe(pinfo->pfd[0]) || pipe(pinfo->pfd[1]))
 		return (errno);
 	return (0);
 }
