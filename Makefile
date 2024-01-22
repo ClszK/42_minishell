@@ -27,7 +27,8 @@ SRCS_UTILS		=	utils.c\
 					cmd.c\
 					proc.c\
 					fd.c\
-					file.c
+					file.c\
+					signal.c
 
 SRCS_BUILTIN	=	echo.c\
 					pwd.c\
@@ -62,7 +63,7 @@ $(NAME)	:	$(OBJ) $(addprefix includes/, ${HEADERS})
 	$(CC) $(CFLAGS) $(RFLAGS) $(LIB) $(OBJ) -o $(NAME)
 
 %.o	:	%.c
-	$(CC) $(CFLAGS) -c $< -o $@ -I$(HEADERS_PATH) -g
+	$(CC) $(CFLAGS) -c $< -o $@ -I$(HEADERS_PATH) -g $(RFLAGS)
 
 clean:
 	rm -rf $(OBJ)
