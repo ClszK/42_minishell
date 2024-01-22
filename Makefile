@@ -63,11 +63,7 @@ $(NAME)	:	$(OBJ) $(addprefix includes/, ${HEADERS})
 	$(CC) $(CFLAGS) $(RFLAGS) $(LIB) $(OBJ) -o $(NAME)
 
 %.o	:	%.c
-<<<<<<< HEAD
-	$(CC) $(CFLAGS) -c $< -o $@ -I$(HEADERS_PATH) -g $(RFLAGS)
-=======
-	$(CC) $(CFLAGS) -c $< -o $@ -I$(HEADERS_PATH) -g 
->>>>>>> e602c7d0a0619bd412d5855ae1c018d538ebe411
+	$(CC) $(CFLAGS) -c $< -o $@ -I$(HEADERS_PATH) -g
 
 clean:
 	rm -rf $(OBJ)
