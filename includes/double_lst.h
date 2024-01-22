@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   double_lst.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 23:59:03 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/21 07:40:52 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/22 16:52:48 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,9 @@ struct s_lst
 {
 	t_node	*head;
 	t_node	*tail;
-	long	lst_size;
 	char	*pwd;
+	int		last_stat;
+	long	lst_size;
 };
 
 t_node	*dlst_node_generate(void *element);

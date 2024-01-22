@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:43:21 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/22 14:06:58 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/22 15:46:08 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	**envp_split(t_envp *env_c)
 	while (map_node->elem)
 	{
 		map_elem = map_node->elem;
-		if (map_elem)
+		if (map_elem && map_elem->val)
 			envp[++i] = ft_strdup(map_elem->val);
 		if (envp[i] == NULL)
 			exit(errno);
