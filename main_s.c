@@ -68,7 +68,7 @@ int main(int argc, char **argv, char **envp)
 		add_history(sh.rline);
 		if (commandline_preprocessing(&sh))
 			continue ;
-		commandline_excute(&sh);
+		command_excute_temporary(&sh);
 		shinfo_free(&sh, NULL);
     }
 	return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:19:39 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/20 14:45:17 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/22 13:54:45 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,22 @@ int	is_builtin_command(char *cmd)
 		if (!ft_strcmp(cmd, builtincmd[i]))
 			return (i);
 	}
+	return (0);
+}
+
+int	is_include_pipe(t_analyze *alz)
+{
+	if (alz->lst_size > 1)
+		return (1);
+	return (0);
+}
+
+int	is_file_access(char *progname, char *filename, int mode)
+{
+	errno = 0;
+	if (access(filename, mode) == 0)
+		return (1);
+	if (errno != 0)
+		print_strerror(progname, filename);
 	return (0);
 }

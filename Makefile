@@ -24,7 +24,10 @@ SRCS_UTILS		=	utils.c\
 					expand.c\
 					expand2.c\
 					path.c\
-					cmd.c
+					cmd.c\
+					proc.c\
+					fd.c\
+					file.c
 
 SRCS_BUILTIN	=	echo.c\
 					pwd.c\

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd.c                                              :+:      :+:    :+:   */
+/*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:31:07 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/20 13:05:36 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/20 17:24:08 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,13 @@ void	path_insert_in_parse(t_analyze *alz, t_envp *env_c)
 	while (parse_node->elem)
 	{
 		parse = parse_node->elem;
-		if (parse->cmd_argv)
-			parse->cmd_path = path_cmd_path(parse->cmd_argv[0], env_c);
+		if (parse->cmd_argv && parse->cmd_argv[0])
+		{
+			if (is_builtin_command(parse->cmd_argv[0]))
+				parse->cmd_path = ft_strdup(parse->cmd_argv[0]);
+			else
+				parse->cmd_path = path_cmd_path(parse->cmd_argv[0], env_c);
+		}
 		parse_node = parse_node->next;
 	}
 }
