@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 08:10:11 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/23 05:34:10 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/23 05:39:37 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,6 @@ void		expand_start(t_analyze *alz, t_envp *env_c);
 void		path_insert_in_parse(t_analyze *alz, t_envp *env_c);
 
 /* cmd.c */
-void		command_excute_temporary(t_shinfo *sh);
 void		command_excute(t_shinfo *sh);
 int			command_excute_builtin(t_parse *parse, t_envp *env_c, int builtin_idx);
 
