@@ -79,7 +79,6 @@ int main(int argc, char **argv, char **envp)
 		add_history(sh.rline);
 		if (command_preprocessing(&sh))
 			continue ;
-		ft_putnbr_fd(&sh, 2);
 		command_excute(&sh);
 		shinfo_free(&sh, NULL);
     }
