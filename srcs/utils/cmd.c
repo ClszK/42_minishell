@@ -6,74 +6,65 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:06:38 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/22 13:57:12 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/22 20:03:43 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /* builtin command 실행 후 fd 닫기 로직 만들기. */
-void	command_excute_builtin(t_parse *parse, t_envp *env_c, int builtin_idx)
+int	command_excute_builtin(t_parse *parse, t_envp *env_c, int builtin_idx)
 {
+	int	exit_code;
+
+	exit_code = 0;
 	if (builtin_idx == 0)
-		builtin_cd(parse, env_c);
+		exit_code = builtin_cd(parse, env_c);
 	else if (builtin_idx == 1)
-		builtin_echo(parse);
+		exit_code = builtin_echo(parse);
 	else if (builtin_idx == 2)
-		builtin_env(env_c);
+		exit_code = builtin_env(env_c);
 	else if (builtin_idx == 3)
-		builtin_exit(parse);
+		exit_code = builtin_exit(parse);
 	else if (builtin_idx == 4)
-		builtin_export(parse, env_c);
+		exit_code = builtin_export(parse, env_c);
 	else if (builtin_idx == 5)
-		builtin_pwd(env_c);
+		exit_code = builtin_pwd(env_c);
 	else if (builtin_idx == 6)
-		builtin_unset(parse, env_c);
-}
-
-void	command_excute_temporary(t_shinfo *sh)
-{
-	int		builtin_idx;
-	t_envp	*env_c;
-	t_parse	*parse;
-
-	parse = sh->alz.head->next->elem;
-	env_c = &sh->env_c;
-	builtin_idx = 0;
-	if (parse->cmd_path)
-		builtin_idx = is_builtin_command(parse->cmd_path);
-	command_excute_builtin(parse, env_c, builtin_idx);
+		exit_code = builtin_unset(parse, env_c);
+	return (exit_code);
 }
 
 void	command_fork(t_analyze *alz, t_envp *env_c)
 {
 	int			i;
 	t_node		*parse_node;
-	t_pinfo		pinfo;
+	t_pinfo		info;
 	
 	parse_node = alz->head->next;
-	if (pipe_init(&pinfo, alz->lst_size))
+	if (pipe_init(&info, alz->lst_size))
 		exit(errno);
 	i = -1;
 	while (++i < alz->lst_size)
 	{
 		errno = 0;
-		pinfo.pid = fork();
-		if (pinfo.pid < 0)
+		info.pid = fork();
+		if (info.pid < 0)
 			perror_exit("minishell");
-		else if (pinfo.pid == 0)
-			child_process(parse_node->elem, env_c, i, &pinfo);
-		pinfo.last_pid = pinfo.pid;
+		else if (info.pid == 0)
+			child_process(parse_node->elem, env_c, i, &info);
+		info.last_pid = info.pid;
 		parse_node = parse_node->next;
 	}
-	if (pinfo.pipe_cnt)
+	if (info.pipe_cnt)
 	{
-		close(pinfo.pfd[0][0]);
-		close(pinfo.pfd[0][1]);
-		close(pinfo.pfd[1][0]);
-		close(pinfo.pfd[1][1]);
+		close(info.pfd[0][0]);
+		close(info.pfd[0][1]);
+		close(info.pfd[1][0]);
+		close(info.pfd[1][1]);
 	}
-	wait_child(&pinfo, i);
+	wait_child(&info, i);
+	env_c->last_stat = ((*(int *)&(info.last_status)) >> 8) & 0x000000ff;
 }
 
 void	command_excute(t_shinfo *sh)
@@ -93,8 +84,8 @@ void	command_excute(t_shinfo *sh)
 		builtin_idx = 0;
 		if (parse->cmd_path)
 			builtin_idx = is_builtin_command(parse->cmd_path);
-		if (parse->cmd_path && is_builtin_command(parse->cmd_path))
-			command_excute_builtin(parse, env_c, builtin_idx);
+		if (parse->cmd_path && builtin_idx)
+			env_c->last_stat = command_excute_builtin(parse, env_c, builtin_idx - 1);
 		else
 			command_fork(alz, env_c);
 	}

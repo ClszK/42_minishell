@@ -6,11 +6,25 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 04:22:38 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/22 16:51:27 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/22 18:37:15 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*expand_last_stat(char *start, size_t *size, t_envp *env_c, char *dst)
+{
+	char	*last_stat_str;
+
+	last_stat_str = ft_itoa(env_c->last_stat);
+	if (last_stat_str == NULL)
+		exit(errno);
+	*size += ft_strlen(last_stat_str);
+	if (dst)
+		ft_strlcat(dst, last_stat_str, *size + 1);
+	free(last_stat_str);
+	return (start);
+}
 
 char	*expand_dollar(char *start, size_t *size, t_envp *env_c, char *dst)
 {
@@ -20,6 +34,8 @@ char	*expand_dollar(char *start, size_t *size, t_envp *env_c, char *dst)
 
 	errno = 0;
 	end = start;
+	if (*start == '?')
+		return (expand_last_stat(start, size, env_c, dst));
 	while (*end && !is_dollar_sperator(*end))
 		end++;
 	str_dup = ft_substr(start, 0, end - start);

@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 21:19:42 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/22 13:55:23 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/22 17:26:33 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ int	open_file(char *filename, int mode)
 			rfd = open(filename, omode, 0666);
 		if (rfd == -1 && errno != 0)
 		{
-			error_exit("minishell", filename, strerror(errno), EXIT_FAILURE);
+			print_strerror(filename, NULL);
+			// error_exit("minishell", filename, strerror(errno), EXIT_FAILURE);
 			return (-1);
 		}
 		return (rfd);

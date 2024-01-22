@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 04:28:15 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/20 15:13:22 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/22 17:25:23 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,18 +42,4 @@ int	print_builtin_error(char *cmd, char *arg, char *error)
 		ft_putstr_fd(error, STDERR_FILENO))
 		return (1);
 	return (0);
-}
-
-/** 임시 exit **/
-void	error_exit(char *progname, char *str, char *str2, int code)
-{
-	ft_putstr_fd(progname, STDERR_FILENO);
-	ft_putstr_fd(": ", STDERR_FILENO);
-	ft_putstr_fd(str, STDERR_FILENO);
-	if (str2 != NULL)
-	{
-		ft_putstr_fd(": ", STDERR_FILENO);
-		ft_putstr_fd(str2, STDERR_FILENO);
-	}
-	ft_putchar_fd('\n', STDERR_FILENO);
 }

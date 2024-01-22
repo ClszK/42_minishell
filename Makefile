@@ -62,7 +62,7 @@ $(NAME)	:	$(OBJ) $(addprefix includes/, ${HEADERS})
 	$(CC) $(CFLAGS) $(RFLAGS) $(LIB) $(OBJ) -o $(NAME) -fsanitize=address
 
 %.o	:	%.c
-	$(CC) $(CFLAGS) -c $< -o $@ -I$(HEADERS_PATH) -g
+	$(CC) $(CFLAGS) -c $< -o $@ -I$(HEADERS_PATH) -g 
 
 clean:
 	rm -rf $(OBJ)
