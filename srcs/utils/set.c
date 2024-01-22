@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 04:10:53 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/21 07:40:48 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/22 14:12:21 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	envp_init(char **envp, t_envp *env_c)
 	t_map	*map;
 	int		equal;
 	int		i;
+	char	*val;
 
 	errno = 0;
 	if (dlst_init(env_c))
@@ -34,9 +35,13 @@ void	envp_init(char **envp, t_envp *env_c)
 			dlst_add_last(env_c, (t_map*)map))
 			exit(errno);
 	}
-	env_c->pwd = ft_strdup(expand_env_find(env_c, "PWD"));
-	if (env_c->pwd == NULL)
-		exit(errno);
+	val = expand_env_find(env_c, "PWD");
+	if (val)
+	{
+		env_c->pwd = ft_strdup(val);
+		if (env_c->pwd == NULL)
+			exit(errno);
+	}
 	map_oldpwd_find(env_c);
 }
 

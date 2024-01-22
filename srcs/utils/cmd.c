@@ -3,20 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:06:38 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/21 10:24:02 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/22 13:57:12 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	command_complex(void)
-{
-	return ;
-}
-
+/* builtin command 실행 후 fd 닫기 로직 만들기. */
 void	command_excute_builtin(t_parse *parse, t_envp *env_c, int builtin_idx)
 {
 	if (builtin_idx == 0)
@@ -62,7 +58,6 @@ void	command_fork(t_analyze *alz, t_envp *env_c)
 	while (++i < alz->lst_size)
 	{
 		errno = 0;
-		printf("lst_size : %d\n", i);
 		pinfo.pid = fork();
 		if (pinfo.pid < 0)
 			perror_exit("minishell");
@@ -71,13 +66,14 @@ void	command_fork(t_analyze *alz, t_envp *env_c)
 		pinfo.last_pid = pinfo.pid;
 		parse_node = parse_node->next;
 	}
-	printf("			cmd_cnt%d\n", i);
+	if (pinfo.pipe_cnt)
+	{
+		close(pinfo.pfd[0][0]);
+		close(pinfo.pfd[0][1]);
+		close(pinfo.pfd[1][0]);
+		close(pinfo.pfd[1][1]);
+	}
 	wait_child(&pinfo, i);
-	close(pinfo.pfd[0][1]);
-	close(pinfo.pfd[0][0]);
-	close(pinfo.pfd[1][0]);
-	close(pinfo.pfd[1][1]);
-
 }
 
 void	command_excute(t_shinfo *sh)

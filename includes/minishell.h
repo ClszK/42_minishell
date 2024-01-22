@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 08:10:11 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/21 09:45:36 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/22 14:43:38 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ char		valid_quote(char *rline);
 /* utils3.c*/
 int			is_builtin_command(char *cmd);
 int			is_include_pipe(t_analyze *alz);
+int			is_file_access(char *progname, char *filename, int mode);
 
 /* set.c */
 void		envp_init(char **envp, t_envp *env_c);
@@ -172,10 +173,14 @@ void		child_process(t_parse *parse, t_envp *env_c, int i, t_pinfo *info);
 
 /* file.c */
 int			tmpfile_create(char **tmp_name);
+int			open_file(char *filename, int mode);
+void		stdin_heredoc(char *end_id, int tmp_fd);
 
 /* fd.c */
 int 		pipe_init(t_pinfo *pinfo, int cmd_argc);
-void		pipe_close(t_pinfo *info, int pos, int pipe_cnt);
+void		pipe_close(t_pinfo *info, int pos);
+int			std_to_fd(t_stdio *std_lst, int i, int std_fd, t_pinfo *info);
+void		dup_std_fd(t_pinfo *info, t_stdio *stdin_lst, t_stdio *stdout_lst, int i);
 
 /* builtin */
 int			builtin_echo(t_parse *parse);
@@ -204,6 +209,5 @@ int			check_export_key(char *key);
 int			check_unset_key(char *key);
 int			check_dup(char	*cmd_argv, t_envp *env_c, size_t equal);
 void		append_env(char *cmd_argv, t_envp *env_c, size_t equal);
-
 
 #endif
