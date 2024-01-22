@@ -51,7 +51,7 @@ int	change_dir(t_envp *env_c, char *path)
 						"getcwd: cannot access parent directories");
 			pwd = ft_strjoin(env_c->pwd, "/..");
 			if (pwd == NULL)
-				exit(1);
+				exit(errno);
 		}
 		else
 			return (print_strerror("cd", NULL));
@@ -65,7 +65,6 @@ int	builtin_cd(t_parse *parse, t_envp *env_c)
 {
 	char	*path;
 
-	errno = 0;
 	if (parse->cmd_argv[1] == NULL || !ft_strcmp(parse->cmd_argv[1], "--"))
 	{
 		path = expand_env_find(env_c, "HOME");

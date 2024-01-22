@@ -56,7 +56,7 @@ all:	$(NAME)
 
 $(NAME)	:	$(OBJ) $(addprefix includes/, ${HEADERS})
 	make -C $(LIB_DIR)
-	$(CC) $(CFLAGS) $(RFLAGS) $(LIB) $(OBJ) -o $(NAME) -fsanitize=address
+	$(CC) $(CFLAGS) $(RFLAGS) $(LIB) $(OBJ) -o $(NAME)
 
 %.o	:	%.c
 	$(CC) $(CFLAGS) -c $< -o $@ -I$(HEADERS_PATH) -g
