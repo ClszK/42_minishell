@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 04:28:15 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/23 05:37:38 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/23 09:47:11 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ void	perror_exit(char *progname)
 int	print_strerror(char *cmd, char *arg)
 {
 	if	(ft_putstr_fd("minishell: ", STDERR_FILENO) || \
-		ft_putstr_fd(cmd, STDERR_FILENO) || \
-		ft_putstr_fd(": ", STDERR_FILENO) || \
-		(arg != NULL && ft_putstr_fd(arg, STDERR_FILENO)) || \
-		(arg != NULL && ft_putstr_fd(": ", STDERR_FILENO)) || \
+		(cmd && ft_putstr_fd(cmd, STDERR_FILENO)) || \
+		(cmd && ft_putstr_fd(": ", STDERR_FILENO)) || \
+		(arg && ft_putstr_fd(arg, STDERR_FILENO)) || \
+		(arg && ft_putstr_fd(": ", STDERR_FILENO)) || \
 		ft_putstr_fd(strerror(errno), STDERR_FILENO) || \
 		ft_putstr_fd("\n", STDERR_FILENO))
 		return (1);
@@ -40,6 +40,16 @@ int	print_builtin_error(char *cmd, char *arg, char *error)
 		(arg != NULL && ft_putstr_fd(arg, STDERR_FILENO)) || \
 		(arg != NULL && ft_putstr_fd(": ", STDERR_FILENO)) || \
 		ft_putstr_fd(error, STDERR_FILENO))
+		return (1);
+	return (0);
+}
+
+int	print_syntax_error(char ch)
+{
+	if (ft_putstr_fd("minishell: ", STDERR_FILENO) || \
+		ft_putstr_fd("syntax error near unexpected token `", STDERR_FILENO) || \
+		ft_putchar_fd(ch, STDERR_FILENO) || \
+		ft_putstr_fd("'\n", STDERR_FILENO))
 		return (1);
 	return (0);
 }

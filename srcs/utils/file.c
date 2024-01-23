@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 21:19:42 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/23 05:37:33 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/23 06:14:51 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	tmpfile_create(char **tmp_name)
 	int		fd;
 
 	i = 0;
-	tmp = "here_doc_tmp";
+	tmp = ".here_doc_tmp";
 	errno = 0;
 	while (++i < 2147483647)
 	{

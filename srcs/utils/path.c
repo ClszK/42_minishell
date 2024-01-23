@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:31:07 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/23 05:37:37 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/23 06:13:18 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,12 @@ char	*path_cmd_path(char *cmd, t_envp *env_c)
 	if (ft_strchr(cmd, '/'))
 	{
 		if (access(cmd, X_OK) == 0)
-			return (cmd);
+		{
+			cmd_path = ft_strdup(cmd);
+			if (cmd_path == NULL)
+				exit(errno);
+			return (cmd_path);
+		}
 	}
 	else
 		cmd_path = path_cmd_valid(path, cmd);
