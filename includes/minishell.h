@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 08:10:11 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/23 05:39:37 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/23 09:55:45 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ void		shinfo_init(t_shinfo *sh);
 void		perror_exit(char *progname);
 int			print_strerror(char *cmd, char *str);
 int			print_builtin_error(char *cmd, char *arg, char *error);
+int			print_syntax_error(char ch);
 
 /* parse.c */
 void		token_cmdline(char *rline, t_cmdline *cmdline);

@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:42:10 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/23 05:37:35 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/23 06:14:01 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void	parse_elem_free(void *elem)
 	parse->stdin_lst = NULL;
 	free(parse->stdout_lst);
 	parse->stdout_lst = NULL;
-	printf("	%p\n", parse->cmd_path);
 	if (parse->cmd_path)
 		free(parse->cmd_path);
 	parse->cmd_path = NULL;
@@ -73,7 +72,6 @@ void	shinfo_free(t_shinfo *sh, t_envp *env_c)
 	if (sh)
 	{
 		dlst_del_all(&sh->cmdline, token_elem_free);
-		printf("parse free\n");
 		dlst_del_all(&sh->alz, parse_elem_free);
 		free(sh->rline);
 	}

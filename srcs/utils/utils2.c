@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 00:42:59 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/23 05:37:41 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/23 09:09:35 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	check_quote_type(char ch)
 int	is_dollar_sperator(char ch)
 {
 	if (is_opertator(ch) || ch == ' ' || ch == '\0' || check_quote_type(ch) \
-		|| ch == '$')
+		|| ch == '$' || ch == '/')
 		return (1);
 	return (0);
 }

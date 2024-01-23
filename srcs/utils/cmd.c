@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:06:38 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/23 05:37:30 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/23 09:17:12 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,11 @@ void	command_excute(t_shinfo *sh)
 	t_parse		*parse;
 	t_envp		*env_c;
 	int			builtin_idx;
+	int			stdin_fd;
+	int			stdout_fd;
+	int			fd1;
+	int			fd2;
+
 
 	alz = &sh->alz;
 	env_c = &sh->env_c;
@@ -85,10 +90,26 @@ void	command_excute(t_shinfo *sh)
 		if (parse->cmd_path)
 			builtin_idx = is_builtin_command(parse->cmd_path);
 		if (parse->cmd_path && builtin_idx)
+		{
+			stdin_fd = dup(STDIN_FILENO);
+			stdout_fd = dup(STDOUT_FILENO);
+			fd1 = std_to_fd(parse->stdin_lst, 0, STDIN_FILENO, NULL);
+			fd2 = std_to_fd(parse->stdout_lst, 0, STDOUT_FILENO, NULL);
 			env_c->last_stat = command_excute_builtin(parse, env_c, builtin_idx - 1);
+			dup2(stdin_fd, STDIN_FILENO);
+			dup2(stdout_fd, STDOUT_FILENO);
+			if (fd1)
+				close(fd1);
+			if (fd2)
+				close(fd2);
+			close(stdin_fd);
+			close(stdout_fd);
+		}
 		else
 			command_fork(alz, env_c);
 	}
 }
 
 // heredoc 임시파일 즉시 삭제.
+
+// builtin command fd 닫기

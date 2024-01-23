@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 22:56:04 by jeholee           #+#    #+#             */
-/*   Updated: 2023/03/15 22:59:23 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/23 09:51:18 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 
-void	ft_putnbr_fd(int n, int fd)
+int	ft_putnbr_fd(int n, int fd)
 {
 	char	*hex_table;
 	int		stack[11];
@@ -21,10 +21,14 @@ void	ft_putnbr_fd(int n, int fd)
 	hex_table = "0123456789";
 	top = -1;
 	if (n == 0)
-		write(fd, "0", 1);
+	{
+		if (write(fd, "0", 1) < 0)
+			return (-1);
+	}
 	if (n < 0)
 	{
-		write(fd, "-", 1);
+		if (write(fd, "-", 1) < 0)
+			return (-1);
 		n *= -1;
 	}
 	while (n)
@@ -33,5 +37,7 @@ void	ft_putnbr_fd(int n, int fd)
 		n = (unsigned int)n / 10;
 	}
 	while (top > -1)
-		write(fd, &hex_table[stack[top--]], 1);
+		if (write(fd, &hex_table[stack[top--]], 1) < 0)
+			return (-1);
+	return (0);
 }

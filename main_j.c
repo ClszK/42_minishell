@@ -37,31 +37,28 @@ int	command_preprocessing(t_shinfo *sh)
 {
 	int	error_token;
 
-	if (valid_quote(sh->rline))
-	{
-		printf("ERROR: sysntax\n");
-		shinfo_free(sh, NULL);
-		return  (1);
-	}
 	if (sh->rline && *(sh->rline) != '\0')
 	{
+		error_token = valid_quote(sh->rline);
+		if (error_token)
+		{
+			print_syntax_error(error_token);
+			return  (1);
+		}
 		token_cmdline(sh->rline, &(sh->cmdline));
-		// dlst_print(&sh->cmdline, test_printf_token);
 		if (sh->cmdline.lst_size != 0)
 		{
 			error_token = analyze_start(&sh->alz, &sh->cmdline);
 			if (error_token)
 			{
-				printf("ERROR : %d\n", error_token);
+				print_syntax_error(error_token);
 				return (1);
 			}
 			expand_start(&sh->alz, &sh->env_c);
 			path_insert_in_parse(&sh->alz, &sh->env_c);
 		}
-		// dlst_print(&sh->alz, test_printf_parse);
 		return (0);
 	}
-	shinfo_free(sh, NULL);
 	return (1);
 }
 
@@ -72,6 +69,7 @@ int main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	envp_init(envp, &sh.env_c);
+
 	while (1)
 	{
 		set_signal();
@@ -85,8 +83,13 @@ int main(int argc, char **argv, char **envp)
 		add_history(sh.rline);
 		if (command_preprocessing(&sh))
 			continue ;
-		command_excute(&sh);
+		else
+			command_excute(&sh);
 		shinfo_free(&sh, NULL);
     }
 	return (0);
 }
+
+
+		// dlst_print(&sh->cmdline, test_printf_token);
+		// dlst_print(&sh->alz, test_printf_parse);
