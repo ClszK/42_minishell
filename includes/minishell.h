@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 08:10:11 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/22 19:15:46 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/23 05:39:37 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,9 +130,8 @@ void		shinfo_init(t_shinfo *sh);
 
 /* print.c */
 void		perror_exit(char *progname);
-int			print_strerror(char *progname, char *str);
+int			print_strerror(char *cmd, char *str);
 int			print_builtin_error(char *cmd, char *arg, char *error);
-void		error_exit(char *progname, char *str, char *str2, int code);
 
 /* parse.c */
 void		token_cmdline(char *rline, t_cmdline *cmdline);
@@ -166,8 +165,8 @@ void		expand_start(t_analyze *alz, t_envp *env_c);
 void		path_insert_in_parse(t_analyze *alz, t_envp *env_c);
 
 /* cmd.c */
-void		command_excute_temporary(t_shinfo *sh);
 void		command_excute(t_shinfo *sh);
+int			command_excute_builtin(t_parse *parse, t_envp *env_c, int builtin_idx);
 
 /* proc.c */
 void		wait_child(t_pinfo *info, int cmd_cnt);
@@ -214,5 +213,7 @@ void		append_env(char *cmd_argv, t_envp *env_c, size_t equal);
 
 /* signal.c */
 void		set_signal(void);
+void		set_sigterm(void);
+
 
 #endif

@@ -74,8 +74,14 @@ int main(int argc, char **argv, char **envp)
 	envp_init(envp, &sh.env_c);
 	while (1)
 	{
+		set_signal();
 		shinfo_init(&sh);
 		sh.rline = readline("minishell$ ");
+		if (sh.rline == NULL)
+		{
+			set_sigterm();
+			exit(0);
+		}
 		add_history(sh.rline);
 		if (command_preprocessing(&sh))
 			continue ;

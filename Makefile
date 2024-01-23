@@ -1,7 +1,8 @@
 NAME			=	minishell
 CC				=	cc
 CFLAGS			=	-Wall -Wextra
-RFLAGS			=	-lreadline
+R_FLAGS			=	-lreadline -L/opt/homebrew/opt/readline/lib #-L${HOME}/.brew/opt/readline/lib
+ROBJ_FLAGS		=	-I/opt/homebrew/opt/readline/include #-I${HOME}/.brew/opt/readline/include
 
 LIB_DIR			=	srcs/lib/libft
 LIB				=	-L$(LIB_DIR) -lft
@@ -60,10 +61,10 @@ all:	$(NAME)
 
 $(NAME)	:	$(OBJ) $(addprefix includes/, ${HEADERS})
 	make -C $(LIB_DIR)
-	$(CC) $(CFLAGS) $(RFLAGS) $(LIB) $(OBJ) -o $(NAME)
+	$(CC) $(CFLAGS) $(R_FLAGS) $(LIB) $(OBJ) -o $(NAME)
 
 %.o	:	%.c
-	$(CC) $(CFLAGS) -c $< -o $@ -I$(HEADERS_PATH) -g
+	$(CC) $(CFLAGS) $(ROBJ_FLAGS) -c $< -o $@ -I$(HEADERS_PATH) -g
 
 clean:
 	rm -rf $(OBJ)
