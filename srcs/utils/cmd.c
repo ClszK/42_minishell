@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:06:38 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/23 18:18:12 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/23 18:21:02 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,12 @@ void	command_fork(t_analyze *alz, t_envp *env_c)
 			perror_exit("minishell");
 		else if (info.pid == 0)
 			child_process(parse_node->elem, env_c, i, &info);
+		if (i != 0)
+		{
+			close(info.pfd[(i - 1) % 2][0]);
+			close(info.pfd[(i - 1) % 2][1]);
+			pipe(info.pfd[(i-1)%2]);
+		}
 		info.last_pid = info.pid;
 		parse_node = parse_node->next;
 	}
