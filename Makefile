@@ -34,6 +34,7 @@ SRCS_BUILTIN	=	echo.c\
 					env.c\
 					exit.c\
 					export.c\
+					export2.c\
 					unset.c\
 					cd.c
 
