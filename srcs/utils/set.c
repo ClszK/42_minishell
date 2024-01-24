@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 04:10:53 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/23 05:37:39 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/25 00:25:28 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	envp_init(char **envp, t_envp *env_c)
 	if (dlst_init(env_c))
 		exit(errno);
 	i = -1;
+	env_c->last_stat = 0;
 	while (envp[++i])
 	{
 		map = (t_map*)malloc(sizeof(t_map));

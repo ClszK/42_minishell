@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   analyze.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 01:46:42 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/23 05:37:29 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/25 00:00:31 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,11 @@ int	analyze_token_parse(t_node *token_node, t_parse *parse, int *i)
 		return (0);
 	}
 	if (token->type == OUTPUT || token->type == APPEND)
-		dlst_add_last(parse->stdout_lst, \
-						token_elem_cpy(token_node->next->elem));
+		dlst_add_last(parse->std_lst, \
+						token_elem_cpy(token_node->next->elem, token->type));
 	else if (token->type == INPUT || token->type == HEREDOC)
-		dlst_add_last(parse->stdin_lst, \
-						token_elem_cpy(token_node->next->elem));
+		dlst_add_last(parse->std_lst, \
+						token_elem_cpy(token_node->next->elem, token->type));
 	return (1);
 }
 
@@ -70,7 +70,7 @@ t_node	*analyze_parse_create(t_analyze *alz, t_node *token_node, \
 	errno = 0;
 	if (is_pipe_node(token_node))
 	{
-		dlst_add_last(parse->stdin_lst, token_elem_cpy(token_node->elem));
+		dlst_add_last(parse->std_lst, token_elem_cpy(token_node->elem, PIPE_IN));
 		token_node = token_node->next;
 	}
 	while (token_node->elem && !is_pipe_node(token_node))
@@ -80,7 +80,7 @@ t_node	*analyze_parse_create(t_analyze *alz, t_node *token_node, \
 		token_node = token_node->next;
 	}
 	if (is_pipe_node(token_node))
-		dlst_add_last(parse->stdout_lst, token_elem_cpy(token_node->elem));
+		dlst_add_last(parse->std_lst, token_elem_cpy(token_node->elem, PIPE_OUT));
 	dlst_add_last(alz, parse);
 	return (token_node);
 }

@@ -6,16 +6,18 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 00:42:59 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/24 15:46:20 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/24 22:19:02 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	check_quote_type(char ch)
+int	check_quote_type(char ch)
 {
-	if (ch == '\'' || ch == '"')
-		return (ch);
+	if (ch == '\'')
+		return (SQUOTE_ERROR);
+	if (ch == '"')
+		return (DQUOTE_ERROR);
 	return (0);
 }
 
@@ -52,9 +54,9 @@ void	arr_one_left_shift(char *str)
 	여기서 인용 처리 함수란, 따옴표로 잘 감싸져있는지 체크
 	타당하지 않으면 해당 에러 Type 반환.
 */
-char	valid_quote(char *rline)
+int	valid_quote(char *rline)
 {
-	char	type;
+	int	type;
 
 	while (*rline)
 	{

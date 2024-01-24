@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:06:38 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/24 18:03:44 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/25 00:00:35 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,46 +74,41 @@ void	command_fork(t_analyze *alz, t_envp *env_c)
 	env_c->last_stat = ((*(int *)&(info.last_status)) >> 8) & 0x000000ff;
 }
 
+int		command_simple_exec(t_parse *parse, t_envp *env_c, int builtin_idx)
+{
+	int	fd[4];
+	int	stat;
+	int	fd_stat;
+
+	stat = 0;
+	fd_stat = simple_fd_open(fd, parse->std_lst->head->next);
+	if (fd_stat)
+	{
+		stat = simple_fd_close(fd);
+		if (stat)
+			return (stat);
+		return (fd_stat);
+	}
+	stat = command_excute_builtin(parse, env_c, builtin_idx - 1);
+	fd_stat = simple_fd_close(fd);
+	if (fd_stat)
+		return (fd_stat);
+	return (stat);
+}
+
 void	command_excute(t_analyze *alz, t_envp *env_c)
 {
 	t_parse		*parse;
 	int			builtin_idx;
-	int			fd[4];
 
 	if (is_include_pipe(alz))
 		command_fork(alz, env_c);
 	else
 	{
 		parse = alz->head->next->elem;
-		builtin_idx = 0;
-		if (parse->cmd_path)
-			builtin_idx = is_builtin_command(parse->cmd_path);
-		if (parse->cmd_path && builtin_idx)
-		{
-			fd[STDIN_FILENO] = dup(STDIN_FILENO);
-			fd[STDOUT_FILENO] = dup(STDOUT_FILENO);
-			fd[FD_IN] = std_to_fd(parse->stdin_lst->head->next, 0, STDIN_FILENO, NULL);
-			if (fd[FD_IN] > 0)
-			{
-				if (dup2(fd[FD_IN], STDIN_FILENO) < 0)
-					exit(EXIT_FAILURE);
-			}
-			fd[FD_OUT] = std_to_fd(parse->stdout_lst->head->next, 0, STDOUT_FILENO, NULL);
-			if (fd[FD_OUT] > 0)
-			{
-				if (dup2(fd[FD_OUT], STDOUT_FILENO) < 0)
-					exit(EXIT_FAILURE);
-			}
-			env_c->last_stat = command_excute_builtin(parse, env_c, builtin_idx - 1);
-			dup2(fd[STDIN_FILENO], STDIN_FILENO);
-			dup2(fd[STDOUT_FILENO], STDOUT_FILENO);
-			if (fd[FD_IN])
-				close(fd[FD_IN]);
-			if (fd[FD_OUT])
-				close(fd[FD_OUT]);
-			close(fd[STDIN_FILENO]);
-			close(fd[STDOUT_FILENO]);
-		}
+		builtin_idx = is_builtin_command(parse->cmd_path);
+		if (builtin_idx)
+			env_c->last_stat = command_simple_exec(parse, env_c, builtin_idx);
 		else
 			command_fork(alz, env_c);
 	}
