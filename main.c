@@ -73,7 +73,7 @@ int	command_preprocessing(t_shinfo *sh)
 			}
 			expand_start(&sh->alz, &sh->env_c);
 			path_insert_in_parse(&sh->alz, &sh->env_c);
-			dlst_print(&sh->alz, test_printf_parse);
+			// dlst_print(&sh->alz, test_printf_parse);
 		}
 		return (0);
 	}
