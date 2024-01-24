@@ -205,6 +205,14 @@ int			builtin_export(t_parse *parse, t_envp *env_c);
 int			builtin_unset(t_parse *parse, t_envp *env_c);
 int			builtin_cd(t_parse *parse, t_envp *env_c);
 
+/* export2.c*/
+void		append_env(char *cmd_argv, t_envp *env_c, size_t equal);
+int			check_dup(char	*cmd_argv, t_envp *env_c, size_t equal);
+void		update_env(char *cmd_argv, t_map *cur, size_t equal);
+void		free_copy(t_map *export_c, long lst_size);
+int			export_print_sort(t_map *export_c, int pos);
+
+
 /* free.c */
 void		token_elem_free(void *elem);
 void		map_elem_free(void *elem);
@@ -221,8 +229,6 @@ int			find_char(char *str, char c);
 /* builtin_utils.c */
 int			check_export_key(char *key);
 int			check_unset_key(char *key);
-int			check_dup(char	*cmd_argv, t_envp *env_c, size_t equal);
-void		append_env(char *cmd_argv, t_envp *env_c, size_t equal);
 
 /* signal.c */
 void		set_signal(void);
