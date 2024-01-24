@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 08:10:11 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/24 15:59:58 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/25 02:39:05 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,14 @@
 # define EXIT_FAILURE 1
 
 # define SYNTAX_ERROR 1
+# define SQUOTE_ERROR 8
+# define DQUOTE_ERROR 9
 
 # define READ_FD 0
 # define WRITE_FD 1
+
+# define FD_IN 2
+# define FD_OUT 3
 
 # include <stdio.h>
 # include <readline/readline.h>
@@ -56,7 +61,9 @@ enum e_type
 	APPEND,
 	INPUT,
 	HEREDOC,
-	NEWLN
+	NEWLN,
+	PIPE_IN,
+	PIPE_OUT
 };
 
 typedef struct s_lst	t_envp;
@@ -68,6 +75,8 @@ typedef struct s_token
 {
 	enum e_type	type;
 	char		*str;
+	char		*env_val;
+	int			quote_flag;
 }	t_token;
 
 typedef struct s_parse
@@ -75,8 +84,7 @@ typedef struct s_parse
 	int		cmd_argc;
 	char	*cmd_path;
 	char	**cmd_argv;
-	t_stdio	*stdin_lst;
-	t_stdio	*stdout_lst;
+	t_stdio	*std_lst;
 }	t_parse;
 
 typedef struct s_map
@@ -111,15 +119,16 @@ int			is_operator(char ch);
 
 /* utils2.c*/
 int			is_dollar_sperator(char ch);
-char		check_quote_type(char ch);
+int			check_quote_type(char ch);
 int			can_dollar_expand(char *str);
 void		arr_one_left_shift(char *str);
-char		valid_quote(char *rline);
+int			valid_quote(char *rline);
 
 /* utils3.c*/
 int			is_builtin_command(char *cmd);
 int			is_include_pipe(t_analyze *alz);
-int			is_file_access(char *progname, char *filename, int mode);
+int			is_file_access(char *filename, int mode);
+void		split_shift(char **str, int i);
 
 /* set.c */
 void		envp_init(char **envp, t_envp *env_c);
@@ -140,7 +149,7 @@ void		token_cmdline(char *rline, t_cmdline *cmdline);
 /* generate.c */
 t_token		*token_elem_generate(char *str, enum e_type type);
 t_parse		*parse_elem_generate(int cmd_argc);
-t_token		*token_elem_cpy(void *elem);
+t_token		*token_elem_cpy(void *elem, enum e_type type);
 
 /* analyze.c */
 int			analyze_start(t_analyze *alz, t_cmdline *cmdline);
@@ -166,7 +175,7 @@ void		expand_start(t_analyze *alz, t_envp *env_c);
 void		path_insert_in_parse(t_analyze *alz, t_envp *env_c);
 
 /* cmd.c */
-void		command_excute(t_shinfo *sh);
+void		command_excute(t_analyze *alz, t_envp *env_c);
 int			command_excute_builtin(t_parse *parse, t_envp *env_c, int builtin_idx);
 
 /* proc.c */
@@ -177,12 +186,15 @@ void		child_process(t_parse *parse, t_envp *env_c, int i, t_pinfo *info);
 int			tmpfile_create(char **tmp_name);
 int			open_file(char *filename, int mode);
 void		stdin_heredoc(char *end_id, int tmp_fd);
+int			open_append(char *filename);
 
 /* fd.c */
 int 		pipe_init(t_pinfo *pinfo, int cmd_argc);
 void		pipe_close(t_pinfo *info, int pos);
-int			std_to_fd(t_node *std_node, int i, int std_fd, t_pinfo *info);
-void		dup_std_fd(t_pinfo *info, t_stdio *stdin_lst, t_stdio *stdout_lst, int i);
+int			std_to_fd(t_node *std_node);
+void		dup_std_fd(t_pinfo *info, t_stdio *std_lst, int i);
+int			simple_fd_open(int *fd, t_node *std_node);
+int			simple_fd_close(int *fd);
 
 /* builtin */
 int			builtin_echo(t_parse *parse);
@@ -192,6 +204,14 @@ int			builtin_exit(t_parse *parse);
 int			builtin_export(t_parse *parse, t_envp *env_c);
 int			builtin_unset(t_parse *parse, t_envp *env_c);
 int			builtin_cd(t_parse *parse, t_envp *env_c);
+
+/* export2.c*/
+void		append_env(char *cmd_argv, t_envp *env_c, size_t equal);
+int			check_dup(char	*cmd_argv, t_envp *env_c, size_t equal);
+void		update_env(char *cmd_argv, t_map *cur, size_t equal);
+void		free_copy(t_map *export_c, long lst_size);
+int			export_print_sort(t_map *export_c, int pos);
+
 
 /* free.c */
 void		token_elem_free(void *elem);
@@ -209,8 +229,6 @@ int			find_char(char *str, char c);
 /* builtin_utils.c */
 int			check_export_key(char *key);
 int			check_unset_key(char *key);
-int			check_dup(char	*cmd_argv, t_envp *env_c, size_t equal);
-void		append_env(char *cmd_argv, t_envp *env_c, size_t equal);
 
 /* signal.c */
 void		set_signal(void);

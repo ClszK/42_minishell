@@ -3,3 +3,4 @@ minishell
 test
 *.o
 minishell_tester
+*.a

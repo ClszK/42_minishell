@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:06:38 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/24 14:15:23 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/25 00:00:35 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,43 +74,41 @@ void	command_fork(t_analyze *alz, t_envp *env_c)
 	env_c->last_stat = ((*(int *)&(info.last_status)) >> 8) & 0x000000ff;
 }
 
-void	command_excute(t_shinfo *sh)
+int		command_simple_exec(t_parse *parse, t_envp *env_c, int builtin_idx)
 {
-	t_analyze	*alz;
-	t_parse		*parse;
-	t_envp		*env_c;
-	int			builtin_idx;
-	int			stdin_fd;
-	int			stdout_fd;
-	int			fd1;
-	int			fd2;
+	int	fd[4];
+	int	stat;
+	int	fd_stat;
 
-	alz = &sh->alz;
-	env_c = &sh->env_c;
+	stat = 0;
+	fd_stat = simple_fd_open(fd, parse->std_lst->head->next);
+	if (fd_stat)
+	{
+		stat = simple_fd_close(fd);
+		if (stat)
+			return (stat);
+		return (fd_stat);
+	}
+	stat = command_excute_builtin(parse, env_c, builtin_idx - 1);
+	fd_stat = simple_fd_close(fd);
+	if (fd_stat)
+		return (fd_stat);
+	return (stat);
+}
+
+void	command_excute(t_analyze *alz, t_envp *env_c)
+{
+	t_parse		*parse;
+	int			builtin_idx;
+
 	if (is_include_pipe(alz))
 		command_fork(alz, env_c);
 	else
 	{
 		parse = alz->head->next->elem;
-		builtin_idx = 0;
-		if (parse->cmd_path)
-			builtin_idx = is_builtin_command(parse->cmd_path);
-		if (parse->cmd_path && builtin_idx)
-		{
-			stdin_fd = dup(STDIN_FILENO);
-			stdout_fd = dup(STDOUT_FILENO);
-			fd1 = std_to_fd(parse->stdin_lst, 0, STDIN_FILENO, NULL);
-			fd2 = std_to_fd(parse->stdout_lst, 0, STDOUT_FILENO, NULL);
-			env_c->last_stat = command_excute_builtin(parse, env_c, builtin_idx - 1);
-			dup2(stdin_fd, STDIN_FILENO);
-			dup2(stdout_fd, STDOUT_FILENO);
-			if (fd1)
-				close(fd1);
-			if (fd2)
-				close(fd2);
-			close(stdin_fd);
-			close(stdout_fd);
-		}
+		builtin_idx = is_builtin_command(parse->cmd_path);
+		if (builtin_idx)
+			env_c->last_stat = command_simple_exec(parse, env_c, builtin_idx);
 		else
 			command_fork(alz, env_c);
 	}

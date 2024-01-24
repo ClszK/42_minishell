@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:31:07 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/23 06:13:18 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/25 00:30:39 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,13 @@ char	*path_cmd_path(char *cmd, t_envp *env_c)
 	path = path_find_in_env(env_c);
 	if (ft_strchr(cmd, '/'))
 	{
+		open(cmd, O_WRONLY);
+		if (errno)
+		{
+			print_strerror(cmd, NULL);
+			env_c->last_stat = 126;
+			return (NULL);
+		}
 		if (access(cmd, X_OK) == 0)
 		{
 			cmd_path = ft_strdup(cmd);

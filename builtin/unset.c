@@ -22,21 +22,18 @@ int	builtin_unset(t_parse *parse, t_envp *env_c)
 	int	unset_stat;
 
 	i = 1;
-	errno = 0;
 	unset_stat = 0;
 	while (parse->cmd_argv[i])
 	{
 		if (check_unset_key(parse->cmd_argv[i]))
 		{
-			if (print_builtin_error(parse->cmd_argv[0], parse->cmd_argv[i], \
-									"not a valid identifier\n"))
-				return (1); //echo $? = 1
+			print_builtin_error(parse->cmd_argv[0], parse->cmd_argv[i], \
+									"not a valid identifier\n");
 			unset_stat = 1;
 		}
 		else
 			dlst_delete(env_c, map_elem_free, map_key_find, parse->cmd_argv[i]);
 		i++;
-		// builtin_env(env_c);
 	}
 	return (unset_stat);
 }

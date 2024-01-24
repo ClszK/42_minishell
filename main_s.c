@@ -25,8 +25,6 @@ int	test_printf_parse(void *elem)
 		printf("		%s%%\n", parse->cmd_argv[i]);
 	printf("\n	STDIN_LST\n\n");
 	dlst_print(parse->stdin_lst, test_printf_token);
-	printf("\n	STDOUT_LST\n\n");
-	dlst_print(parse->stdout_lst, test_printf_token);
 	printf("\n");
 	return (0);
 }
