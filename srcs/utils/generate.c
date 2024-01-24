@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   generate.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 01:43:32 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/23 05:37:37 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/25 02:39:18 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,12 @@ t_token	*token_elem_generate(char *str, enum e_type type)
 		exit(errno);
 	node->str = str;
 	node->type = type;
+	node->env_val = NULL;
+	node->quote_flag = 0;
 	return (node);
 }
 
-t_token	*token_elem_cpy(void *elem)
+t_token	*token_elem_cpy(void *elem, enum e_type type)
 {
 	t_token *node;
 	t_token *token;
@@ -40,7 +42,7 @@ t_token	*token_elem_cpy(void *elem)
 		if (str == NULL)
 			exit(errno);
 	}
-	node = token_elem_generate(str, token->type);
+	node = token_elem_generate(str, type);
 	return (node);
 }
 
@@ -58,7 +60,6 @@ t_parse	*parse_elem_generate(int cmd_argc)
 		exit(errno);
 	ft_memset(node->cmd_argv, 0, sizeof(char *) * (cmd_argc + 1));
 	node->cmd_path = NULL;
-	node->stdin_lst = stdio_init();
-	node->stdout_lst = stdio_init();
+	node->std_lst = stdio_init();
 	return (node);
 }

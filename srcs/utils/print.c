@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 04:28:15 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/24 15:19:13 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/24 22:19:41 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	print_builtin_error(char *cmd, char *arg, char *error)
 
 int	print_syntax_error(int type)
 {
-	char	*type_str[8];
+	char	*type_str[10];
 
 	type_str[0] = NULL;
 	type_str[1] = NULL;
@@ -56,6 +56,8 @@ int	print_syntax_error(int type)
 	type_str[5] = "<";
 	type_str[6] = "<<";
 	type_str[7] = "newline";
+	type_str[8] = "'";
+	type_str[9] = "\"";
 	if (ft_putstr_fd("minishell: ", STDERR_FILENO) || \
 		ft_putstr_fd("syntax error near unexpected token `", STDERR_FILENO) || \
 		ft_putstr_fd(type_str[type], STDERR_FILENO) || \

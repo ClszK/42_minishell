@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 14:43:08 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/23 05:37:31 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/25 02:47:05 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,13 @@ char	*expand_str_cpy(char *start, char *dst, t_envp *env_c)
 	size = 0;
 	while (*start)
 	{
-		if (*start == '\'')
+		if (*start == '\'' || *start == '"')
 		{
 			arr_one_left_shift(start);
-			start = expand_squote(start, &size, dst);
-			arr_one_left_shift(--start);
-		}
-		else if (*start == '"')
-		{
-			arr_one_left_shift(start);
-			start = expand_dquote(start, &size, env_c, dst);
+			if (*start == '\'')
+				start = expand_squote(start, &size, dst);
+			else
+				start = expand_dquote(start, &size, env_c, dst);
 			arr_one_left_shift(--start);
 		}
 		else if (can_dollar_expand(start))
@@ -84,8 +81,7 @@ void	expand_start(t_analyze *alz, t_envp *env_c)
 	{
 		parse = parse_node->elem;
 		expand_cmd_argv(parse->cmd_argv, env_c);
-		expand_stdio(parse->stdin_lst, env_c);
-		expand_stdio(parse->stdout_lst, env_c);
+		expand_stdio(parse->std_lst, env_c);
 		parse_node = parse_node->next;
 	}
 }

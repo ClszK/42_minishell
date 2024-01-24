@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:19:39 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/24 17:05:41 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/25 02:42:17 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,18 @@ int	is_file_access(char *filename, int mode)
 	errno = 0;
 	if (access(filename, mode) == 0)
 		return (1);
+	if (mode == W_OK && errno == ENOENT)
+		return (1);	
 	if (errno != 0)
 		print_strerror(NULL, filename);
 	return (0);
+}
+
+void	split_shift(char **str, int i)
+{
+	free(str[i]);
+	while (str[i + 1])
+	{
+		str[i] = str[i + 1];
+	}
 }
