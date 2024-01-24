@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 08:10:11 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/23 09:55:45 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/24 15:59:58 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int			ps_move_sign(char *str, int *sign);
 long		ft_atol(char *str, int *flag);
 enum e_type	operate_type(char *str);
 int			is_redirect(t_token *token);
-int			is_opertator(char ch);
+int			is_operator(char ch);
 
 /* utils2.c*/
 int			is_dollar_sperator(char ch);
@@ -132,7 +132,7 @@ void		shinfo_init(t_shinfo *sh);
 void		perror_exit(char *progname);
 int			print_strerror(char *cmd, char *str);
 int			print_builtin_error(char *cmd, char *arg, char *error);
-int			print_syntax_error(char ch);
+int			print_syntax_error(int type);
 
 /* parse.c */
 void		token_cmdline(char *rline, t_cmdline *cmdline);
@@ -181,7 +181,7 @@ void		stdin_heredoc(char *end_id, int tmp_fd);
 /* fd.c */
 int 		pipe_init(t_pinfo *pinfo, int cmd_argc);
 void		pipe_close(t_pinfo *info, int pos);
-int			std_to_fd(t_stdio *std_lst, int i, int std_fd, t_pinfo *info);
+int			std_to_fd(t_node *std_node, int i, int std_fd, t_pinfo *info);
 void		dup_std_fd(t_pinfo *info, t_stdio *stdin_lst, t_stdio *stdout_lst, int i);
 
 /* builtin */
@@ -216,5 +216,7 @@ void		append_env(char *cmd_argv, t_envp *env_c, size_t equal);
 void		set_signal(void);
 void		set_sigterm(void);
 
+/* test in main.c */
+void		test_leak(void);
 
 #endif

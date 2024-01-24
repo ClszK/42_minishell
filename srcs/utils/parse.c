@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 04:21:16 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/23 05:37:36 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/24 15:39:06 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@ void	token_add_list(\
 		exit(errno);
 }
 
+/*
+	공백을 밀어내는 함수.
+*/
 char	*str_push_space(char *str)
 {
 	while (*str && *str == ' ')
@@ -36,7 +39,7 @@ char	*token_split(char *rline, t_cmdline *cmdline, int i)
 {
 	enum e_type	type;
 
-	if (is_opertator(rline[i]))
+	if (is_operator(rline[i]))
 	{
 		if (i)
 			token_add_list(cmdline, rline, i, WORD);
@@ -52,6 +55,10 @@ char	*token_split(char *rline, t_cmdline *cmdline, int i)
 	return (str_push_space(rline + i + 1));
 }
 
+/*
+	readline 함수에서 받아온 문자열을 token 단위로 파싱.
+	token 단위의 구분자는 연산자, 단어.
+*/
 void	token_cmdline(char *rline, t_cmdline *cmdline)
 {
 	int		i;
@@ -61,7 +68,7 @@ void	token_cmdline(char *rline, t_cmdline *cmdline)
 	while (*rline)
 	{
 		i = 0;
-		while (rline[i] && !(is_opertator(rline[i]) || rline[i] == ' '))
+		while (rline[i] && !(is_operator(rline[i]) || rline[i] == ' '))
 		{
 			if (rline[i] == '"' || rline[i] == '\'')
 			{

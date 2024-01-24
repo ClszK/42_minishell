@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:06:38 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/23 18:21:02 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/24 14:15:23 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	command_excute_builtin(t_parse *parse, t_envp *env_c, int builtin_idx)
 	return (exit_code);
 }
 
+/* error message 수정 필요 */
 void	command_fork(t_analyze *alz, t_envp *env_c)
 {
 	int			i;
@@ -83,7 +84,6 @@ void	command_excute(t_shinfo *sh)
 	int			stdout_fd;
 	int			fd1;
 	int			fd2;
-
 
 	alz = &sh->alz;
 	env_c = &sh->env_c;

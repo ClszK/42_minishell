@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 04:28:15 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/23 09:47:11 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/24 15:19:13 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,21 @@ int	print_builtin_error(char *cmd, char *arg, char *error)
 	return (0);
 }
 
-int	print_syntax_error(char ch)
+int	print_syntax_error(int type)
 {
+	char	*type_str[8];
+
+	type_str[0] = NULL;
+	type_str[1] = NULL;
+	type_str[2] = "|";
+	type_str[3] = ">";
+	type_str[4] = ">>";
+	type_str[5] = "<";
+	type_str[6] = "<<";
+	type_str[7] = "newline";
 	if (ft_putstr_fd("minishell: ", STDERR_FILENO) || \
 		ft_putstr_fd("syntax error near unexpected token `", STDERR_FILENO) || \
-		ft_putchar_fd(ch, STDERR_FILENO) || \
+		ft_putstr_fd(type_str[type], STDERR_FILENO) || \
 		ft_putstr_fd("'\n", STDERR_FILENO))
 		return (1);
 	return (0);

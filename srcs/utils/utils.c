@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 00:42:59 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/23 05:37:40 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/24 15:39:08 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,12 @@ int	is_redirect(t_token *token)
 	return (1);
 }
 
-int	is_opertator(char ch)
+/*
+	들어온 문자가
+	<, >, |
+	인지 판단하는 함수.
+*/
+int	is_operator(char ch)
 {
 	if (ch == '<' || ch == '>' || ch == '|')
 		return (1);

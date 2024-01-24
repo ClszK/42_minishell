@@ -7,9 +7,7 @@ ROBJ_FLAGS		=	-I/opt/homebrew/opt/readline/include #-I${HOME}/.brew/opt/readline
 LIB_DIR			=	srcs/lib/libft
 LIB				=	-L$(LIB_DIR) -lft
 
-SRCS_J			=	main_j.c
-
-SRCS_S			=	main_s.c
+SRCS			=	main.c
 
 SRCS_UTILS		=	utils.c\
 					utils2.c\
@@ -42,7 +40,8 @@ SRCS_BUILTIN	=	echo.c\
 SRCS_DOUBLE		=	double_lst.c\
 					double_lst2.c
 
-OBJS			=	$(addprefix srcs/utils/, ${SRCS_UTILS:.c=.o})\
+OBJS			=	$(SRCS:.c=.o)\
+					$(addprefix srcs/utils/, ${SRCS_UTILS:.c=.o})\
 					$(addprefix builtin/, ${SRCS_BUILTIN:.c=.o})\
 					$(addprefix srcs/lib/double/, ${SRCS_DOUBLE:.c=.o})
 
@@ -51,23 +50,17 @@ HEADERS			=	double_lst.h\
 
 HEADERS_PATH	=	includes
 
-ifdef MY
-    OBJ = $(OBJS) $(SRCS_J:.c=.o)
-else
-    OBJ = $(OBJS) $(SRCS_S:.c=.o)
-endif
-
 all:	$(NAME)
 
-$(NAME)	:	$(OBJ) $(addprefix includes/, ${HEADERS})
+$(NAME)	:	$(OBJS) $(addprefix includes/, ${HEADERS})
 	make -C $(LIB_DIR)
-	$(CC) $(CFLAGS) $(R_FLAGS) $(LIB) $(OBJ) -o $(NAME)
+	$(CC) $(CFLAGS) $(R_FLAGS) $(LIB) $(OBJS) -o $(NAME)
 
 %.o	:	%.c
 	$(CC) $(CFLAGS) $(ROBJ_FLAGS) -c $< -o $@ -I$(HEADERS_PATH) -g
 
 clean:
-	rm -rf $(OBJ)
+	rm -rf $(OBJS)
 	make clean -C $(LIB_DIR)
 
 fclean: clean
