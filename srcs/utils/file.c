@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 21:19:42 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/23 06:14:51 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/24 14:45:46 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,24 +68,24 @@ int	open_file(char *filename, int mode)
 
 void	stdin_heredoc(char *end_id, int tmp_fd)
 {
-	char	*readline;
+	char	*rline;
 	size_t	len;
 
 	errno = 0;
 	len = ft_strlen(end_id);
 	while (1)
 	{
-		ft_printf("> ");
-		readline = get_next_line(STDIN_FILENO);
-		if (readline == NULL && errno != 0)
+		rline = readline("> ");
+		if (rline == NULL && errno != 0)
 			perror_exit("minishell");
-		if (len == ft_strlen(readline) - 1 && \
-			!ft_strncmp(readline, end_id, len))
+		if (len == ft_strlen(rline) && \
+			!ft_strncmp(rline, end_id, len))
 		{
-			free(readline);
+			free(rline);
 			return ;
 		}
-		write(tmp_fd, readline, ft_strlen(readline));
-		free(readline);
+		write(tmp_fd, rline, ft_strlen(rline));
+		write(tmp_fd, "\n", 1);
+		free(rline);
 	}
 }

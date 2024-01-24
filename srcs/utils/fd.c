@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 21:18:12 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/23 09:15:52 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/24 16:04:45 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,29 +44,39 @@ void	pipe_close(t_pinfo *info, int pos)
 		close(info->pfd[pos % 2][1]);
 }
 
-int	std_to_fd(t_stdio *std_lst, int i, int std_fd, t_pinfo *info)
+int	here_doc_process(char *eof)
 {
-	t_node	*std_node;
-	t_token	*token;	
+	int		fd;
 	char	*tmp_name;
+
+	fd = tmpfile_create(&tmp_name);
+	if (fd < 0)
+		perror("HEREDOC");
+	stdin_heredoc(eof, fd);
+	close(fd);
+	fd = open_file(tmp_name, R_OK);
+	unlink(tmp_name);
+	free(tmp_name);
+	return (fd);
+}
+
+int	std_to_fd(t_node *std_node, int i, int std_fd, t_pinfo *info)
+{
+	t_token	*token;
 	int		fd;
 
-	std_node = std_lst->head->next;
 	fd = 0;
 	while (std_node->elem)
 	{
+		if (fd)
+			close(fd);
 		token = std_node->elem;
 		if (token->type == APPEND)
 			fd = open(token->str, O_WRONLY | O_APPEND | O_CREAT, 0644);
 		else if (token->type == OUTPUT)
 			fd = open_file(token->str, W_OK);
 		else if (token->type == HEREDOC)
-		{
-			fd = tmpfile_create(&tmp_name);
-			stdin_heredoc(token->str, fd);
-			close(fd);
-			fd = open_file(tmp_name, R_OK);
-		}
+			fd = here_doc_process(token->str);
 		else if (token->type == INPUT)
 			fd = open_file(token->str, R_OK);
 		else if (info && token->type == PIPE)
@@ -76,10 +86,6 @@ int	std_to_fd(t_stdio *std_lst, int i, int std_fd, t_pinfo *info)
 			else
 				fd = info->pfd[i % 2][std_fd];
 		}
-		if (dup2(fd, std_fd) < 0)
-			exit(EXIT_FAILURE);
-		if (tmp_name)
-			unlink(tmp_name);
 		std_node = std_node->next;
 	}
 	return (fd);
@@ -87,8 +93,25 @@ int	std_to_fd(t_stdio *std_lst, int i, int std_fd, t_pinfo *info)
 
 void	dup_std_fd(t_pinfo *info, t_stdio *stdin_lst, t_stdio *stdout_lst, int i)
 {
-	std_to_fd(stdin_lst, i, STDIN_FILENO, info);
-	std_to_fd(stdout_lst, i, STDOUT_FILENO, info);
+	int	fd;
+
+	fd = std_to_fd(stdin_lst->head->next, i, STDIN_FILENO, info);
+	if (fd < 0)
+		perror("minishell");
+	if (fd)
+	{
+		if (dup2(fd, STDIN_FILENO) < 0)
+			exit(EXIT_FAILURE);
+	}
+	std_to_fd(stdout_lst->head->next, i, STDOUT_FILENO, info);
+	if (fd < 0)
+		perror("minishell");
+	if (fd)
+	{
+		if (dup2(fd, STDOUT_FILENO) < 0)
+			exit(EXIT_FAILURE);
+	}
+	test_leak();
 	if (info->pipe_cnt)
 		pipe_close(info, i);
 }

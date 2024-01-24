@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 00:42:59 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/23 09:09:35 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/24 15:46:20 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	check_quote_type(char ch)
 
 int	is_dollar_sperator(char ch)
 {
-	if (is_opertator(ch) || ch == ' ' || ch == '\0' || check_quote_type(ch) \
+	if (is_operator(ch) || ch == ' ' || ch == '\0' || check_quote_type(ch) \
 		|| ch == '$' || ch == '/')
 		return (1);
 	return (0);
@@ -47,7 +47,11 @@ void	arr_one_left_shift(char *str)
 	str[i] = '\0';
 }
 
-/* need error process!! */
+/* 	
+	인용 처리 함수
+	여기서 인용 처리 함수란, 따옴표로 잘 감싸져있는지 체크
+	타당하지 않으면 해당 에러 Type 반환.
+*/
 char	valid_quote(char *rline)
 {
 	char	type;

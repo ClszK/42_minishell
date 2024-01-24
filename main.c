@@ -31,7 +31,23 @@ int	test_printf_parse(void *elem)
 	return (0);
 }
 
-/* 명령어 전처리(token화, 구문 분석, 변수 확장, 파일 확장)
+void	test_leak(void)
+{
+	char	*test;
+	char	*pid;
+	char	*str = "leaks -quiet --list ";
+
+	pid = ft_itoa(getpid());
+	test = malloc(sizeof(char) * (ft_strlen(str) + ft_strlen(pid) + 1));
+	ft_strcpy(test, str);
+	ft_strlcat(test, pid, 1000);
+	system(test);
+	free(pid);
+	free(test);
+}
+
+/* 	명령어 전처리.
+	token화, 구문 분석, 변수 확장, 파일 확장.
 	Error 처리 미구현 */
 int	command_preprocessing(t_shinfo *sh)
 {
@@ -42,6 +58,7 @@ int	command_preprocessing(t_shinfo *sh)
 		error_token = valid_quote(sh->rline);
 		if (error_token)
 		{
+			sh->env_c.last_stat = 2;
 			print_syntax_error(error_token);
 			return  (1);
 		}
@@ -51,6 +68,7 @@ int	command_preprocessing(t_shinfo *sh)
 			error_token = analyze_start(&sh->alz, &sh->cmdline);
 			if (error_token)
 			{
+				sh->env_c.last_stat = 2;
 				print_syntax_error(error_token);
 				return (1);
 			}
