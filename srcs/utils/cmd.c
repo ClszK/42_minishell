@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:06:38 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/24 14:15:23 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/24 18:03:44 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,19 +74,12 @@ void	command_fork(t_analyze *alz, t_envp *env_c)
 	env_c->last_stat = ((*(int *)&(info.last_status)) >> 8) & 0x000000ff;
 }
 
-void	command_excute(t_shinfo *sh)
+void	command_excute(t_analyze *alz, t_envp *env_c)
 {
-	t_analyze	*alz;
 	t_parse		*parse;
-	t_envp		*env_c;
 	int			builtin_idx;
-	int			stdin_fd;
-	int			stdout_fd;
-	int			fd1;
-	int			fd2;
+	int			fd[4];
 
-	alz = &sh->alz;
-	env_c = &sh->env_c;
 	if (is_include_pipe(alz))
 		command_fork(alz, env_c);
 	else
@@ -97,19 +90,29 @@ void	command_excute(t_shinfo *sh)
 			builtin_idx = is_builtin_command(parse->cmd_path);
 		if (parse->cmd_path && builtin_idx)
 		{
-			stdin_fd = dup(STDIN_FILENO);
-			stdout_fd = dup(STDOUT_FILENO);
-			fd1 = std_to_fd(parse->stdin_lst, 0, STDIN_FILENO, NULL);
-			fd2 = std_to_fd(parse->stdout_lst, 0, STDOUT_FILENO, NULL);
+			fd[STDIN_FILENO] = dup(STDIN_FILENO);
+			fd[STDOUT_FILENO] = dup(STDOUT_FILENO);
+			fd[FD_IN] = std_to_fd(parse->stdin_lst->head->next, 0, STDIN_FILENO, NULL);
+			if (fd[FD_IN] > 0)
+			{
+				if (dup2(fd[FD_IN], STDIN_FILENO) < 0)
+					exit(EXIT_FAILURE);
+			}
+			fd[FD_OUT] = std_to_fd(parse->stdout_lst->head->next, 0, STDOUT_FILENO, NULL);
+			if (fd[FD_OUT] > 0)
+			{
+				if (dup2(fd[FD_OUT], STDOUT_FILENO) < 0)
+					exit(EXIT_FAILURE);
+			}
 			env_c->last_stat = command_excute_builtin(parse, env_c, builtin_idx - 1);
-			dup2(stdin_fd, STDIN_FILENO);
-			dup2(stdout_fd, STDOUT_FILENO);
-			if (fd1)
-				close(fd1);
-			if (fd2)
-				close(fd2);
-			close(stdin_fd);
-			close(stdout_fd);
+			dup2(fd[STDIN_FILENO], STDIN_FILENO);
+			dup2(fd[STDOUT_FILENO], STDOUT_FILENO);
+			if (fd[FD_IN])
+				close(fd[FD_IN]);
+			if (fd[FD_OUT])
+				close(fd[FD_OUT]);
+			close(fd[STDIN_FILENO]);
+			close(fd[STDOUT_FILENO]);
 		}
 		else
 			command_fork(alz, env_c);

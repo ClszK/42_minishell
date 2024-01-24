@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:19:39 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/23 05:37:42 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/24 17:05:41 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,12 @@ int	is_include_pipe(t_analyze *alz)
 	return (0);
 }
 
-int	is_file_access(char *progname, char *filename, int mode)
+int	is_file_access(char *filename, int mode)
 {
 	errno = 0;
 	if (access(filename, mode) == 0)
 		return (1);
 	if (errno != 0)
-		print_strerror(progname, filename);
+		print_strerror(NULL, filename);
 	return (0);
 }

@@ -97,7 +97,7 @@ int main(int argc, char **argv, char **envp)
 			exit(EXIT_FAILURE);
 		add_history(sh.rline);
 		if (!command_preprocessing(&sh))
-			command_excute(&sh);
+			command_excute(&sh.alz, &sh.env_c);
 		shinfo_free(&sh, NULL);
     }
 	return (0);

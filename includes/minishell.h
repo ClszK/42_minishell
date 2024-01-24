@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 08:10:11 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/24 15:59:58 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/24 18:01:40 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@
 
 # define READ_FD 0
 # define WRITE_FD 1
+
+# define FD_IN 2
+# define FD_OUT 3
 
 # include <stdio.h>
 # include <readline/readline.h>
@@ -119,7 +122,7 @@ char		valid_quote(char *rline);
 /* utils3.c*/
 int			is_builtin_command(char *cmd);
 int			is_include_pipe(t_analyze *alz);
-int			is_file_access(char *progname, char *filename, int mode);
+int			is_file_access(char *filename, int mode);
 
 /* set.c */
 void		envp_init(char **envp, t_envp *env_c);
@@ -166,7 +169,7 @@ void		expand_start(t_analyze *alz, t_envp *env_c);
 void		path_insert_in_parse(t_analyze *alz, t_envp *env_c);
 
 /* cmd.c */
-void		command_excute(t_shinfo *sh);
+void		command_excute(t_analyze *alz, t_envp *env_c);
 int			command_excute_builtin(t_parse *parse, t_envp *env_c, int builtin_idx);
 
 /* proc.c */

@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 21:19:42 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/24 14:45:46 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/24 17:05:18 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	tmpfile_create(char **tmp_name)
 			return (fd);
 		free(*tmp_name);
 		if (errno != EEXIST)
-			perror_exit("minishell");
+			perror("minishell: ");
 	}
 	return (-1);
 }
@@ -48,7 +48,7 @@ int	open_file(char *filename, int mode)
 		omode = O_RDONLY;
 	else
 		omode = O_WRONLY | O_TRUNC | O_CREAT;
-	if (mode != R_OK || is_file_access("minishell", filename, mode))
+	if (mode != R_OK || is_file_access(filename, mode))
 	{
 		errno = 0;
 		if (mode == R_OK)
@@ -57,8 +57,7 @@ int	open_file(char *filename, int mode)
 			rfd = open(filename, omode, 0666);
 		if (rfd == -1 && errno != 0)
 		{
-			print_strerror(filename, NULL);
-			// error_exit("minishell", filename, strerror(errno), EXIT_FAILURE);
+			print_strerror(NULL, filename);
 			return (-1);
 		}
 		return (rfd);

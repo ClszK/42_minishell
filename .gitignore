@@ -3,4 +3,3 @@ main.c
 minishell
 test
 *.o
-minishell_tester

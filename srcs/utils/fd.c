@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 21:18:12 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/24 16:04:45 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/24 17:08:17 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ int	std_to_fd(t_node *std_node, int i, int std_fd, t_pinfo *info)
 			else
 				fd = info->pfd[i % 2][std_fd];
 		}
+		if (fd < 0)
+			return (-1);
 		std_node = std_node->next;
 	}
 	return (fd);
@@ -97,21 +99,14 @@ void	dup_std_fd(t_pinfo *info, t_stdio *stdin_lst, t_stdio *stdout_lst, int i)
 
 	fd = std_to_fd(stdin_lst->head->next, i, STDIN_FILENO, info);
 	if (fd < 0)
-		perror("minishell");
-	if (fd)
-	{
-		if (dup2(fd, STDIN_FILENO) < 0)
-			exit(EXIT_FAILURE);
-	}
-	std_to_fd(stdout_lst->head->next, i, STDOUT_FILENO, info);
+		exit(EXIT_FAILURE);
+	if (dup2(fd, STDIN_FILENO) < 0)
+		exit(EXIT_FAILURE);
+	fd = std_to_fd(stdout_lst->head->next, i, STDOUT_FILENO, info);
 	if (fd < 0)
-		perror("minishell");
-	if (fd)
-	{
-		if (dup2(fd, STDOUT_FILENO) < 0)
-			exit(EXIT_FAILURE);
-	}
-	test_leak();
+		exit(EXIT_FAILURE);
+	if (dup2(fd, STDOUT_FILENO) < 0)
+		exit(EXIT_FAILURE);
 	if (info->pipe_cnt)
 		pipe_close(info, i);
 }
