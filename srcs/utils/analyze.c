@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 01:46:42 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/25 00:00:31 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/25 04:04:34 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	analyze_token_parse(t_node *token_node, t_parse *parse, int *i)
 t_node	*analyze_parse_create(t_analyze *alz, t_node *token_node, \
 								t_parse *parse)
 {
-	int			i;
+	int	i;
 
 	i = 0;
 	errno = 0;

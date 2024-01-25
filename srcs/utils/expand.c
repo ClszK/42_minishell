@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 04:22:38 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/25 02:24:46 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/25 04:15:43 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,15 +86,19 @@ char	*expand_dquote(char *start, size_t *size, t_envp *env_c, char *dst)
 char	*expand_str_alloc(char *start, t_envp *env_c)
 {
 	size_t	size;
-	char	*rstr;
+	int		quote_flag;
 
 	size = 0;
+	quote_flag = 0;
 	while (*start)
 	{
 		if (*start == '\'')
 			start = expand_squote(++start, &size, NULL);
 		else if (*start == '"')
+		{
+			quote_flag = 1;
 			start = expand_dquote(++start, &size, env_c, NULL);
+		}
 		else if (can_dollar_expand(start))
 			start = expand_dollar(++start, &size, env_c, NULL);
 		else
@@ -102,8 +106,7 @@ char	*expand_str_alloc(char *start, t_envp *env_c)
 		start++;
 	}
 	errno = 0;
-	rstr = ft_calloc(sizeof(char), size + 1);
-	if (rstr == NULL)
-		exit(errno);
-	return (rstr);
+	if (quote_flag == 0 && size == 0)
+		return (NULL);
+	return (ft_calloc(sizeof(char), size + 1));
 }

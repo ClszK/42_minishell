@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 14:43:08 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/25 02:47:05 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/25 04:15:29 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,16 @@
 char	*expand_str_cpy(char *start, char *dst, t_envp *env_c)
 {
 	size_t	size;
+	char	ch;
 
 	size = 0;
 	while (*start)
 	{
 		if (*start == '\'' || *start == '"')
 		{
+			ch = *start;
 			arr_one_left_shift(start);
-			if (*start == '\'')
+			if (ch == '\'')
 				start = expand_squote(start, &size, dst);
 			else
 				start = expand_dquote(start, &size, env_c, dst);
@@ -46,6 +48,14 @@ void	expand_cmd_argv(char **cmd_argv, t_envp *env_c)
 	while (cmd_argv[i])
 	{
 		expand_str = expand_str_alloc(cmd_argv[i], env_c);
+		if (errno)
+			exit(errno);
+		if (expand_str == NULL)
+		{
+			free(cmd_argv[i]);
+			split_shift(cmd_argv, i);
+			continue ;
+		}
 		expand_str_cpy(cmd_argv[i], expand_str, env_c);
 		free(cmd_argv[i]);
 		cmd_argv[i] = expand_str;
@@ -64,7 +74,17 @@ void	expand_stdio(t_stdio *std, t_envp *env_c)
 	{
 		token = stdio_node->elem;
 		expand_str = expand_str_alloc(token->str, env_c);
-		expand_str_cpy(token->str, expand_str, env_c);
+		if (errno)
+			exit(errno);
+		if (expand_str == NULL)
+		{
+			errno = 0;
+			token->env_val = ft_strdup(token->str);
+			if (token->env_val == NULL && errno)
+				exit(errno);
+		}
+		else
+			expand_str_cpy(token->str, expand_str, env_c);
 		free(token->str);
 		token->str = expand_str;
 		stdio_node = stdio_node->next;
