@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:31:07 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/25 00:30:39 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/25 05:23:00 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char	*path_cmd_path(char *cmd, t_envp *env_c)
 	if (ft_strchr(cmd, '/'))
 	{
 		open(cmd, O_WRONLY);
-		if (errno)
+		if (errno == EACCES || errno == EISDIR)
 		{
 			print_strerror(cmd, NULL);
 			env_c->last_stat = 126;
@@ -92,6 +92,13 @@ char	*path_cmd_path(char *cmd, t_envp *env_c)
 				exit(errno);
 			return (cmd_path);
 		}
+		else
+		{
+			print_strerror(cmd, NULL);
+			env_c->last_stat = 127;
+			return (NULL);
+		}
+		
 	}
 	else
 		cmd_path = path_cmd_valid(path, cmd);

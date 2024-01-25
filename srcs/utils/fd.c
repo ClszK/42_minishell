@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 21:18:12 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/25 00:11:28 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/25 04:01:03 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,11 @@ int	std_to_fd(t_node *std_node)
 		token = std_node->elem;
 		if (fd)
 			close(fd);
+		if (token->str == NULL && token->env_val)
+		{
+			print_builtin_error(token->env_val, NULL, "ambiguous redirect\n");
+			return (-1);
+		}
 		if (token->type == APPEND)
 			fd = open_append(token->str);
 		else if (token->type == OUTPUT)

@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:43:21 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/25 00:23:11 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/25 04:59:53 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,5 @@ void	child_process(t_parse *parse, t_envp *env_c, int i, t_pinfo *info)
 		exit(env_c->last_stat);
 	errno = 0;
 	execve(parse->cmd_path, parse->cmd_argv, envp);
-	perror("minishell: ");
 	exit(EXIT_FAILURE);
 }
