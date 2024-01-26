@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 01:46:42 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/26 19:55:11 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/27 03:29:06 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,11 @@ int	analyze_start(t_analyze *alz, t_cmdline *cmdline)
 		cmd_argc = analyze_cmd_argc(node);
 		parse = parse_elem_generate(cmd_argc);
 		node = analyze_parse_create(alz, node, parse);
+		if (parse->here_doc_lst->lst_size > 16)
+		{
+			print_builtin_error(NULL, NULL, "maximum here-document count exceeded\n");
+			exit(2);
+		}
 	}
 	return (0);
 }

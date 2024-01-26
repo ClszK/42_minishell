@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 04:28:15 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/27 00:39:26 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/27 03:28:39 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ int	print_strerror(char *cmd, char *arg)
 int	print_builtin_error(char *cmd, char *arg, char *error)
 {
 	if (ft_putstr_fd("minishell: ", STDERR_FILENO) || \
-		ft_putstr_fd(cmd, STDERR_FILENO) || \
-		ft_putstr_fd(": ", STDERR_FILENO) || \
-		(arg != NULL && ft_putstr_fd(arg, STDERR_FILENO)) || \
-		(arg != NULL && ft_putstr_fd(": ", STDERR_FILENO)) || \
+		(cmd && ft_putstr_fd(cmd, STDERR_FILENO)) || \
+		(cmd && ft_putstr_fd(": ", STDERR_FILENO)) || \
+		(arg && ft_putstr_fd(arg, STDERR_FILENO)) || \
+		(arg && ft_putstr_fd(": ", STDERR_FILENO)) || \
 		ft_putstr_fd(error, STDERR_FILENO))
 		return (1);
 	return (0);
