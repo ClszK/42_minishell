@@ -4,10 +4,26 @@ CFLAGS			=	-Wall -Wextra
 R_FLAGS			=	-lreadline -L/opt/homebrew/opt/readline/lib #-L${HOME}/.brew/opt/readline/lib
 ROBJ_FLAGS		=	-I/opt/homebrew/opt/readline/include #-I${HOME}/.brew/opt/readline/include
 
-LIB_DIR			=	srcs/lib/libft
+LIB_DIR			=	lib/libft
 LIB				=	-L$(LIB_DIR) -lft
 
 SRCS			=	main.c
+
+SRCS_PARSER		=	analyze.c\
+					analyze2.c\
+					parse.c\
+					expand.c\
+					expand2.c\
+					path.c\
+					path2.c\
+					file.c
+
+SRCS_EXEC		=	fd.c\
+					fd2.c\
+					signal.c\
+					proc.c\
+					pipe.c\
+					cmd.c
 
 SRCS_UTILS		=	utils.c\
 					utils2.c\
@@ -15,23 +31,9 @@ SRCS_UTILS		=	utils.c\
 					set.c\
 					set2.c\
 					print.c\
-					parse.c\
 					generate.c\
-					analyze.c\
-					analyze2.c\
 					free.c\
 					find.c\
-					expand.c\
-					expand2.c\
-					path.c\
-					path2.c\
-					cmd.c\
-					proc.c\
-					fd.c\
-					fd2.c\
-					file.c\
-					signal.c\
-					pipe.c
 
 SRCS_BUILTIN	=	echo.c\
 					pwd.c\
@@ -47,8 +49,10 @@ SRCS_DOUBLE		=	double_lst.c\
 
 OBJS			=	$(SRCS:.c=.o)\
 					$(addprefix srcs/utils/, ${SRCS_UTILS:.c=.o})\
+					$(addprefix srcs/parser/, ${SRCS_PARSER:.c=.o})\
+					$(addprefix srcs/exec/, ${SRCS_EXEC:.c=.o})\
 					$(addprefix builtin/, ${SRCS_BUILTIN:.c=.o})\
-					$(addprefix srcs/lib/double/, ${SRCS_DOUBLE:.c=.o})
+					$(addprefix lib/double/, ${SRCS_DOUBLE:.c=.o})
 
 HEADERS			=	double_lst.h\
 					minishell.h

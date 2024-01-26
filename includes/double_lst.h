@@ -6,14 +6,14 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 23:59:03 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/26 18:55:18 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/27 01:13:47 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DOUBLE_LST_H
 # define DOUBLE_LST_H
 
-# include "../srcs/lib/libft/libft.h"
+# include "../lib/libft/libft.h"
 # include <stdlib.h>
 # include <errno.h>
 
