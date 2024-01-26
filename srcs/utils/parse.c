@@ -6,12 +6,19 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 04:21:16 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/26 13:26:48 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/26 17:51:00 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
+	str, type을 가진 노드를 cmdline 연결리스트에 추가.
+	여기서 str은 ls -al | cat이라 하면 
+	ls, -al, |, cat을 의미.
+	type은
+	WORD, WORD, PIPE, WORD 형태로 삽입됨.
+*/
 void	token_add_list(\
 			t_cmdline *cmdline, char *rline, int size, enum e_type type)
 {
@@ -35,6 +42,12 @@ char	*str_push_space(char *str)
 	return (str);
 }
 
+
+/*
+	연산자인지 체크.
+	연산자라면 해당 연산자에 맞는 TYPE을 가지고 t_cmdline 연결리스트 마지막 노드에 삽입.
+	단어라면 TYPE을 WORD라 지정하고 연결리스트 마지막 노드 삽입.
+*/
 char	*token_split(char *rline, t_cmdline *cmdline, int i)
 {
 	enum e_type	type;
@@ -58,6 +71,7 @@ char	*token_split(char *rline, t_cmdline *cmdline, int i)
 /*
 	readline 함수에서 받아온 문자열을 token 단위로 파싱.
 	token 단위의 구분자는 연산자, 단어.
+	먼저, 화이트스페이스를 밀고 난 후, token으로 분리.
 */
 void	token_cmdline(char *rline, t_cmdline *cmdline)
 {
