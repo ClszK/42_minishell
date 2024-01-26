@@ -87,7 +87,6 @@ int main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	envp_init(envp, &sh.env_c);
-
 	while (1)
 	{
 		shinfo_init(&sh);
@@ -99,6 +98,7 @@ int main(int argc, char **argv, char **envp)
 			command_excute(&sh.alz, &sh.env_c);
 		shinfo_free(&sh, NULL);
     }
+	set_terminal(0);
 	return (0);
 }
 

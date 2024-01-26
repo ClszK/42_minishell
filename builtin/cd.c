@@ -79,6 +79,8 @@ int	builtin_cd(t_parse *parse, t_envp *env_c)
 {
 	char	*path;
 
+	if (parse->cmd_argv == NULL || parse->cmd_argv[1][0] == '\0')
+		return (0);
 	if (parse->cmd_argv[1] == NULL || !ft_strcmp(parse->cmd_argv[1], "--"))
 	{
 		path = expand_env_find(env_c, "HOME");
