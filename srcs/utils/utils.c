@@ -39,19 +39,14 @@ long	ft_atol(char *str, int *flag)
 	result = 0;
 	i = ps_move_sign(str, &sign);
 	if (!str[i--])
-		*flag = 1;
+		return (*flag = 1);
 	while (str[++i])
 	{
-		if (!(str[i] >= '0' && str[i] <= '9'))
-			*flag = 1;
 		tmp = result;
 		result = (result * 10) + (str[i] - '0');
+		if (tmp > result || !(str[i] >= '0' && str[i] <= '9'))
+			return (*flag = 1);
 	}
-	if (tmp > result)
-		*flag = 1;
-	if (sign == -1)
-		if (result < 0)
-			*flag = 1;
 	result *= sign;
 	return (result);
 }

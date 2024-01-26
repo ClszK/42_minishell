@@ -233,6 +233,8 @@ int			check_unset_key(char *key);
 /* signal.c */
 void		set_signal(void);
 void		set_sigterm(void);
+void		set_terminal(int flag);
+
 
 /* test in main.c */
 void		test_leak(void);

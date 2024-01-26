@@ -109,6 +109,7 @@ int main(int argc, char **argv, char **envp)
 			command_excute(&sh.alz, &sh.env_c);
 		shinfo_free(&sh, NULL);
     }
+	set_terminal(0);
 	return (0);
 }
 
