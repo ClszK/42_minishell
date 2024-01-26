@@ -33,7 +33,7 @@ $(NAME)	:	$(OBJ_FILES)
 	@ar rsc $@ $(OBJ_FILES)
 
 %.o	:	%.c
-	@$(CC) $(CFLAGS) $< -o $@ -I$(HEADER)
+	@$(CC) $(CFLAGS) $< -o $@ -I$(HEADER) -g
 
 clean:
 	@rm -rf $(OBJS) $(B_OBJS)

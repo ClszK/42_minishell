@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 04:22:38 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/26 12:23:39 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/26 18:30:12 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ char	*expand_last_stat(char *start, size_t *size, t_envp *env_c, char *dst)
 {
 	char	*last_stat_str;
 
+	errno = 0;
 	last_stat_str = ft_itoa(env_c->last_stat);
 	if (last_stat_str == NULL)
 		exit(errno);

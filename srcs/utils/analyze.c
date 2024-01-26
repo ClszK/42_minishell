@@ -6,12 +6,15 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 01:46:42 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/26 10:56:38 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/26 18:26:40 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
+	
+*/
 int	analyze_cmd_argc(t_node *token_node)
 {
 	t_token		*token;
@@ -43,6 +46,7 @@ int	analyze_token_parse(t_node *token_node, t_parse *parse, int *i)
 {
 	t_token		*token;
 
+	errno = 0;
 	token = token_node->elem;
 	if (token->type == WORD)
 	{
@@ -55,7 +59,7 @@ int	analyze_token_parse(t_node *token_node, t_parse *parse, int *i)
 	if (token->type == OUTPUT || token->type == APPEND || token->type == INPUT)
 		dlst_add_last(parse->std_lst, \
 						token_elem_cpy(token_node->next->elem, token->type));
-	else if ( token->type == HEREDOC)
+	else if (token->type == HEREDOC)
 		dlst_add_last(parse->here_doc_lst, \
 						token_elem_cpy(token_node->next->elem, token->type));
 	return (1);
@@ -67,7 +71,6 @@ t_node	*analyze_parse_create(t_analyze *alz, t_node *token_node, \
 	int	i;
 
 	i = 0;
-	errno = 0;
 	if (is_pipe_node(token_node))
 	{
 		dlst_add_last(parse->std_lst, token_elem_cpy(token_node->elem, PIPE_IN));

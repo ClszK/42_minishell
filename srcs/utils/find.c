@@ -17,6 +17,7 @@ void	map_oldpwd_find(t_envp *env_c)
 	int		flag;
 
 	flag = 0;
+	errno = 0;
 	node = env_c->head->next;
 	while (node->next)
 	{

@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 23:57:30 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/23 05:35:31 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/26 18:55:52 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,10 @@ t_node	*dlst_node_generate(void *element)
 {
 	t_node	*node;
 
+	errno = 0;
 	node = (t_node *)malloc(sizeof(t_node));
 	if (node == NULL)
-		return (NULL);
+		exit(errno);
 	node->elem = element;
 	node->next = NULL;
 	node->prev = NULL;
@@ -31,8 +32,6 @@ int	dlst_init(struct s_lst *lst)
 		return (1);
 	lst->head = dlst_node_generate(NULL);
 	lst->tail = dlst_node_generate(NULL);
-	if (lst->head == NULL || lst->tail == NULL)
-		return (1);
 	lst->head->next = lst->tail;
 	lst->tail->prev = lst->head;
 	lst->lst_size = 0;
@@ -46,8 +45,6 @@ int	dlst_add_last(struct s_lst *lst, void *element)
 	t_node	*node;
 
 	node = dlst_node_generate(element);
-	if (node == NULL)
-		return (1);
 	lst->tail->prev->next = node;
 	node->prev = lst->tail->prev;
 	node->next = lst->tail;

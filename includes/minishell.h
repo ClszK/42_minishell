@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 08:10:11 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/26 18:00:56 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/26 18:44:08 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ int			is_builtin_command(char *cmd);
 int			is_include_pipe(t_analyze *alz);
 int			is_file_access(char *filename, int mode);
 void		split_shift(char **str, int i);
+char		*str_push_space(char *str);
 
 /* set.c */
 void		envp_init(char **envp, t_envp *env_c);
@@ -177,9 +178,10 @@ void		path_insert_in_parse(t_analyze *alz, t_envp *env_c);
 /* cmd.c */
 void		command_excute(t_analyze *alz, t_envp *env_c);
 int			command_excute_builtin(t_parse *parse, t_envp *env_c, int builtin_idx, int is_fork);
+int			command_preprocessing(t_shinfo *sh);
 
 /* proc.c */
-void		wait_child(t_pinfo *info, int cmd_cnt);
+void		wait_child(t_pinfo *info, t_envp *env_c, int cmd_cnt);
 void		child_process(t_parse *parse, t_envp *env_c, int i, t_pinfo *info);
 
 /* file.c */

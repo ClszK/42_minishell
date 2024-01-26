@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 18:02:52 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/26 18:02:52 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/26 18:18:14 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,37 +41,6 @@ int	check_dup(char	*cmd_argv, t_node *env_node, size_t equal)
 	return (1);
 }
 
-// int	check_dup(char	*cmd_argv, t_envp *env_c, size_t equal)
-// {
-// 	t_map	*cmp;
-// 	t_node	*node;
-// 	char	*argv_key;
-
-// 	errno = 0;
-// 	argv_key = ft_substr(cmd_argv, 0, equal);
-// 	if (argv_key == NULL)
-// 		exit(errno);
-// 	node = env_c->head->next;
-// 	while (node->next)
-// 	{
-// 		cmp = node->elem;
-// 		if (cmp != NULL && !ft_strcmp(argv_key, cmp->key))
-// 		{
-// 			if (equal != ft_strlen(cmd_argv))
-// 			{
-// 				if (cmp->val)
-// 					free(cmp->val);
-// 				update_env(cmd_argv, cmp, equal);
-// 				free(argv_key);
-// 			}
-// 			return (0);
-// 		}
-// 		node = node->next;
-// 	}
-// 	free(argv_key);
-// 	return (1);
-// }
-
 void	update_env(char *cmd_argv, t_map *cur, size_t equal)
 {
 	errno = 0;
@@ -87,7 +56,7 @@ void	append_env(char *cmd_argv, t_envp *env_c, size_t equal)
 	errno = 0;
 	map = (t_map *)malloc(sizeof(t_map));
 	if (map == NULL)
-		exit(1);
+		exit(errno);
 	map->key = ft_substr(cmd_argv, 0, equal);
 	if (equal != ft_strlen(cmd_argv))
 		map->val = ft_strdup(cmd_argv + equal + 1);
@@ -95,7 +64,7 @@ void	append_env(char *cmd_argv, t_envp *env_c, size_t equal)
 		map->val = NULL;
 	if (map->key == NULL || (map->val == NULL && errno != 0) \
 		|| dlst_add_last(env_c, (t_map *)map))
-		exit(1);
+		exit(errno);
 }
 
 void	free_copy(t_map *export_c, long lst_size)

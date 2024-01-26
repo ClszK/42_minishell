@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 18:02:48 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/26 18:02:49 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/26 18:13:40 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ void	copy_env(t_envp *env_c, t_map *export_c)
 	t_node	*node;
 	int		i;
 
-	node = env_c->head->next;
 	i = 0;
 	errno = 0;
+	node = env_c->head->next;
 	while (node->next)
 	{
 		map = node->elem;
@@ -45,9 +45,8 @@ void	copy_env(t_envp *env_c, t_map *export_c)
 			export_c[i].val = ft_strdup(map->val);
 		else
 			export_c[i].val = NULL;
-		if (export_c[i].key == NULL \
-			|| (export_c[i].val == NULL && errno != 0))
-			exit(1);
+		if (export_c[i].key == NULL || (export_c[i].val == NULL && errno != 0))
+			exit(errno);
 		i++;
 		node = node->next;
 	}

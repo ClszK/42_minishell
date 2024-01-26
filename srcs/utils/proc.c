@@ -6,13 +6,13 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:43:21 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/26 15:11:33 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/26 18:48:50 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	wait_child(t_pinfo *info, int cmd_cnt)
+void	wait_child(t_pinfo *info, t_envp *env_c, int cmd_cnt)
 {
 	int	status;
 	int	i;
@@ -24,6 +24,14 @@ void	wait_child(t_pinfo *info, int cmd_cnt)
 		if (info->last_pid == info->pid)
 			info->last_status = status;
 	}
+	env_c->last_stat = ((*(int *)&(info->last_status)) >> 8) & 0x000000ff;
+	if (info->pipe_cnt)
+	{
+		close(info->pfd[0][0]);
+		close(info->pfd[0][1]);
+		close(info->pfd[1][0]);
+		close(info->pfd[1][1]);
+	}
 }
 
 char	*envp_copy(t_map *map)
@@ -31,6 +39,7 @@ char	*envp_copy(t_map *map)
 	char	*str;
 	size_t	size;
 
+	errno = 0;
 	size = ft_strlen(map->key) + ft_strlen(map->val) + 1;
 	str = ft_calloc(sizeof(char), size + 1);
 	if (str == NULL)

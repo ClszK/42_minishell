@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/26 18:29:34 by ljh               #+#    #+#             */
+/*   Updated: 2024/01/26 18:36:26 by ljh              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	test_printf_token(void *elem)
@@ -46,42 +58,6 @@ void	test_leak(void)
 	free(test);
 }
 
-/* 	명령어 전처리.
-	token화, 구문 분석, 변수 확장, 파일 확장.
-	Error 처리 미구현 */
-int	command_preprocessing(t_shinfo *sh)
-{
-	int		error_token;
-
-	if (sh->rline && *(sh->rline) != '\0')
-	{
-		error_token = valid_quote(sh->rline);
-		if (error_token)
-		{
-			sh->env_c.last_stat = 258;
-			print_syntax_error(error_token);
-			return  (1);
-		}
-		token_cmdline(sh->rline, &(sh->cmdline));
-		// dlst_print(&sh->cmdline, test_printf_token);
-		if (sh->cmdline.lst_size != 0)
-		{
-			error_token = analyze_start(&sh->alz, &sh->cmdline);
-			if (error_token)
-			{
-				sh->env_c.last_stat = 258;
-				print_syntax_error(error_token);
-				return (1);
-			}
-			expand_start(&sh->alz, &sh->env_c);
-			path_insert_in_parse(&sh->alz, &sh->env_c);
-			// dlst_print(&sh->alz, test_printf_parse);
-		}
-		return (0);
-	}
-	return (1);
-}
-
 int main(int argc, char **argv, char **envp)
 {
 	t_shinfo	sh;
@@ -101,11 +77,10 @@ int main(int argc, char **argv, char **envp)
 			sh.rline = ft_strtrim(line, "\n");
 			free(line);
 		}
-		// sh.rline = readline("minishell$ ");
 		if (sh.rline == NULL)
 			exit (sh.env_c.last_stat);
 		add_history(sh.rline);
-		if (!command_preprocessing(&sh))
+		if (sh.rline && !command_preprocessing(&sh))
 			command_excute(&sh.alz, &sh.env_c);
 		shinfo_free(&sh, NULL);
     }

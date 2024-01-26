@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:19:39 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/26 12:38:16 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/26 18:43:57 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,14 @@ void	split_shift(char **str, int i)
 		i++;
 	}
 	str[i] = NULL;
+}
+
+/*
+	공백을 밀어내는 함수.
+*/
+char	*str_push_space(char *str)
+{
+	while (*str && ((*(str) >= 9 && *(str) <= 13) || *(str) == 32))
+		str++;
+	return (str);
 }

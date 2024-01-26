@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 04:21:16 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/26 17:51:00 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/26 18:45:36 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,6 @@ void	token_add_list(\
 	if (dlst_add_last(cmdline, token))
 		exit(errno);
 }
-
-/*
-	공백을 밀어내는 함수.
-*/
-char	*str_push_space(char *str)
-{
-	while (*str && ((*(str) >= 9 && *(str) <= 13) || *(str) == 32))
-		str++;
-	return (str);
-}
-
 
 /*
 	연산자인지 체크.
@@ -81,8 +70,8 @@ void	token_cmdline(char *rline, t_cmdline *cmdline)
 	rline = str_push_space(rline);
 	while (*rline)
 	{
-		i = 0;
-		while (rline[i] && !(is_operator(rline[i]) \
+		i = -1;
+		while (rline[++i] && !(is_operator(rline[i]) \
 			|| ((rline[i] >= 9 && rline[i] <= 13) || rline[i] == 32)))
 		{
 			if (rline[i] == '"' || rline[i] == '\'')
@@ -93,7 +82,6 @@ void	token_cmdline(char *rline, t_cmdline *cmdline)
 				else
 					i = quote_pos - rline;
 			}
-			i++;
 		}
 		if (i > 0 && rline[i] == '\0')
 			token_add_list(cmdline, rline, i, WORD);

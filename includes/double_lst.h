@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 23:59:03 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/22 16:52:48 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/26 18:55:18 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "../srcs/lib/libft/libft.h"
 # include <stdlib.h>
+# include <errno.h>
 
 typedef struct s_node
 {

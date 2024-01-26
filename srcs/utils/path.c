@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:31:07 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/25 23:49:33 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/26 18:47:53 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	**path_find_in_env(t_envp *env_c)
 	{
 		path = ft_split(path_line, ':');
 		if (path == NULL && errno != 0)
-			perror_exit("minishell");
+			exit(errno);
 		return (path);
 	}
 	return (NULL);
@@ -37,12 +37,12 @@ char	*path_cmd(char *path, char *cmd)
 	errno = 0;
 	rcmd = ft_strjoin(path, "/");
 	if (rcmd == NULL && errno != 0)
-		perror_exit("minishell");
+		exit(errno);
 	tmp = rcmd;
 	rcmd = ft_strjoin(rcmd, cmd);
 	free(tmp);
 	if (rcmd == NULL && errno != 0)
-		perror_exit("minishell");
+		exit(errno);
 	return (rcmd);
 }
 
@@ -56,12 +56,12 @@ char	*path_cmd_valid(char **path, char *cmd)
 		return (NULL);
 	while (path[++i] && *cmd)
 	{
+		errno = 0;
 		cmd_path = path_cmd(path[i], cmd);
 		if ((access(cmd_path, X_OK) == 0))
 			return (cmd_path);
 		if (errno == EACCES)
 			break ;
-		errno = 0;
 		free(cmd_path);
 	}
 	return (NULL);
@@ -74,6 +74,7 @@ char	*path_cmd_path(char *cmd, t_envp *env_c)
 
 	if (cmd == NULL)
 		return (NULL);
+	errno = 0;
 	cmd_path = NULL;
 	path = path_find_in_env(env_c);
 	if (ft_strchr(cmd, '/'))
@@ -128,12 +129,15 @@ void	path_insert_in_parse(t_analyze *alz, t_envp *env_c)
 	while (parse_node->elem)
 	{
 		parse = parse_node->elem;
+		errno = 0;
 		if (parse->cmd_argv && parse->cmd_argv[0])
 		{
 			if (is_builtin_command(parse->cmd_argv[0]))
 				parse->cmd_path = ft_strdup(parse->cmd_argv[0]);
 			else
 				parse->cmd_path = path_cmd_path(parse->cmd_argv[0], env_c);
+			if (errno)
+				exit(errno);
 		}
 		parse_node = parse_node->next;
 	}
