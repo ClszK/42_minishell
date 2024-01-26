@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 18:29:34 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/27 00:46:56 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/27 03:20:16 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ int main(int argc, char **argv, char **envp)
 	envp_init(envp, &sh.env_c);
 	while (1)
 	{
+		errno = 0;
+		
 		shinfo_init(&sh);
 		// if (isatty(fileno(stdin)))
 		// 	sh.rline = readline("minishell$ ");
@@ -84,6 +86,7 @@ int main(int argc, char **argv, char **envp)
 		if (sh.rline && !command_preprocessing(&sh))
 			command_excute(&sh.alz, &sh.env_c);
 		shinfo_free(&sh, NULL);
+		delete_heredoc();
     }
 	set_terminal(0);
 	return (0);

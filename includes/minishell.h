@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 08:10:11 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/27 00:59:31 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/27 02:40:24 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,6 +201,7 @@ int			tmpfile_create(char **tmp_name);
 int			open_file(char *filename, int mode);
 void		stdin_heredoc(char *end_id, int tmp_fd);
 int			open_append(char *filename, int fd);
+void		delete_heredoc(void);
 
 /* fd.c */
 int			here_doc_process(char *eof);

@@ -106,3 +106,89 @@ void	is_fork_signal(int status) //wait 반환값 확인
 			ft_putstr_fd("Quit: 3\n", STDERR_FILENO);
 	}
 }
+
+// void    main_sigint_handler_heredoc(int sig)
+// {
+//     (void) sig;
+//     rl_on_new_line();
+//     rl_replace_line("", 0);
+//     rl_redisplay();
+//     printf("\n");
+//     exit(1);
+// }
+// //main에서 ctrl+c을 눌렀을 때
+// void    main_sigint_handler(int sign)
+// {
+//     (void ) sign;
+//     printf("\n");
+//     rl_on_new_line();
+//     rl_replace_line("", 0);
+//     rl_redisplay();
+//     g_minishell.exit_code = 1;
+// }
+// //main ctrl+d를 눌렀을때 작동 signal은 발생하지 않음
+// void    main_sigterm_handler(void)
+// {
+//     write(2, "\033[1A", 4);
+//     write(2, "\033[11C", 5);
+//     write(2, "exit\n", 5);
+//     exit(g_minishell.exit_code = 0);
+// }
+// //main에서 signal 정의
+// //SIGINT == ctrl+c, SIGQUIT == ctrl+\, SIGTERM == ctrl+d
+// void    all_signal(void)
+// {
+//     signal(SIGINT, main_sigint_handler);
+//     signal(SIGQUIT, SIG_IGN);
+// }
+
+// int heredoc_substitute(t_list *tokens)
+// {
+//     int     heredoc_idx;
+//     pid_t   pid;
+//     int     exit_code;
+//     t_list  limit_strings;
+//     list_init(&limit_strings);
+//     heredoc_replace(tokens, &limit_strings);
+//     pid = heredoc_fork(&limit_strings, &heredoc_idx);
+//     signal(SIGINT, SIG_IGN);
+//     waitpid(pid, &exit_code, 0);
+//     list_free_all(&limit_strings, (void *)0);
+//     signal(SIGINT, main_sigint_handler);
+//     if (WIFEXITED(exit_code))
+//     {
+//         exit_code = WEXITSTATUS(exit_code);
+//         if (exit_code != 0)
+//         {
+//             heredoc_unlink_tmp();
+//             g_minishell.exit_code = exit_code;
+//             return (0);
+//         }
+//     }
+//     return (1);
+// 	}
+
+
+
+
+// void    process_run(t_list *tokens)
+// {
+//     t_list      process_list;
+//     t_process   *tmp;
+//     int         pid;
+//     int         builtin_idx;
+//     process_list = compile(tokens);
+//     tmp = list_get(&process_list, 0);
+//     signal(SIGINT, SIG_IGN);
+//     signal(SIGQUIT, sig_quit);
+//     if (process_list.length == 1 && check_builtin(tmp->name, &builtin_idx))
+//         execute_no_fork(tmp, builtin_idx);
+//     else
+//     {
+//         pid = execute_fork(&process_list);
+//         wait_process(pid);
+//     }
+//     signal(SIGINT, main_sigint_handler);
+//     signal(SIGQUIT, SIG_IGN);
+//     list_free_all(&process_list, process_free);
+// }

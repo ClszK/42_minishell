@@ -15,8 +15,7 @@ SRCS_PARSER		=	analyze.c\
 					expand.c\
 					expand2.c\
 					path.c\
-					path2.c\
-					file.c
+					path2.c
 
 SRCS_EXEC		=	fd.c\
 					fd2.c\
@@ -34,6 +33,7 @@ SRCS_UTILS		=	utils.c\
 					generate.c\
 					free.c\
 					find.c\
+					file.c
 
 SRCS_BUILTIN	=	echo.c\
 					pwd.c\
@@ -51,7 +51,7 @@ OBJS			=	$(SRCS:.c=.o)\
 					$(addprefix srcs/utils/, ${SRCS_UTILS:.c=.o})\
 					$(addprefix srcs/parser/, ${SRCS_PARSER:.c=.o})\
 					$(addprefix srcs/exec/, ${SRCS_EXEC:.c=.o})\
-					$(addprefix builtin/, ${SRCS_BUILTIN:.c=.o})\
+					$(addprefix srcs/builtin/, ${SRCS_BUILTIN:.c=.o})\
 					$(addprefix lib/double/, ${SRCS_DOUBLE:.c=.o})
 
 HEADERS			=	double_lst.h\
