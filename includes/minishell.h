@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 08:10:11 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/26 15:11:20 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/26 18:00:56 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,8 @@ int			builtin_cd(t_parse *parse, t_envp *env_c);
 
 /* export2.c*/
 void		append_env(char *cmd_argv, t_envp *env_c, size_t equal);
-int			check_dup(char	*cmd_argv, t_envp *env_c, size_t equal);
+// int			check_dup(char	*cmd_argv, t_envp *env_c, size_t equal);
+int			check_dup(char	*cmd_argv, t_node *env_node, size_t equal);
 void		update_env(char *cmd_argv, t_map *cur, size_t equal);
 void		free_copy(t_map *export_c, long lst_size);
 int			export_print_sort(t_map *export_c, int pos);

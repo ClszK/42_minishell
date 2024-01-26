@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cd.c                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/26 18:02:39 by ljh               #+#    #+#             */
+/*   Updated: 2024/01/26 18:02:40 by ljh              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	change_pwd(t_envp *env_c, char *pwd)
@@ -10,7 +22,7 @@ void	change_pwd(t_envp *env_c, char *pwd)
 	if (pwd && tmp == NULL)
 		exit(1);
 	equal = find_char(tmp, '=');
-	check_dup(tmp, env_c, equal);
+	check_dup(tmp, env_c->head->next, equal);
 	free(tmp);
 	if (env_c->pwd)
 	{
@@ -32,7 +44,7 @@ void	change_oldpwd(t_envp *env_c)
 	if (env_c->pwd && tmp == NULL)
 		exit(errno);
 	equal = find_char(tmp, '=');
-	check_dup(tmp, env_c, equal);
+	check_dup(tmp, env_c->head->next, equal);
 	free(tmp);
 }
 

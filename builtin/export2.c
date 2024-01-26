@@ -1,19 +1,29 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export2.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/26 18:02:52 by ljh               #+#    #+#             */
+/*   Updated: 2024/01/26 18:02:52 by ljh              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-int	check_dup(char	*cmd_argv, t_envp *env_c, size_t equal)
+int	check_dup(char	*cmd_argv, t_node *env_node, size_t equal)
 {
 	t_map	*cmp;
-	t_node	*node;
 	char	*argv_key;
 
 	errno = 0;
 	argv_key = ft_substr(cmd_argv, 0, equal);
 	if (argv_key == NULL)
 		exit(errno);
-	node = env_c->head->next;
-	while (node->next)
+	while (env_node->next)
 	{
-		cmp = node->elem;
+		cmp = env_node->elem;
 		if (cmp != NULL && !ft_strcmp(argv_key, cmp->key))
 		{
 			if (equal != ft_strlen(cmd_argv))
@@ -25,11 +35,42 @@ int	check_dup(char	*cmd_argv, t_envp *env_c, size_t equal)
 			}
 			return (0);
 		}
-		node = node->next;
+		env_node = env_node->next;
 	}
 	free(argv_key);
 	return (1);
 }
+
+// int	check_dup(char	*cmd_argv, t_envp *env_c, size_t equal)
+// {
+// 	t_map	*cmp;
+// 	t_node	*node;
+// 	char	*argv_key;
+
+// 	errno = 0;
+// 	argv_key = ft_substr(cmd_argv, 0, equal);
+// 	if (argv_key == NULL)
+// 		exit(errno);
+// 	node = env_c->head->next;
+// 	while (node->next)
+// 	{
+// 		cmp = node->elem;
+// 		if (cmp != NULL && !ft_strcmp(argv_key, cmp->key))
+// 		{
+// 			if (equal != ft_strlen(cmd_argv))
+// 			{
+// 				if (cmp->val)
+// 					free(cmp->val);
+// 				update_env(cmd_argv, cmp, equal);
+// 				free(argv_key);
+// 			}
+// 			return (0);
+// 		}
+// 		node = node->next;
+// 	}
+// 	free(argv_key);
+// 	return (1);
+// }
 
 void	update_env(char *cmd_argv, t_map *cur, size_t equal)
 {

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/26 18:02:48 by ljh               #+#    #+#             */
+/*   Updated: 2024/01/26 18:02:49 by ljh              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	check_export_key(char *key)
@@ -105,7 +117,7 @@ int	builtin_export(t_parse *parse, t_envp *env_c)
 		else
 		{
 			equal = find_char(parse->cmd_argv[i], '=');
-			if (check_dup(parse->cmd_argv[i], env_c, equal))
+			if (check_dup(parse->cmd_argv[i], env_c->head->next, equal))
 				append_env(parse->cmd_argv[i], env_c, equal);
 		}
 		i++;
