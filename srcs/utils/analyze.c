@@ -6,14 +6,22 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 01:46:42 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/26 18:26:40 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/26 19:40:29 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-	
+	cmdline 연결리스트 안에 몇 개의 명령어가 있는지 확인하는 함수.
+	예를 들어, ls -al | grep test | cat -e 인 경우,
+	ls  , -al ,  |  , grep, test,  |  , cat , -e
+ 	WORD, WORD, PIPE, WORD, WORD, PIPE, WORD, WORD
+	형태로 각각의 노드가 입력되어 있을 텐데, 
+	파이프를 기준으로 cmd_argc 체크.
+	처음에는 ls -al | 까지 체크하는데 cmd_argc는 2가 됨.(반환)
+	그 다음에 이 함수가 호출되면 | grep test | 까지 체크되고 cmd_argc는 2가됨.(반환)
+	마지막으로 | cat -e 하고 cmd_argc 값을 2로 반환.
 */
 int	analyze_cmd_argc(t_node *token_node)
 {
@@ -65,6 +73,7 @@ int	analyze_token_parse(t_node *token_node, t_parse *parse, int *i)
 	return (1);
 }
 
+
 t_node	*analyze_parse_create(t_analyze *alz, t_node *token_node, \
 								t_parse *parse)
 {
@@ -112,6 +121,11 @@ enum e_type	analyze_syntax_valid(t_cmdline *cmdline)
 	return (NONE);
 }
 
+/*
+	앞에서 token화를 진행한 결과가 담긴 cmdline 연결리스트를 구문 분석하는 함수.
+	처음에 syntax가 오류일 때를 체크함.
+	이후 cmdline을 순회하면서 로직 실행.
+*/
 int	analyze_start(t_analyze *alz, t_cmdline *cmdline)
 {
 	t_node		*node;

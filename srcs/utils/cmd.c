@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:06:38 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/26 18:56:53 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/26 19:28:00 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,11 @@ int	command_excute_builtin(t_parse *parse, t_envp *env_c, \
 }
 
 /*
-	error message 수정 필요
+	Pipe로 연결된 명령어들은 자식 프로세스에서 해당 명령어 실행해야함.
+	Fork 함수를 통해 자식 프로세스를 생성 후, 
+	실행할 명령어가 builtin-command인지, 아닌지 판단 후,
+	builtin-command이면 작성한 builtin 실행
+	아니면 execve 함수를 통해서 명령어 실행.
 */
 void	command_fork(t_analyze *alz, t_envp *env_c)
 {
@@ -89,18 +93,19 @@ void	command_fork(t_analyze *alz, t_envp *env_c)
 			perror_exit("minishell");
 		else if (info.pid == 0)
 			child_process(parse_node->elem, env_c, i, &info);
-		if (i != 0)
-		{
-			close(info.pfd[(i - 1) % 2][0]);
-			close(info.pfd[(i - 1) % 2][1]);
-			pipe(info.pfd[(i - 1) % 2]);
-		}
+		pipe_parrent_init(&info, i);
 		info.last_pid = info.pid;
 		parse_node = parse_node->next;
 	}
 	wait_child(&info, env_c, i);
 }
 
+/*
+	builtin-command 실행부.
+	여기서 리다이렉션이 있는 경우도 함께 처리.
+	만약 리다이렉션으로 인해 표준 입출력이 dup2를 통해 복제가 된다면,
+	되돌려주는 작업도 같이함.
+*/
 int	command_simple_exec(t_parse *parse, t_envp *env_c, int builtin_idx)
 {
 	int	fd[4];
@@ -123,6 +128,12 @@ int	command_simple_exec(t_parse *parse, t_envp *env_c, int builtin_idx)
 	return (stat);
 }
 
+/*
+	command를 실행하는 함수.
+	여기서 pipe로 연결된 command_line인지 판단.
+	pipe로 연결되어 있지 않더라도 builtin-command가 아니라면
+	fork 후 execve함수를 통해 실행해야함.
+*/
 void	command_excute(t_analyze *alz, t_envp *env_c)
 {
 	t_parse		*parse;

@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 21:18:12 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/26 11:05:20 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/26 19:27:20 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,18 @@ void	pipe_close(t_pinfo *info, int pos)
 		close(info->pfd[1][0]);
 	else if (pos == info->pipe_cnt)
 		close(info->pfd[pos % 2][1]);
+}
+
+void	pipe_parrent_init(t_pinfo *info, int pos)
+{
+	errno = 0;
+	if (pos != 0)
+	{
+		close(info->pfd[(pos - 1) % 2][0]);
+		close(info->pfd[(pos - 1) % 2][1]);
+		if (pipe(info->pfd[(pos - 1) % 2]))
+			exit(errno);
+	}
 }
 
 int	here_doc_process(char *eof)
@@ -105,8 +117,17 @@ int	std_to_fd(t_node *std_node)
 	return (fd);
 }
 
+/*
+	필요한 fd를 여는 작업.
+	여기서 리다이렉션이 있는 경우, 처리함.
+	표준 입출력이 dup2함수를 통해 변화했을 경우,
+	builtin-command 실행 후 되돌려주는 작업을 진행해야해서
+	dup함수를 통해 원본 저장.
+	swap 함수를 구현할 때 tmp에다가 원본 값 저장하는 원리와 동일.
+*/
 int	simple_fd_open(int *fd, t_parse *parse)
 {
+	errno = 0;
 	fd[STDIN_FILENO] = dup(STDIN_FILENO);
 	fd[STDOUT_FILENO] = dup(STDOUT_FILENO);
 	if (fd[STDIN_FILENO] < 0 || fd[STDOUT_FILENO] < 0)
@@ -123,8 +144,12 @@ int	simple_fd_open(int *fd, t_parse *parse)
 	return (0);
 }
 
+/*
+	사용이 끝난 fd를 닫아주는 함수.
+*/
 int	simple_fd_close(int *fd)
 {
+	errno = 0;
 	if (dup2(fd[STDIN_FILENO], STDIN_FILENO) < 0 || \
 		dup2(fd[STDOUT_FILENO], STDOUT_FILENO) < 0)
 	{

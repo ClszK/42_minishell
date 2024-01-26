@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:31:07 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/26 18:47:53 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/26 19:21:34 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ char	*path_cmd_path(char *cmd, t_envp *env_c)
 		{
 			print_strerror(cmd, NULL);
 			env_c->last_stat = 126;
+			errno = 0;
 			return (NULL);
 		}
 		if (access(cmd, X_OK) == 0)
@@ -91,12 +92,14 @@ char	*path_cmd_path(char *cmd, t_envp *env_c)
 			cmd_path = ft_strdup(cmd);
 			if (cmd_path == NULL)
 				exit(errno);
+			errno = 0;
 			return (cmd_path);
 		}
 		else
 		{
 			print_strerror(cmd, NULL);
 			env_c->last_stat = 127;
+			errno = 0;
 			return (NULL);
 		}
 		
@@ -117,6 +120,7 @@ char	*path_cmd_path(char *cmd, t_envp *env_c)
 		env_c->last_stat = 127;
 	}
 	free(cmd_path);
+	errno = 0;
 	return (NULL);
 }
 
@@ -136,7 +140,7 @@ void	path_insert_in_parse(t_analyze *alz, t_envp *env_c)
 				parse->cmd_path = ft_strdup(parse->cmd_argv[0]);
 			else
 				parse->cmd_path = path_cmd_path(parse->cmd_argv[0], env_c);
-			if (errno)
+			if (parse->cmd_path == NULL && errno)
 				exit(errno);
 		}
 		parse_node = parse_node->next;

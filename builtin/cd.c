@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 18:02:39 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/26 18:11:12 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/26 19:11:47 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	builtin_cd(t_parse *parse, t_envp *env_c)
 {
 	char	*path;
 
-	if (parse->cmd_argv == NULL || parse->cmd_argv[1][0] == '\0')
+	if (parse->cmd_argv[1] && parse->cmd_argv[1][0] == '\0')
 		return (0);
 	if (parse->cmd_argv[1] == NULL || !ft_strcmp(parse->cmd_argv[1], "--"))
 	{

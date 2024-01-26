@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 08:10:11 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/26 18:44:08 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/26 19:15:41 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,8 @@ int			std_to_fd(t_node *std_node);
 void		dup_std_fd(t_pinfo *info, t_parse *parse, int i);
 int			simple_fd_open(int *fd, t_parse *parse);
 int			simple_fd_close(int *fd);
+
+void		pipe_parrent_init(t_pinfo *info, int pos);
 
 /* builtin */
 int			builtin_echo(t_parse *parse);

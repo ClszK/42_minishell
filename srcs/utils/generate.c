@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 01:43:32 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/26 10:57:31 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/26 19:40:53 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,9 @@ t_token	*token_elem_cpy(void *elem, enum e_type type)
 	return (node);
 }
 
+/*
+	cmd_argc를 기반으로 cmd_argv를 malloc함.
+*/
 t_parse	*parse_elem_generate(int cmd_argc)
 {
 	t_parse	*node;
