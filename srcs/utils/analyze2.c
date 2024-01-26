@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:51:51 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/23 05:37:29 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/26 19:56:55 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,12 @@ int	is_pipe_node(t_node *node)
 	return (0);
 }
 
+/*
+	cmdline에서 < test라는 부분이 존재하면
+	<, test
+	연산자, WORD가 될텐데
+	여기서 test의 TYPE을 연산자로 변경해주는 작업을 진행한다.
+*/
 void	token_redirection_type_change(t_node *node)
 {
 	t_token		*token;

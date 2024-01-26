@@ -13,6 +13,7 @@ SRCS_UTILS		=	utils.c\
 					utils2.c\
 					utils3.c\
 					set.c\
+					set2.c\
 					print.c\
 					parse.c\
 					generate.c\
@@ -23,11 +24,14 @@ SRCS_UTILS		=	utils.c\
 					expand.c\
 					expand2.c\
 					path.c\
+					path2.c\
 					cmd.c\
 					proc.c\
 					fd.c\
+					fd2.c\
 					file.c\
-					signal.c
+					signal.c\
+					pipe.c
 
 SRCS_BUILTIN	=	echo.c\
 					pwd.c\
@@ -55,7 +59,7 @@ all:	$(NAME)
 
 $(NAME)	:	$(OBJS) $(addprefix includes/, ${HEADERS})
 	@make -C $(LIB_DIR)
-	@$(CC) $(CFLAGS) $(R_FLAGS) $(LIB) $(OBJS) -o $(NAME) -fsanitize=address
+	@$(CC) $(CFLAGS) $(R_FLAGS) $(LIB) $(OBJS) -o $(NAME)
 
 %.o	:	%.c
 	@$(CC) $(CFLAGS) $(ROBJ_FLAGS) -c $< -o $@ -I$(HEADERS_PATH) -g

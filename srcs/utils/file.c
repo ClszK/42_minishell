@@ -6,12 +6,15 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 21:19:42 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/26 14:19:05 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/27 00:57:09 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
+	tmp 디렉토리에 임시파일 생성.
+*/
 int	tmpfile_create(char **tmp_name)
 {
 	char	*itoa_str;
@@ -20,7 +23,7 @@ int	tmpfile_create(char **tmp_name)
 	int		fd;
 
 	i = 0;
-	tmp = ".here_doc_tmp";
+	tmp = "./tmp/here_doc_tmp";
 	errno = 0;
 	while (++i < 2147483647)
 	{
@@ -39,6 +42,10 @@ int	tmpfile_create(char **tmp_name)
 	return (-1);
 }
 
+/*
+	mode에 따라 쓰기 파일인지 읽기 파일인지 파악.
+	파악 이후 해당 파일을 open한 후 fd값을 반환함.
+*/
 int	open_file(char *filename, int mode)
 {
 	int	omode;
@@ -65,6 +72,9 @@ int	open_file(char *filename, int mode)
 	return (-1);
 }
 
+/*
+	임시 파일 생성된 fd를 통해 표준 입력으로 받아온 값을 파일에 작성.
+*/
 void	stdin_heredoc(char *end_id, int tmp_fd)
 {
 	char	*rline;
@@ -75,15 +85,7 @@ void	stdin_heredoc(char *end_id, int tmp_fd)
 	len = ft_strlen(end_id);
 	while (1)
 	{
-		if (isatty(fileno(stdin)))
-			rline = readline("> ");
-		else
-		{
-			line = get_next_line(fileno(stdin));
-			rline = ft_strtrim(line, "\n");
-			free(line);
-		}
-		// rline = readline("> ");
+		rline = readline("> ");
 		if (rline == NULL && errno != 0)
 			perror_exit("minishell");
 		if (len == ft_strlen(rline) && \
@@ -98,15 +100,29 @@ void	stdin_heredoc(char *end_id, int tmp_fd)
 	}
 }
 
-int	open_append(char *filename)
+/*
+	파일이 존재하는 경우 해당 파일에다가 덮어씌우는 open 함수.
+*/
+int	open_append(char *filename, int fd)
 {
-	int	fd;
-
-	fd = 0;
 	errno = 0;
 	if (is_file_access(filename, W_OK))
+	{
 		fd = open(filename, O_WRONLY | O_APPEND | O_CREAT, 0644);
-	if (errno)
-		print_strerror(filename, NULL);
+		if (errno)
+			print_strerror(filename, NULL);
+	}
+	if (errno == EACCES)
+		return (-1);
 	return (fd);
 }
+
+//heredoc 환경변수 해석해야하는지.
+		// if (isatty(fileno(stdin)))
+		// 	rline = readline("> ");
+		// else
+		// {
+		// 	line = get_next_line(fileno(stdin));
+		// 	rline = ft_strtrim(line, "\n");
+		// 	free(line);
+		// }

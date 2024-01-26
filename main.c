@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 18:29:34 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/26 18:36:26 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/27 00:46:56 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	test_leak(void)
 int main(int argc, char **argv, char **envp)
 {
 	t_shinfo	sh;
-	char		*line;
+	// char		*line;
 
 	(void)argc;
 	(void)argv;
@@ -69,14 +69,15 @@ int main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		shinfo_init(&sh);
-		if (isatty(fileno(stdin)))
-			sh.rline = readline("minishell$ ");
-		else
-		{
-			line = get_next_line(fileno(stdin));
-			sh.rline = ft_strtrim(line, "\n");
-			free(line);
-		}
+		// if (isatty(fileno(stdin)))
+		// 	sh.rline = readline("minishell$ ");
+		// else
+		// {
+		// 	line = get_next_line(fileno(stdin));
+		// 	sh.rline = ft_strtrim(line, "\n");
+		// 	free(line);
+		// }
+		sh.rline = readline("minishell$ ");
 		if (sh.rline == NULL)
 			exit (sh.env_c.last_stat);
 		add_history(sh.rline);

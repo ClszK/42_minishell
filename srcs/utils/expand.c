@@ -6,12 +6,15 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 04:22:38 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/26 18:30:12 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/26 21:52:31 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
+	$? 예외처리 함수.
+*/
 char	*expand_last_stat(char *start, size_t *size, t_envp *env_c, char *dst)
 {
 	char	*last_stat_str;
@@ -27,6 +30,11 @@ char	*expand_last_stat(char *start, size_t *size, t_envp *env_c, char *dst)
 	return (start);
 }
 
+/*
+	확장 가능한 $이므로 확장을 진행한다.
+	여기서 $?형태는 이전 명령어의 종료코드를 나타내므로 예외처리를 해줬다.
+	이후로 env_c안에서 확장 가능한 key값을 찾아 순회해서 찾는 과정.
+*/
 char	*expand_dollar(char *start, size_t *size, t_envp *env_c, char *dst)
 {
 	char	*end;
@@ -53,10 +61,16 @@ char	*expand_dollar(char *start, size_t *size, t_envp *env_c, char *dst)
 	return (end - 1);
 }
 
+/*
+	작은 따옴표는 확장할 필요가 없기 때문에
+	작은 따옴표를 제외한 크기를 구한다.
+*/
 char	*expand_squote(char *start, size_t *size, char *dst)
 {
 	char	*end;
 
+	if (dst)
+		arr_one_left_shift(start);
 	end = ft_strchr(start, '\'');
 	*size += end - start;
 	if (dst)
@@ -64,10 +78,16 @@ char	*expand_squote(char *start, size_t *size, char *dst)
 	return (end);
 }
 
+/*
+	큰 따옴표는 내부에 확장할 $가 있으면 확장을 진행해주어야한다.
+	이를 처리하는 함수.
+*/
 char	*expand_dquote(char *start, size_t *size, t_envp *env_c, char *dst)
 {
 	char	*end;
 
+	if (dst)
+		arr_one_left_shift(start);
 	end = ft_strchr(start, '"');
 	while (start != end)
 	{
@@ -84,6 +104,15 @@ char	*expand_dquote(char *start, size_t *size, t_envp *env_c, char *dst)
 	return (end);
 }
 
+/*
+	여기는 확장되기 전의 str을 가지고 확장될 str의 크기를 구하는 함수.
+	$PWD면 길이가 4인데 확장되면 
+	예를 들어, /Users/ljh/Documents/42_minishell형태가 된다.
+	그래서 크기를 구한다음 동적 할당하는 작업 진행.
+	여기서 hi"$PWD" 형태일 경우
+	hi/Users/ljh/Documents/42_minishell이므로
+	이를 체크하는 로직을 가지고 있다.
+*/
 char	*expand_str_alloc(char *start, t_envp *env_c)
 {
 	size_t	size;
@@ -93,15 +122,13 @@ char	*expand_str_alloc(char *start, t_envp *env_c)
 	quote_flag = 0;
 	while (*start)
 	{
-		if (*start == '\'')
+		if (check_quote_type(*start))
 		{
 			quote_flag = 1;
-			start = expand_squote(++start, &size, NULL);
-		}
-		else if (*start == '"')
-		{
-			quote_flag = 1;
-			start = expand_dquote(++start, &size, env_c, NULL);
+			if (*start == '\'')
+				start = expand_squote(++start, &size, NULL);
+			else if (*start == '"')
+				start = expand_dquote(++start, &size, env_c, NULL);
 		}
 		else if (can_dollar_expand(start))
 			start = expand_dollar(++start, &size, env_c, NULL);

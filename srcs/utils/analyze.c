@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 01:46:42 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/26 19:40:29 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/26 19:55:11 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,12 @@ int	analyze_cmd_argc(t_node *token_node)
 	return (cmd_argc);
 }
 
+/*
+	PIPE를 제외한 나머지 노드들에 대한 노드를 분석하고 담아둔다.
+	TYPE이 WORD이면 cmd_argv에 담아두고,
+	TYPE이 파이프를 제외한 연산자이면 stdio에 추가하는데 여기서
+	here_doc만 따로 here_doc 연결리스트에 담고 나머지는 stdio에 담는다.
+*/
 int	analyze_token_parse(t_node *token_node, t_parse *parse, int *i)
 {
 	t_token		*token;
@@ -73,7 +79,16 @@ int	analyze_token_parse(t_node *token_node, t_parse *parse, int *i)
 	return (1);
 }
 
-
+/*
+	parse를 생성하는 함수.
+	예를 들어, ls -al | grep test < hi| cat -e 이면,
+	처음엔 cmd_argv에 ls, -al이 담기고
+	stdio 에는 type이 PIPEOUT이 담긴다. 이유는 ls -al | 이기 때문에.
+	두 번째는 cmd_argv에 grep, test가 담기고
+	stdio에는 PIPEIN, PIPEOUT, < 가 담긴다.
+	세 번째는 cmd_argv에 cat, -e가 담기고
+	stdio는 PIPEIN이 담긴다.
+*/
 t_node	*analyze_parse_create(t_analyze *alz, t_node *token_node, \
 								t_parse *parse)
 {
@@ -82,7 +97,8 @@ t_node	*analyze_parse_create(t_analyze *alz, t_node *token_node, \
 	i = 0;
 	if (is_pipe_node(token_node))
 	{
-		dlst_add_last(parse->std_lst, token_elem_cpy(token_node->elem, PIPE_IN));
+		dlst_add_last(parse->std_lst, \
+				token_elem_cpy(token_node->elem, PIPE_IN));
 		token_node = token_node->next;
 	}
 	while (token_node->elem && !is_pipe_node(token_node))
@@ -92,11 +108,20 @@ t_node	*analyze_parse_create(t_analyze *alz, t_node *token_node, \
 		token_node = token_node->next;
 	}
 	if (is_pipe_node(token_node))
-		dlst_add_last(parse->std_lst, token_elem_cpy(token_node->elem, PIPE_OUT));
+		dlst_add_last(parse->std_lst, \
+				token_elem_cpy(token_node->elem, PIPE_OUT));
 	dlst_add_last(alz, parse);
 	return (token_node);
 }
 
+/*
+	구문 분석을 통해 오류가 나는 부분 찾는 함수.
+	첫 번째 노드와 마지막 노드가 파이프인 경우,
+	리다이렉션인데 이전 노드도 리다이렉션인 경우,
+	파이프인데 이전 노드가 연산자(|, <, <<, >, >>)인 경우,
+	마지막 노드가 연산자인 경우
+	해당 Type 반환
+*/
 enum e_type	analyze_syntax_valid(t_cmdline *cmdline)
 {
 	t_node		*token_node;

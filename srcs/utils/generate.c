@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 01:43:32 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/26 19:40:53 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/27 00:38:47 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,13 @@ t_token	*token_elem_generate(char *str, enum e_type type)
 	return (node);
 }
 
+/*
+	token 복사하는 함수.
+*/
 t_token	*token_elem_cpy(void *elem, enum e_type type)
 {
-	t_token *node;
-	t_token *token;
+	t_token	*node;
+	t_token	*token;
 	char	*str;
 
 	errno = 0;
@@ -41,12 +44,21 @@ t_token	*token_elem_cpy(void *elem, enum e_type type)
 		if (str == NULL)
 			exit(errno);
 	}
+	if (token->env_val)
+	{
+		str = ft_strdup(token->env_val);
+		if (str == NULL)
+			exit(errno);
+	}
 	node = token_elem_generate(str, type);
 	return (node);
 }
 
 /*
 	cmd_argc를 기반으로 cmd_argv를 malloc함.
+	그리고 stdio 연결리스트와 here_doc 연결리스트 초기화함.
+	here_doc은 here_doc만 담아두는 연결리스트이고
+	stdio는 리다이렉션을 담아두는 연결리스트이다.
 */
 t_parse	*parse_elem_generate(int cmd_argc)
 {

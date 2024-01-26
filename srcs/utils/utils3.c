@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:19:39 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/26 18:43:57 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/27 01:01:13 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ int	is_builtin_command(char *cmd)
 	i = -1;
 	if (cmd == NULL)
 		return (0);
-	// while (cmd[++i])
-	// 	cmd[i] = ft_tolower(cmd[i]);
 	builtincmd[0] = "cd";
 	builtincmd[1] = "echo";
 	builtincmd[2] = "env";
@@ -52,7 +50,7 @@ int	is_file_access(char *filename, int mode)
 	if (access(filename, mode) == 0)
 		return (1);
 	if (mode == W_OK && errno == ENOENT)
-		return (1);	
+		return (1);
 	if (errno != 0)
 		print_strerror(NULL, filename);
 	return (0);

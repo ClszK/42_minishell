@@ -1,15 +1,22 @@
 #include "minishell.h"
 
-void	set_sigterm(void) // exit code 0 //ctrl + d
+/*
+	// exit code 0 //ctrl + d
+*/
+void	set_sigterm(void)
 {
 	ft_putstr_fd("\033[1A", STDERR_FILENO);
 	ft_putstr_fd("\033[11C", STDERR_FILENO);
 	ft_putstr_fd("exit\n", STDERR_FILENO);
 }
 
-void	sigint_handler(int signo) //sigint 처리 
+/*
+	//sigint 처리 
+		// exit code 1
+*/
+void	sigint_handler(int signo)
 {
-	if (signo == SIGINT) // exit code 1
+	if (signo == SIGINT)
 	{
 		g_signo = 1;
 		write(1, "\n", 2);
@@ -19,26 +26,38 @@ void	sigint_handler(int signo) //sigint 처리
 	}
 }
 
-void	set_signal(void) //메인 시그널 처리 자식 프로세스에서 모든 작업 끝나면다시 셋해주기
+/*
+	//메인 시그널 처리 자식 프로세스에서 모든 작업 끝나면다시 셋해주기
+*/
+void	set_signal(void)
 {
 	set_terminal(1);
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void	set_signal_child(void) //fork 하기 전에 모든 시그널 안받게함
+/*
+	//fork 하기 전에 모든 시그널 안받게함
+*/
+void	set_signal_child(void)
 {
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void	restore_signal(void) //다시 모든 시그널 받게 만들어줌 마지막에 핸들러 적용 안함
+/*
+	//다시 모든 시그널 받게 만들어줌 마지막에 핸들러 적용 안함
+*/
+void	restore_signal(void)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 }
 
-void	heredoc_handler(int signo) //heredoc에서 끝나게 해줌
+/*
+	//heredoc에서 끝나게 해줌
+*/
+void	heredoc_handler(int signo)
 {
 	if (signo == SIGINT)
 	{
@@ -47,7 +66,10 @@ void	heredoc_handler(int signo) //heredoc에서 끝나게 해줌
 	}
 }
 
-void	heredoc_signal(void) //here doc 실행될 때 
+/*
+	//here doc 실행될 때 
+*/
+void	heredoc_signal(void) 
 {
 	signal(SIGINT, heredoc_handler);
 	signal(SIGQUIT, SIG_IGN);

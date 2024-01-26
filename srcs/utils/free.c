@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:42:10 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/25 00:00:47 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/26 22:49:34 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	token_elem_free(void *elem)
 
 	token = (t_token *)elem;
 	free(token->str);
+	free(token->env_val);
 	free(token);
 }
 
@@ -38,6 +39,9 @@ void	parse_elem_free(void *elem)
 	if (parse->cmd_path)
 		free(parse->cmd_path);
 	parse->cmd_path = NULL;
+	dlst_del_all(parse->here_doc_lst, token_elem_free);
+	free(parse->std_lst);
+	parse->here_doc_lst = NULL;
 	free(parse);
 }
 

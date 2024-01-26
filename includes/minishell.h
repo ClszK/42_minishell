@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 08:10:11 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/26 19:15:41 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/27 00:59:31 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,17 +132,21 @@ void		split_shift(char **str, int i);
 char		*str_push_space(char *str);
 
 /* set.c */
-void		envp_init(char **envp, t_envp *env_c);
 void		cmdline_init(t_cmdline *cmdline);
 void		analyze_init(t_analyze *alz);
 t_stdio		*stdio_init(void);
 void		shinfo_init(t_shinfo *sh);
+
+/* set2.c */
+void		envp_init(char **envp, t_envp *env_c);
+void		set_env_pwd(t_envp *env_c);
 
 /* print.c */
 void		perror_exit(char *progname);
 int			print_strerror(char *cmd, char *str);
 int			print_builtin_error(char *cmd, char *arg, char *error);
 int			print_syntax_error(int type);
+void		print_cmd_path_error(char *cmd, t_envp *env_c);
 
 /* parse.c */
 void		token_cmdline(char *rline, t_cmdline *cmdline);
@@ -173,6 +177,14 @@ void		expand_stdio(t_stdio *std, t_envp *env_c);
 void		expand_start(t_analyze *alz, t_envp *env_c);
 
 /* path.c */
+char		**path_find_in_env(t_envp *env_c);
+char		*path_cmd(char *path, char *cmd);
+char		*path_cmd_valid(char **path, char *cmd);
+char		*cmd_path_in_slash(char *cmd, t_envp *env_c);
+int			path_in_dot_dot_check(char *cmd, t_envp *env_c);
+
+/* path2.c */
+char		*path_cmd_path(char *cmd, t_envp *env_c);
 void		path_insert_in_parse(t_analyze *alz, t_envp *env_c);
 
 /* cmd.c */
@@ -188,17 +200,18 @@ void		child_process(t_parse *parse, t_envp *env_c, int i, t_pinfo *info);
 int			tmpfile_create(char **tmp_name);
 int			open_file(char *filename, int mode);
 void		stdin_heredoc(char *end_id, int tmp_fd);
-int			open_append(char *filename);
+int			open_append(char *filename, int fd);
 
 /* fd.c */
-int 		pipe_init(t_pinfo *pinfo, int cmd_argc);
-void		pipe_close(t_pinfo *info, int pos);
+int			here_doc_process(char *eof);
+int			dup2_to_std(int fd, t_token *token);
+int			open_redirection(t_token *token, int fd);
 int			std_to_fd(t_node *std_node);
 void		dup_std_fd(t_pinfo *info, t_parse *parse, int i);
+
+/* fd2.c */
 int			simple_fd_open(int *fd, t_parse *parse);
 int			simple_fd_close(int *fd);
-
-void		pipe_parrent_init(t_pinfo *info, int pos);
 
 /* builtin */
 int			builtin_echo(t_parse *parse);
@@ -217,7 +230,6 @@ void		update_env(char *cmd_argv, t_map *cur, size_t equal);
 void		free_copy(t_map *export_c, long lst_size);
 int			export_print_sort(t_map *export_c, int pos);
 
-
 /* free.c */
 void		token_elem_free(void *elem);
 void		map_elem_free(void *elem);
@@ -227,13 +239,19 @@ void		shinfo_free(t_shinfo *sh, t_envp *env_c);
 
 /* find.c */
 int			map_key_find(void *elem, void *cmp);
-void		map_oldpwd_find(t_envp *env_c);
+void		map_oldpwd_find(t_envp *env_c, t_node *env_node);
 char		*expand_env_find(t_envp *env_c, char *str);
 int			find_char(char *str, char c);
 
 /* builtin_utils.c */
 int			check_export_key(char *key);
 int			check_unset_key(char *key);
+
+/* pipe.c */
+int 		pipe_init(t_pinfo *pinfo, int cmd_argc);
+void		pipe_close(t_pinfo *info, int pos);
+void		pipe_parrent_init(t_pinfo *info, int pos);
+void		pipe_std_dup(t_stdio *std, t_pinfo *info, int pos);
 
 /* signal.c */
 void		set_signal(void);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 04:28:15 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/24 22:19:41 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/27 00:39:26 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	perror_exit(char *progname)
 
 int	print_strerror(char *cmd, char *arg)
 {
-	if	(ft_putstr_fd("minishell: ", STDERR_FILENO) || \
+	if (ft_putstr_fd("minishell: ", STDERR_FILENO) || \
 		(cmd && ft_putstr_fd(cmd, STDERR_FILENO)) || \
 		(cmd && ft_putstr_fd(": ", STDERR_FILENO)) || \
 		(arg && ft_putstr_fd(arg, STDERR_FILENO)) || \
@@ -34,7 +34,7 @@ int	print_strerror(char *cmd, char *arg)
 
 int	print_builtin_error(char *cmd, char *arg, char *error)
 {
-	if	(ft_putstr_fd("minishell: ", STDERR_FILENO) || \
+	if (ft_putstr_fd("minishell: ", STDERR_FILENO) || \
 		ft_putstr_fd(cmd, STDERR_FILENO) || \
 		ft_putstr_fd(": ", STDERR_FILENO) || \
 		(arg != NULL && ft_putstr_fd(arg, STDERR_FILENO)) || \
@@ -64,4 +64,18 @@ int	print_syntax_error(int type)
 		ft_putstr_fd("'\n", STDERR_FILENO))
 		return (1);
 	return (0);
+}
+
+void	print_cmd_path_error(char *cmd, t_envp *env_c)
+{
+	if (errno == EACCES)
+	{
+		print_strerror(cmd, NULL);
+		env_c->last_stat = 126;
+	}
+	else
+	{
+		print_builtin_error(cmd, NULL, "command not found\n");
+		env_c->last_stat = 127;
+	}
 }

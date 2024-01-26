@@ -6,12 +6,17 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:43:21 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/26 18:48:50 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/27 01:01:36 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
+	부모 프로세스가 자식 프로세스들이 끝나길 기다는 함수.
+	모든 자식 프로세스가 종료되면 마지막 자식 프로세스 종료 코드를 담고
+	사용이 끝난 fd를 닫아줌.
+*/
 void	wait_child(t_pinfo *info, t_envp *env_c, int cmd_cnt)
 {
 	int	status;
@@ -34,6 +39,11 @@ void	wait_child(t_pinfo *info, t_envp *env_c, int cmd_cnt)
 	}
 }
 
+/*
+	execve 함수의 두 번째 매개변수는 main에서 받아오는 char **envp 형태가 필요.
+	그래서 minishell의 envp을 복사하는 과정.
+	여기서는 envp의 한 노드만 복사하는 과정.
+*/
 char	*envp_copy(t_map *map)
 {
 	char	*str;
@@ -50,6 +60,9 @@ char	*envp_copy(t_map *map)
 	return (str);
 }
 
+/*
+	env_c 연결리스트를 char **envp로 복사하는 과정.
+*/
 char	**envp_split(t_envp *env_c)
 {
 	t_node	*map_node;
@@ -75,6 +88,14 @@ char	**envp_split(t_envp *env_c)
 	return (envp);
 }
 
+/*
+	자식 프로세스가 실행될 부분.
+	여기서 먼저 builtin-command인지 판단하고, 
+	리다이렉션을 실행해야할 부분을 진행. 여기서 파이프도 같이 적용됨.
+	builtin-command라면 실행후 종료.
+	아니면 execve함수가 원하는 형태인 envp를 생성해서
+	execve 함수 호출.
+*/
 void	child_process(t_parse *parse, t_envp *env_c, int i, t_pinfo *info)
 {
 	char	**envp;

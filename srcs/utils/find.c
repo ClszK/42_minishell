@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   find.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/27 00:57:22 by ljh               #+#    #+#             */
+/*   Updated: 2024/01/27 00:59:31 by ljh              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	map_key_find(void *elem, void *cmp)
@@ -10,23 +22,21 @@ int	map_key_find(void *elem, void *cmp)
 	return (!ft_strcmp(map->key, cmp_str));
 }
 
-void	map_oldpwd_find(t_envp *env_c)
+void	map_oldpwd_find(t_envp *env_c, t_node *env_node)
 {
 	t_map	*map;
-	t_node	*node;
 	int		flag;
 
 	flag = 0;
 	errno = 0;
-	node = env_c->head->next;
-	while (node->next)
+	while (env_node->next)
 	{
-		if (map_key_find(node->elem, "OLDPWD"))
+		if (map_key_find(env_node->elem, "OLDPWD"))
 		{
 			flag = 1;
 			break ;
 		}
-		node = node->next;
+		env_node = env_node->next;
 	}
 	if (!flag)
 	{
@@ -35,7 +45,7 @@ void	map_oldpwd_find(t_envp *env_c)
 			exit(errno);
 		map->key = ft_strdup("OLDPWD");
 		map->val = NULL;
-		if (map->key == NULL || dlst_add_last(env_c, (t_map*)map))
+		if (map->key == NULL || dlst_add_last(env_c, (t_map *)map))
 			exit(errno);
 	}
 }
