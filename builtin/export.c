@@ -4,12 +4,12 @@ int	check_export_key(char *key)
 {
 	int	i;
 
-	if (ft_isalpha(key[0]) == 0 && key[0] != '_')
+	if (!ft_isalpha(key[0]) && key[0] != '_')
 		return (1);
 	i = 1;
 	while (key[i] && key[i] != '=')
 	{
-		if (ft_isalnum(key[i]) == 0 && key[i] != '_')
+		if (!ft_isalnum(key[i]) && key[i] != '_')
 			return (1);
 		i++;
 	}

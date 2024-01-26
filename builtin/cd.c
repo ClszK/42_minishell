@@ -5,6 +5,7 @@ void	change_pwd(t_envp *env_c, char *pwd)
 	char	*tmp;
 	int		equal;
 
+	errno = 0;
 	tmp = ft_strjoin("PWD=", pwd);
 	if (pwd && tmp == NULL)
 		exit(1);
@@ -15,6 +16,8 @@ void	change_pwd(t_envp *env_c, char *pwd)
 	{
 		free(env_c->pwd);
 		env_c->pwd = ft_strdup(pwd);
+		if (env_c->pwd == NULL)
+			exit(errno);
 	}
 	free(pwd);
 }

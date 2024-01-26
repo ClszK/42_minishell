@@ -26,7 +26,6 @@ int	builtin_exit(t_parse *parse, int is_fork)
 	long	exit_num;
 	char	*argv;
 
-	errno = 0;
 	if (!is_fork && (ft_putstr_fd("exit", STDOUT_FILENO) || \
 		ft_putstr_fd("\n", STDOUT_FILENO)))
 		return (1);

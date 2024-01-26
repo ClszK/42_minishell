@@ -6,7 +6,10 @@ int	check_dup(char	*cmd_argv, t_envp *env_c, size_t equal)
 	t_node	*node;
 	char	*argv_key;
 
+	errno = 0;
 	argv_key = ft_substr(cmd_argv, 0, equal);
+	if (argv_key == NULL)
+		exit(errno);
 	node = env_c->head->next;
 	while (node->next)
 	{
