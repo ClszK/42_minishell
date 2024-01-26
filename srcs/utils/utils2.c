@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 00:42:59 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/24 22:19:02 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/26 12:31:58 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ int	check_quote_type(char ch)
 
 int	is_dollar_sperator(char ch)
 {
-	if (is_operator(ch) || ch == ' ' || ch == '\0' || check_quote_type(ch) \
-		|| ch == '$' || ch == '/')
+	if (is_operator(ch) || ch == '\0' || check_quote_type(ch) \
+		|| ch == '$' || ch == '/' || (ch >= 9 && ch <= 13) || ch == 32)
 		return (1);
 	return (0);
 }

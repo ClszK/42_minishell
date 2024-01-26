@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 04:22:38 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/25 04:15:43 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/26 12:23:39 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,10 @@ char	*expand_str_alloc(char *start, t_envp *env_c)
 	while (*start)
 	{
 		if (*start == '\'')
+		{
+			quote_flag = 1;
 			start = expand_squote(++start, &size, NULL);
+		}
 		else if (*start == '"')
 		{
 			quote_flag = 1;

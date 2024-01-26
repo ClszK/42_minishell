@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 08:10:11 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/25 02:39:05 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/26 15:11:20 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ typedef struct s_token
 	enum e_type	type;
 	char		*str;
 	char		*env_val;
-	int			quote_flag;
 }	t_token;
 
 typedef struct s_parse
@@ -85,6 +84,7 @@ typedef struct s_parse
 	char	*cmd_path;
 	char	**cmd_argv;
 	t_stdio	*std_lst;
+	t_stdio	*here_doc_lst;
 }	t_parse;
 
 typedef struct s_map
@@ -176,7 +176,7 @@ void		path_insert_in_parse(t_analyze *alz, t_envp *env_c);
 
 /* cmd.c */
 void		command_excute(t_analyze *alz, t_envp *env_c);
-int			command_excute_builtin(t_parse *parse, t_envp *env_c, int builtin_idx);
+int			command_excute_builtin(t_parse *parse, t_envp *env_c, int builtin_idx, int is_fork);
 
 /* proc.c */
 void		wait_child(t_pinfo *info, int cmd_cnt);
@@ -192,15 +192,15 @@ int			open_append(char *filename);
 int 		pipe_init(t_pinfo *pinfo, int cmd_argc);
 void		pipe_close(t_pinfo *info, int pos);
 int			std_to_fd(t_node *std_node);
-void		dup_std_fd(t_pinfo *info, t_stdio *std_lst, int i);
-int			simple_fd_open(int *fd, t_node *std_node);
+void		dup_std_fd(t_pinfo *info, t_parse *parse, int i);
+int			simple_fd_open(int *fd, t_parse *parse);
 int			simple_fd_close(int *fd);
 
 /* builtin */
 int			builtin_echo(t_parse *parse);
 int			builtin_pwd(t_envp *env_c);
 int			builtin_env(t_envp *env_c);
-int			builtin_exit(t_parse *parse);
+int			builtin_exit(t_parse *parse, int is_fork);
 int			builtin_export(t_parse *parse, t_envp *env_c);
 int			builtin_unset(t_parse *parse, t_envp *env_c);
 int			builtin_cd(t_parse *parse, t_envp *env_c);
@@ -236,5 +236,6 @@ void		set_sigterm(void);
 
 /* test in main.c */
 void		test_leak(void);
+int			test_printf_parse(void *elem);
 
 #endif

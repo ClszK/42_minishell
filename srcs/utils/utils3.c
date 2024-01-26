@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:19:39 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/25 03:43:06 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/26 12:38:16 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ int	is_builtin_command(char *cmd)
 	i = -1;
 	if (cmd == NULL)
 		return (0);
-	while (cmd[++i])
-		cmd[i] = ft_tolower(cmd[i]);
+	// while (cmd[++i])
+	// 	cmd[i] = ft_tolower(cmd[i]);
 	builtincmd[0] = "cd";
 	builtincmd[1] = "echo";
 	builtincmd[2] = "env";

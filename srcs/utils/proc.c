@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   proc.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:43:21 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/25 04:59:53 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/26 15:11:33 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,9 @@ void	child_process(t_parse *parse, t_envp *env_c, int i, t_pinfo *info)
 
 	envp = NULL;
 	builtin_idx = is_builtin_command(parse->cmd_path);
-	dup_std_fd(info, parse->std_lst, i);
+	dup_std_fd(info, parse, i);
 	if (builtin_idx)
-		exit(command_excute_builtin(parse, env_c, builtin_idx - 1));
+		exit(command_excute_builtin(parse, env_c, builtin_idx - 1, 1));
 	envp = envp_split(env_c);
 	if (parse->cmd_path == NULL)
 		exit(env_c->last_stat);

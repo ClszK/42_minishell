@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 21:18:12 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/25 04:01:03 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/26 11:05:20 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,9 @@ int	dup2_to_std(int fd, t_token *token)
 int	std_to_fd(t_node *std_node)
 {
 	t_token	*token;
-	t_node	*std_head;
 	int		fd;
 
 	fd = 0;
-	std_head = std_node->prev;
 	while (std_node->elem)
 	{
 		token = std_node->elem;
@@ -107,7 +105,7 @@ int	std_to_fd(t_node *std_node)
 	return (fd);
 }
 
-int	simple_fd_open(int *fd, t_node *std_node)
+int	simple_fd_open(int *fd, t_parse *parse)
 {
 	fd[STDIN_FILENO] = dup(STDIN_FILENO);
 	fd[STDOUT_FILENO] = dup(STDOUT_FILENO);
@@ -116,8 +114,11 @@ int	simple_fd_open(int *fd, t_node *std_node)
 		perror("minishell: ");
 		return (EXIT_FAILURE);
 	}
-	fd[FD_IN] = std_to_fd(std_node);
-	if (fd[FD_IN] < 0)
+	fd[2] = std_to_fd(parse->here_doc_lst->head->next);
+	if (fd[2] < 0)
+		return (EXIT_FAILURE);
+	fd[3] = std_to_fd(parse->std_lst->head->next);
+	if (fd[3] < 0)
 		return (EXIT_FAILURE);
 	return (0);
 }
@@ -130,10 +131,10 @@ int	simple_fd_close(int *fd)
 		perror("minishell: ");
 		return (EXIT_FAILURE);
 	}
-	if (fd[FD_IN])
-		close(fd[FD_IN]);
-	if (fd[FD_OUT])
-		close(fd[FD_OUT]);
+	if (fd[2])
+		close(fd[2]);
+	if (fd[3])
+		close(fd[3]);
 	close(fd[STDIN_FILENO]);
 	close(fd[STDOUT_FILENO]);
 	return (0);
@@ -155,13 +156,16 @@ void	pipe_std_dup(t_stdio *std, t_pinfo *info, int pos)
 			exit(EXIT_FAILURE);
 }
 
-void	dup_std_fd(t_pinfo *info, t_stdio *std_lst, int i)
+void	dup_std_fd(t_pinfo *info, t_parse *parse, int i)
 {
 	int	fd[2];
 
-	pipe_std_dup(std_lst, info, i);
-	fd[0] = std_to_fd(std_lst->head->next);
+	pipe_std_dup(parse->std_lst, info, i);
+	fd[0] = std_to_fd(parse->here_doc_lst->head->next);
 	if (fd[0] < 0) 
+		exit(EXIT_FAILURE);
+	fd[1] = std_to_fd(parse->std_lst->head->next);
+	if (fd[1] < 0) 
 		exit(EXIT_FAILURE);
 	if (info->pipe_cnt)
 		pipe_close(info, i);

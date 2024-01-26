@@ -17,14 +17,14 @@ int	exit_check_argv(t_parse *parse, char *argv)
 	return (exit_num);
 }
 
-int	builtin_exit(t_parse *parse)
+int	builtin_exit(t_parse *parse, int is_fork)
 {
 	int		exit_num;
 	char	*argv;
 
 	errno = 0;
-	if (ft_putstr_fd("exit", STDOUT_FILENO) || \
-		ft_putstr_fd("\n", STDOUT_FILENO))
+	if (!is_fork && (ft_putstr_fd("exit", STDOUT_FILENO) || \
+		ft_putstr_fd("\n", STDOUT_FILENO)))
 		return (1);
 	if (parse->cmd_argv[1] == NULL)
 		exit(0);

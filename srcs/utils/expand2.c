@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 14:43:08 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/25 04:15:29 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/26 14:50:39 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,16 @@ char	*expand_str_cpy(char *start, char *dst, t_envp *env_c)
 				start = expand_squote(start, &size, dst);
 			else
 				start = expand_dquote(start, &size, env_c, dst);
-			arr_one_left_shift(--start);
+			arr_one_left_shift(start);
 		}
-		else if (can_dollar_expand(start))
-			start = expand_dollar(++start, &size, env_c, dst);
 		else
-			dst[size++] = *start;
-		start++;
+		{
+			if (can_dollar_expand(start))
+				start = expand_dollar(++start, &size, env_c, dst);
+			else if (!(*start == '$' && check_quote_type(*(start + 1))))
+				dst[size++] = *start;
+			start++;
+		}
 	}
 	return (dst);
 }
@@ -45,6 +48,7 @@ void	expand_cmd_argv(char **cmd_argv, t_envp *env_c)
 	int		i;
 
 	i = 0;
+	errno = 0;
 	while (cmd_argv[i])
 	{
 		expand_str = expand_str_alloc(cmd_argv[i], env_c);
@@ -101,6 +105,7 @@ void	expand_start(t_analyze *alz, t_envp *env_c)
 	{
 		parse = parse_node->elem;
 		expand_cmd_argv(parse->cmd_argv, env_c);
+		expand_stdio(parse->here_doc_lst, env_c);
 		expand_stdio(parse->std_lst, env_c);
 		parse_node = parse_node->next;
 	}

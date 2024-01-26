@@ -23,6 +23,8 @@ int	test_printf_parse(void *elem)
 	printf("\n	CMD_ARGV\n\n");
 	for (int i = 0; parse->cmd_argv[i] ; i++)
 		printf("		%s%%\n", parse->cmd_argv[i]);
+	printf("\n	HERE_DOC\n\n");
+	dlst_print(parse->here_doc_lst, test_printf_token);
 	printf("\n	STD_LST\n\n");
 	dlst_print(parse->std_lst, test_printf_token);
 	printf("\n");
@@ -33,7 +35,7 @@ void	test_leak(void)
 {
 	char	*test;
 	char	*pid;
-	char	*str = "leaks -quiet --list ";
+	char	*str = "leaks -quiet ";
 
 	pid = ft_itoa(getpid());
 	test = malloc(sizeof(char) * (ft_strlen(str) + ft_strlen(pid) + 1));
@@ -83,6 +85,7 @@ int	command_preprocessing(t_shinfo *sh)
 int main(int argc, char **argv, char **envp)
 {
 	t_shinfo	sh;
+	char		*line;
 
 	(void)argc;
 	(void)argv;
@@ -90,9 +93,17 @@ int main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		shinfo_init(&sh);
-		sh.rline = readline("minishell$ ");
+		if (isatty(fileno(stdin)))
+			sh.rline = readline("minishell$ ");
+		else
+		{
+			line = get_next_line(fileno(stdin));
+			sh.rline = ft_strtrim(line, "\n");
+			free(line);
+		}
+		// sh.rline = readline("minishell$ ");
 		if (sh.rline == NULL)
-			exit(EXIT_FAILURE);
+			exit (sh.env_c.last_stat);
 		add_history(sh.rline);
 		if (!command_preprocessing(&sh))
 			command_excute(&sh.alz, &sh.env_c);

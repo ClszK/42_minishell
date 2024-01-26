@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   generate.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 01:43:32 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/25 02:39:18 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/26 10:57:31 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ t_token	*token_elem_generate(char *str, enum e_type type)
 	node->str = str;
 	node->type = type;
 	node->env_val = NULL;
-	node->quote_flag = 0;
 	return (node);
 }
 
@@ -61,5 +60,6 @@ t_parse	*parse_elem_generate(int cmd_argc)
 	ft_memset(node->cmd_argv, 0, sizeof(char *) * (cmd_argc + 1));
 	node->cmd_path = NULL;
 	node->std_lst = stdio_init();
+	node->here_doc_lst = stdio_init();
 	return (node);
 }

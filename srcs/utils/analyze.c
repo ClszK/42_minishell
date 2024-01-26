@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   analyze.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 01:46:42 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/25 04:04:34 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/26 10:56:38 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,11 @@ int	analyze_token_parse(t_node *token_node, t_parse *parse, int *i)
 		*i += 1;
 		return (0);
 	}
-	if (token->type == OUTPUT || token->type == APPEND)
+	if (token->type == OUTPUT || token->type == APPEND || token->type == INPUT)
 		dlst_add_last(parse->std_lst, \
 						token_elem_cpy(token_node->next->elem, token->type));
-	else if (token->type == INPUT || token->type == HEREDOC)
-		dlst_add_last(parse->std_lst, \
+	else if ( token->type == HEREDOC)
+		dlst_add_last(parse->here_doc_lst, \
 						token_elem_cpy(token_node->next->elem, token->type));
 	return (1);
 }

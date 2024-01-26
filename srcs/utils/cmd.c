@@ -3,17 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:06:38 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/25 00:00:35 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/26 15:10:35 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /* builtin command 실행 후 fd 닫기 로직 만들기. */
-int	command_excute_builtin(t_parse *parse, t_envp *env_c, int builtin_idx)
+int	command_excute_builtin(t_parse *parse, t_envp *env_c, \
+							int builtin_idx, int is_fork)
 {
 	int	exit_code;
 
@@ -25,7 +26,7 @@ int	command_excute_builtin(t_parse *parse, t_envp *env_c, int builtin_idx)
 	else if (builtin_idx == 2)
 		exit_code = builtin_env(env_c);
 	else if (builtin_idx == 3)
-		exit_code = builtin_exit(parse);
+		exit_code = builtin_exit(parse, is_fork);
 	else if (builtin_idx == 4)
 		exit_code = builtin_export(parse, env_c);
 	else if (builtin_idx == 5)
@@ -81,7 +82,7 @@ int		command_simple_exec(t_parse *parse, t_envp *env_c, int builtin_idx)
 	int	fd_stat;
 
 	stat = 0;
-	fd_stat = simple_fd_open(fd, parse->std_lst->head->next);
+	fd_stat = simple_fd_open(fd, parse);
 	if (fd_stat)
 	{
 		stat = simple_fd_close(fd);
@@ -89,7 +90,7 @@ int		command_simple_exec(t_parse *parse, t_envp *env_c, int builtin_idx)
 			return (stat);
 		return (fd_stat);
 	}
-	stat = command_excute_builtin(parse, env_c, builtin_idx - 1);
+	stat = command_excute_builtin(parse, env_c, builtin_idx - 1, 0);
 	fd_stat = simple_fd_close(fd);
 	if (fd_stat)
 		return (fd_stat);

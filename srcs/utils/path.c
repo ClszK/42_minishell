@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:31:07 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/25 05:23:00 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/25 23:49:33 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ char	*path_cmd_path(char *cmd, t_envp *env_c)
 		print_builtin_error(cmd, NULL, "command not found\n");
 		env_c->last_stat = 127;
 	}
+	free(cmd_path);
 	return (NULL);
 }
 

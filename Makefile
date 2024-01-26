@@ -54,22 +54,22 @@ HEADERS_PATH	=	includes
 all:	$(NAME)
 
 $(NAME)	:	$(OBJS) $(addprefix includes/, ${HEADERS})
-	make -C $(LIB_DIR)
-	$(CC) $(CFLAGS) $(R_FLAGS) $(LIB) $(OBJS) -o $(NAME)
+	@make -C $(LIB_DIR)
+	@$(CC) $(CFLAGS) $(R_FLAGS) $(LIB) $(OBJS) -o $(NAME)
 
 %.o	:	%.c
-	$(CC) $(CFLAGS) $(ROBJ_FLAGS) -c $< -o $@ -I$(HEADERS_PATH)
+	@$(CC) $(CFLAGS) $(ROBJ_FLAGS) -c $< -o $@ -I$(HEADERS_PATH)
 
 clean:
-	rm -rf $(OBJS)
-	make clean -C $(LIB_DIR)
+	@rm -rf $(OBJS)
+	@make clean -C $(LIB_DIR)
 
 fclean: clean
-	rm -rf $(NAME)
-	make fclean -C $(LIB_DIR)
+	@rm -rf $(NAME)
+	@make fclean -C $(LIB_DIR)
 
 re: 
-	make fclean
-	make all
+	@make fclean
+	@make all
 
 .PHONY : all clean fclean re 

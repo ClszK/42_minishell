@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 21:19:42 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/25 00:07:59 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/26 14:19:05 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,22 @@ int	open_file(char *filename, int mode)
 void	stdin_heredoc(char *end_id, int tmp_fd)
 {
 	char	*rline;
+	char	*line;
 	size_t	len;
 
 	errno = 0;
 	len = ft_strlen(end_id);
 	while (1)
 	{
-		rline = readline("> ");
+		if (isatty(fileno(stdin)))
+			rline = readline("> ");
+		else
+		{
+			line = get_next_line(fileno(stdin));
+			rline = ft_strtrim(line, "\n");
+			free(line);
+		}
+		// rline = readline("> ");
 		if (rline == NULL && errno != 0)
 			perror_exit("minishell");
 		if (len == ft_strlen(rline) && \
@@ -94,9 +103,10 @@ int	open_append(char *filename)
 	int	fd;
 
 	fd = 0;
+	errno = 0;
 	if (is_file_access(filename, W_OK))
 		fd = open(filename, O_WRONLY | O_APPEND | O_CREAT, 0644);
-	else
-		return (-1);
+	if (errno)
+		print_strerror(filename, NULL);
 	return (fd);
 }

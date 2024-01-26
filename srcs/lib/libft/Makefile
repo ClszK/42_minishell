@@ -30,20 +30,20 @@ endif
 all:	$(NAME)
 
 $(NAME)	:	$(OBJ_FILES)
-	ar rsc $@ $(OBJ_FILES)
+	@ar rsc $@ $(OBJ_FILES)
 
 %.o	:	%.c
-	$(CC) $(CFLAGS) $< -o $@ -I$(HEADER)
+	@$(CC) $(CFLAGS) $< -o $@ -I$(HEADER)
 
 clean:
-	rm -rf $(OBJS) $(B_OBJS)
+	@rm -rf $(OBJS) $(B_OBJS)
 
 fclean: clean
-	rm -rf $(NAME)
+	@rm -rf $(NAME)
 
 re: 
-	make fclean
-	make bonus
+	@make fclean
+	@make bonus
 
 bonus:
 	@make WITH_BONUS=1 all
