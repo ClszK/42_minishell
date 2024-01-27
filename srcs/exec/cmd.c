@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:06:38 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/27 19:35:53 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/27 20:16:46 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ void	command_excute(t_analyze *alz, t_envp *env_c, t_stdio *heredoc)
 	int			builtin_idx;
 
 	if (heredoc->lst_size)
-		heredoc_process(heredoc);
+		heredoc_process(heredoc->head->next);
 	if (is_include_pipe(alz))
 		command_fork(alz, env_c);
 	else
