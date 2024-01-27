@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 21:19:42 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/27 03:20:24 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/27 14:42:09 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,11 +107,15 @@ int	open_append(char *filename, int fd)
 	errno = 0;
 	if (is_file_access(filename, W_OK))
 	{
+		errno  = 0;
 		fd = open(filename, O_WRONLY | O_APPEND | O_CREAT, 0644);
-		if (errno != ENOENT)
+		if (errno)
+		{
 			print_strerror(filename, NULL);
+			return (-1);
+		}
 	}
-	if (errno == EACCES)
+	if (errno == EACCES || errno == ENAMETOOLONG)
 		return (-1);
 	return (fd);
 }
@@ -120,16 +124,16 @@ void	delete_heredoc(void)
 {
 	DIR				*dir_info;
 	struct dirent	*dir_entry;
-	char			tmp_path[300];
+	char			tmp_path[255];
 	size_t			tmp_size;
 
-	dir_info = opendir("/Users/ljh/Documents/42_minishell/tmp");
+	dir_info = opendir("/Users/ljh/Documents/42_minishell/tmp/");
 	if (!dir_info)
 		return ;
 	dir_entry = readdir(dir_info);
 	while (dir_entry)
 	{
-		ft_strcpy(tmp_path, "/Users/ljh/Documents/42_minishell/tmp");
+		ft_strcpy(tmp_path, "/Users/ljh/Documents/42_minishell/tmp/");
 		if (!ft_strncmp("here_doc_tmp", dir_entry->d_name, 12))
 		{
 			tmp_size = ft_strlen(tmp_path) + ft_strlen(dir_entry->d_name) + 1;
@@ -138,14 +142,5 @@ void	delete_heredoc(void)
 		}
 		dir_entry = readdir(dir_info);
 	}
+	closedir(dir_info);
 }
-
-//heredoc 환경변수 해석해야하는지.
-		// if (isatty(fileno(stdin)))
-		// 	rline = readline("> ");
-		// else
-		// {
-		// 	line = get_next_line(fileno(stdin));
-		// 	rline = ft_strtrim(line, "\n");
-		// 	free(line);
-		// }

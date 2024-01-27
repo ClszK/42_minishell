@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 08:10:11 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/27 02:40:24 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/27 14:45:29 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,7 +252,7 @@ int			check_unset_key(char *key);
 int 		pipe_init(t_pinfo *pinfo, int cmd_argc);
 void		pipe_close(t_pinfo *info, int pos);
 void		pipe_parrent_init(t_pinfo *info, int pos);
-void		pipe_std_dup(t_stdio *std, t_pinfo *info, int pos);
+void		pipe_std_dup(t_stdio *std, t_pinfo *info, int pos, int stdin_fd);
 
 /* signal.c */
 void		set_signal(void);
@@ -263,5 +263,6 @@ void		set_terminal(int flag);
 /* test in main.c */
 void		test_leak(void);
 int			test_printf_parse(void *elem);
+int			test_printf_token(void *elem);
 
 #endif
