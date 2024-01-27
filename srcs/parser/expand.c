@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 04:22:38 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/26 21:52:31 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/28 01:13:56 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,16 @@ char	*expand_last_stat(char *start, size_t *size, t_envp *env_c, char *dst)
 	char	*last_stat_str;
 
 	errno = 0;
+	if (g_signo)
+	{
+		if (g_signo == 1)
+			env_c->last_stat = 1;
+		else if (g_signo == 2)
+			env_c->last_stat = 130;
+		else if (g_signo == 3)
+			env_c->last_stat = 131;
+		g_signo = 0;
+	}
 	last_stat_str = ft_itoa(env_c->last_stat);
 	if (last_stat_str == NULL)
 		exit(errno);

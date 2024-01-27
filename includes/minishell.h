@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 08:10:11 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/27 19:55:13 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/28 03:26:32 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,7 +216,7 @@ void		dup_std_fd(t_pinfo *info, t_parse *parse, int i);
 int			simple_fd_open(int *fd, t_parse *parse);
 int			simple_fd_close(int *fd);
 void		child_heredoc_process(char *eof, int tmp_fd);
-void		heredoc_process(t_node *heredoc_node);
+int			heredoc_process(t_node *heredoc_node, t_envp *env_c);
 
 /* builtin */
 int			builtin_echo(t_parse *parse);
@@ -261,6 +261,13 @@ void		pipe_std_dup(t_stdio *std, t_pinfo *info, int pos);
 void		set_signal(void);
 void		set_sigterm(void);
 void		set_terminal(int flag);
+void		restore_signal(void);
+void		sigint_handler(int signo);
+
+void		set_signal_child(void);
+void		is_fork_signal(int status, int last_status);
+void		heredoc_handler(int signo);
+void		heredoc_signal(void);
 
 /* test in main.c */
 void		test_leak(void);

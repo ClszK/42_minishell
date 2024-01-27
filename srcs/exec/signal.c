@@ -8,6 +8,7 @@ void	set_sigterm(void)
 	ft_putstr_fd("\033[1A", STDERR_FILENO);
 	ft_putstr_fd("\033[11C", STDERR_FILENO);
 	ft_putstr_fd("exit\n", STDERR_FILENO);
+	exit(0);
 }
 
 /*
@@ -50,6 +51,7 @@ void	set_signal_child(void)
 */
 void	restore_signal(void)
 {
+	set_terminal(0);
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 }
@@ -69,7 +71,7 @@ void	heredoc_handler(int signo)
 /*
 	//here doc 실행될 때 
 */
-void	heredoc_signal(void) 
+void	heredoc_signal(void)
 {
 	signal(SIGINT, heredoc_handler);
 	signal(SIGQUIT, SIG_IGN);
@@ -93,18 +95,30 @@ void	set_terminal(int flag)
 	}
 }
 
-void	is_fork_signal(int status) //wait 반환값 확인
+void	is_fork_signal(int status, int last_status) //wait 반환값 확인
 {
 	int	signo;
 
 	signo = (status & 0x7f);
-	if (signo > 0)
+	if (status == last_status)
 	{
-		if (signo == 2) //130
-			ft_putstr_fd("\n", STDERR_FILENO);
-		else if (signo == 3) //131
-			ft_putstr_fd("Quit: 3\n", STDERR_FILENO);
+		if (signo > 0)
+		{
+			if (signo == 2) //130
+			{
+				g_signo = 2;
+				ft_putstr_fd("\n", STDERR_FILENO);
+			}
+			else if (signo == 3)
+			{
+				g_signo = 3;
+				ft_putstr_fd("Quit: 3\n", STDERR_FILENO);
+			}
+		}
 	}
+	else
+		if (signo == 2)
+			ft_putstr_fd("\n", STDOUT_FILENO);
 }
 
 // void    main_sigint_handler_heredoc(int sig)
@@ -155,16 +169,16 @@ void	is_fork_signal(int status) //wait 반환값 확인
 //     waitpid(pid, &exit_code, 0);
 //     list_free_all(&limit_strings, (void *)0);
 //     signal(SIGINT, main_sigint_handler);
-//     if (WIFEXITED(exit_code))
-//     {
-//         exit_code = WEXITSTATUS(exit_code);
-//         if (exit_code != 0)
-//         {
-//             heredoc_unlink_tmp();
-//             g_minishell.exit_code = exit_code;
-//             return (0);
-//         }
-//     }
+    // if (WIFEXITED(exit_code))
+    // {
+    //     exit_code = WEXITSTATUS(exit_code);
+    //     if (exit_code != 0)
+    //     {
+    //         heredoc_unlink_tmp();
+    //         g_minishell.exit_code = exit_code;
+    //         return (0);
+    //     }
+    // }
 //     return (1);
 // 	}
 

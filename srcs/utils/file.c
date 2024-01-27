@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 21:19:42 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/27 19:38:08 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/28 02:54:40 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,20 +81,22 @@ void	child_heredoc_process(char *end_id, int tmp_fd)
 	size_t	len;
 
 	errno = 0;
+	signal(SIGINT, heredoc_handler);
 	len = ft_strlen(end_id);
 	while (1)
 	{
-		rline = readline("> ");
+		write(STDOUT_FILENO, "> ", 2);
+		rline = get_next_line(STDIN_FILENO);
 		if (rline == NULL && errno != 0)
 			perror_exit("minishell");
-		if (len == ft_strlen(rline) && \
-			!ft_strncmp(rline, end_id, len))
+		if (rline == NULL || 
+			(len == ft_strlen(rline) - 1 && \
+			!ft_strncmp(rline, end_id, len)))
 		{
 			free(rline);
 			exit(0);
 		}
 		write(tmp_fd, rline, ft_strlen(rline));
-		write(tmp_fd, "\n", 1);
 		free(rline);
 	}
 }

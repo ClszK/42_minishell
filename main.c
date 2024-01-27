@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 18:29:34 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/27 22:43:07 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/28 00:12:40 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	envp_init(envp, &sh.env_c);
+	set_signal();
 	while (1)
 	{
 		errno = 0;
@@ -77,8 +78,11 @@ int main(int argc, char **argv, char **envp)
 		// 	free(line);
 		// }
 		sh.rline = readline("minishell$ ");
-		if (sh.rline == NULL)
-			exit (sh.env_c.last_stat);
+		if (sh.rline == NULL && !errno)
+		{	
+			restore_signal();
+			set_sigterm();
+		}
 		add_history(sh.rline);
 		if (sh.rline && !command_preprocessing(&sh))
 			command_excute(&sh.alz, &sh.env_c, &sh.heredoc);

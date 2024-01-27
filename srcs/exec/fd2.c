@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 22:10:30 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/27 19:41:34 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/28 01:44:10 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	simple_fd_close(int *fd)
 	return (0);
 }
 
-void	heredoc_process(t_node *heredoc_node)
+int	heredoc_process(t_node *heredoc_node, t_envp *env_c)
 {
 	t_token	*heredoc;
 	int		status;
@@ -63,6 +63,7 @@ void	heredoc_process(t_node *heredoc_node)
 	int		tmp_fd;
 	char	*tmp_name;
 
+	signal(SIGINT, SIG_IGN);
 	while (heredoc_node->elem)
 	{
 		heredoc = heredoc_node->elem;
@@ -73,9 +74,14 @@ void	heredoc_process(t_node *heredoc_node)
 		else if (pid == 0)
 			child_heredoc_process(heredoc->str, tmp_fd);
 		wait(&status);
+		signal(SIGINT, sigint_handler);
+		env_c->last_stat = ((*(int *)&(status)) >> 8) & 0x000000ff;
+		if (env_c->last_stat == 1)
+			return (1);
 		close(tmp_fd);
 		free(heredoc->str);
 		heredoc->str = tmp_name;
 		heredoc_node = heredoc_node->next;
 	}
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:06:38 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/27 22:41:05 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/28 01:44:33 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ void	command_fork(t_analyze *alz, t_envp *env_c)
 	t_node		*parse_node;
 	t_pinfo		info;
 
+	set_signal_child();
 	parse_node = alz->head->next;
 	if (pipe_init(&info, alz->lst_size))
 		exit(errno);
@@ -105,6 +106,7 @@ void	command_fork(t_analyze *alz, t_envp *env_c)
 		parse_node = parse_node->next;
 	}
 	wait_child(&info, env_c, i);
+	set_signal();
 }
 
 /*
@@ -147,7 +149,10 @@ void	command_excute(t_analyze *alz, t_envp *env_c, t_stdio *heredoc)
 	int			builtin_idx;
 
 	if (heredoc->lst_size)
-		heredoc_process(heredoc->head->next);
+	{
+		if (heredoc_process(heredoc->head->next, env_c))
+			return ;
+	}
 	if (is_include_pipe(alz))
 		command_fork(alz, env_c);
 	else
@@ -160,36 +165,3 @@ void	command_excute(t_analyze *alz, t_envp *env_c, t_stdio *heredoc)
 			command_fork(alz, env_c);
 	}
 }
-
-/*
-int	_command_preprocessing(t_shinfo *sh)
-{
-	int		error_token;
-
-	if (sh->rline && *(sh->rline) != '\0')
-	{
-		error_token = valid_quote(sh->rline);
-		if (error_token)
-		{
-			sh->env_c.last_stat = 258;
-			print_syntax_error(error_token);
-			return (1);
-		}
-		token_cmdline(sh->rline, &(sh->cmdline));
-		if (sh->cmdline.lst_size != 0)
-		{
-			error_token = analyze_start(&sh->alz, &sh->cmdline);
-			if (error_token)
-			{
-				sh->env_c.last_stat = 258;
-				print_syntax_error(error_token);
-				return (1);
-			}
-			expand_start(&sh->alz, &sh->env_c);
-			path_insert_in_parse(&sh->alz, &sh->env_c);
-		}
-		return (0);
-	}
-	return (1);
-}
-*/

@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:43:21 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/27 22:41:15 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/28 03:24:42 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	wait_child(t_pinfo *info, t_envp *env_c, int cmd_cnt)
 		if (info->last_pid == info->pid)
 			info->last_status = status;
 	}
+	is_fork_signal(status, info->last_status);
 	env_c->last_stat = ((*(int *)&(info->last_status)) >> 8) & 0x000000ff;
 	if (info->pipe_cnt)
 	{
@@ -101,6 +102,7 @@ void	child_process(t_parse *parse, t_envp *env_c, int i, t_pinfo *info)
 	char	**envp;
 	int		builtin_idx;
 
+	restore_signal();
 	envp = NULL;
 	builtin_idx = is_builtin_command(parse->cmd_path);
 	dup_std_fd(info, parse, i);
