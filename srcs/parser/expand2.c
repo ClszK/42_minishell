@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 14:43:08 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/27 01:50:57 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/27 19:38:27 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,9 +119,7 @@ void	expand_start(t_analyze *alz, t_envp *env_c)
 	{
 		parse = parse_node->elem;
 		expand_cmd_argv(parse->cmd_argv, env_c);
-		expand_stdio(parse->here_doc_lst, env_c);
 		expand_stdio(parse->std_lst, env_c);
 		parse_node = parse_node->next;
 	}
-	// exit(1);
 }

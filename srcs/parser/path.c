@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:31:07 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/27 00:37:40 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/27 19:37:42 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,24 +85,29 @@ char	*path_cmd_valid(char **path, char *cmd)
 char	*cmd_path_in_slash(char *cmd, t_envp *env_c)
 {
 	char	*cmd_path;
+	int		fd;
 
 	cmd_path = NULL;
-	if (open(cmd, O_RDWR) < 0)
+	errno = 0;
+	fd = open(cmd, O_WRONLY);
+	if (fd > 0)
+		close(fd);
+	if (errno != EISDIR)
 	{
-		if (errno == EACCES || errno == EISDIR || errno == ENOENT)
+		if (access(cmd, X_OK) == 0)
 		{
-			print_strerror(cmd, NULL);
-			if (errno == EACCES || errno == EISDIR)
-				env_c->last_stat = 126;
-			else if (errno == ENOENT)
-				env_c->last_stat = 127;
-			return (NULL);
+			cmd_path = ft_strdup(cmd);
+			if (cmd_path == NULL)
+				exit(errno);
+			return (cmd_path);
 		}
 	}
-	cmd_path = ft_strdup(cmd);
-	if (cmd_path == NULL)
-		exit(errno);
-	return (cmd_path);
+	print_strerror(cmd, NULL);
+	if (errno == EACCES || errno == EISDIR)
+		env_c->last_stat = 126;
+	else if (errno == ENOENT)
+		env_c->last_stat = 127;
+	return (NULL);
 }
 
 int	path_in_dot_dot_check(char *cmd, t_envp *env_c)

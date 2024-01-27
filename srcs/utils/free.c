@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:42:10 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/26 22:49:34 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/27 18:24:21 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,6 @@ void	parse_elem_free(void *elem)
 	if (parse->cmd_path)
 		free(parse->cmd_path);
 	parse->cmd_path = NULL;
-	dlst_del_all(parse->here_doc_lst, token_elem_free);
-	free(parse->std_lst);
-	parse->here_doc_lst = NULL;
 	free(parse);
 }
 
@@ -74,6 +71,7 @@ void	shinfo_free(t_shinfo *sh, t_envp *env_c)
 	{
 		dlst_del_all(&sh->cmdline, token_elem_free);
 		dlst_del_all(&sh->alz, parse_elem_free);
+		dlst_del_all(&sh->heredoc, NULL);
 		free(sh->rline);
 	}
 	if (env_c)

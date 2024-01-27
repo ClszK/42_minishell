@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 22:56:04 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/23 09:51:18 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/27 19:43:48 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,8 @@ int	ft_putnbr_fd(int n, int fd)
 
 	hex_table = "0123456789";
 	top = -1;
-	if (n == 0)
-	{
-		if (write(fd, "0", 1) < 0)
-			return (-1);
-	}
+	if (n == 0 && write(fd, "0", 1) < 0)
+		return (-1);
 	if (n < 0)
 	{
 		if (write(fd, "-", 1) < 0)

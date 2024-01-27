@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 08:10:11 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/27 14:45:29 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/27 19:55:13 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,12 @@
 
 # include "double_lst.h"
 
-int	g_signo;
+int						g_signo;
+
+typedef struct s_lst	t_envp;
+typedef struct s_lst	t_cmdline;
+typedef struct s_lst	t_analyze;
+typedef struct s_lst	t_stdio;
 
 enum e_type
 {
@@ -66,11 +71,6 @@ enum e_type
 	PIPE_OUT
 };
 
-typedef struct s_lst	t_envp;
-typedef struct s_lst	t_cmdline;
-typedef struct s_lst	t_analyze;
-typedef struct s_lst	t_stdio;
-
 typedef struct s_token
 {
 	enum e_type	type;
@@ -84,7 +84,6 @@ typedef struct s_parse
 	char	*cmd_path;
 	char	**cmd_argv;
 	t_stdio	*std_lst;
-	t_stdio	*here_doc_lst;
 }	t_parse;
 
 typedef struct s_map
@@ -99,6 +98,7 @@ typedef struct s_shinfo
 	t_envp		env_c;
 	t_cmdline	cmdline;
 	t_analyze	alz;
+	t_stdio		heredoc;
 }	t_shinfo;
 
 typedef struct s_pinfo
@@ -157,8 +157,11 @@ t_parse		*parse_elem_generate(int cmd_argc);
 t_token		*token_elem_cpy(void *elem, enum e_type type);
 
 /* analyze.c */
-int			analyze_start(t_analyze *alz, t_cmdline *cmdline);
-t_node		*analyze_parse_create(t_analyze *alz, t_node *token_node, t_parse *parse);
+int			analyze_start(t_analyze *alz, t_cmdline *cmdline, t_stdio *heredoc);
+t_node		*analyze_parse_create(t_analyze *alz, t_node *token_node, \
+											t_parse *parse, t_stdio *heredoc);
+int			analyze_token_parse(t_node *token_node, t_parse *parse, \
+											int *i, t_stdio *heredoc);
 
 /* analyze2.c */
 int			is_pipe_node(t_node *node);
@@ -188,8 +191,9 @@ char		*path_cmd_path(char *cmd, t_envp *env_c);
 void		path_insert_in_parse(t_analyze *alz, t_envp *env_c);
 
 /* cmd.c */
-void		command_excute(t_analyze *alz, t_envp *env_c);
-int			command_excute_builtin(t_parse *parse, t_envp *env_c, int builtin_idx, int is_fork);
+void		command_excute(t_analyze *alz, t_envp *env_c, t_stdio *heredoc);
+int			command_excute_builtin(t_parse *parse, t_envp *env_c, \
+											int builtin_idx, int is_fork);
 int			command_preprocessing(t_shinfo *sh);
 
 /* proc.c */
@@ -199,12 +203,10 @@ void		child_process(t_parse *parse, t_envp *env_c, int i, t_pinfo *info);
 /* file.c */
 int			tmpfile_create(char **tmp_name);
 int			open_file(char *filename, int mode);
-void		stdin_heredoc(char *end_id, int tmp_fd);
 int			open_append(char *filename, int fd);
 void		delete_heredoc(void);
 
 /* fd.c */
-int			here_doc_process(char *eof);
 int			dup2_to_std(int fd, t_token *token);
 int			open_redirection(t_token *token, int fd);
 int			std_to_fd(t_node *std_node);
@@ -213,6 +215,8 @@ void		dup_std_fd(t_pinfo *info, t_parse *parse, int i);
 /* fd2.c */
 int			simple_fd_open(int *fd, t_parse *parse);
 int			simple_fd_close(int *fd);
+void		child_heredoc_process(char *eof, int tmp_fd);
+void		heredoc_process(t_node *heredoc_node);
 
 /* builtin */
 int			builtin_echo(t_parse *parse);
@@ -225,7 +229,6 @@ int			builtin_cd(t_parse *parse, t_envp *env_c);
 
 /* export2.c*/
 void		append_env(char *cmd_argv, t_envp *env_c, size_t equal);
-// int			check_dup(char	*cmd_argv, t_envp *env_c, size_t equal);
 int			check_dup(char	*cmd_argv, t_node *env_node, size_t equal);
 void		update_env(char *cmd_argv, t_map *cur, size_t equal);
 void		free_copy(t_map *export_c, long lst_size);
@@ -249,16 +252,15 @@ int			check_export_key(char *key);
 int			check_unset_key(char *key);
 
 /* pipe.c */
-int 		pipe_init(t_pinfo *pinfo, int cmd_argc);
+int			pipe_init(t_pinfo *pinfo, int cmd_argc);
 void		pipe_close(t_pinfo *info, int pos);
 void		pipe_parrent_init(t_pinfo *info, int pos);
-void		pipe_std_dup(t_stdio *std, t_pinfo *info, int pos, int stdin_fd);
+void		pipe_std_dup(t_stdio *std, t_pinfo *info, int pos);
 
 /* signal.c */
 void		set_signal(void);
 void		set_sigterm(void);
 void		set_terminal(int flag);
-
 
 /* test in main.c */
 void		test_leak(void);

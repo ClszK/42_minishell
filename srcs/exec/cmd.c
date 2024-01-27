@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:06:38 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/27 03:24:02 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/27 19:35:53 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	command_preprocessing(t_shinfo *sh)
 		token_cmdline(sh->rline, &(sh->cmdline));
 		if (sh->cmdline.lst_size == 0)
 			return (1);
-		error_token = analyze_start(&sh->alz, &sh->cmdline);
+		error_token = analyze_start(&sh->alz, &sh->cmdline, &sh->heredoc);
 		if (!error_token)
 		{
 			expand_start(&sh->alz, &sh->env_c);
@@ -115,7 +115,7 @@ void	command_fork(t_analyze *alz, t_envp *env_c)
 */
 int	command_simple_exec(t_parse *parse, t_envp *env_c, int builtin_idx)
 {
-	int	fd[4];
+	int	fd[3];
 	int	stat;
 	int	fd_stat;
 
@@ -141,11 +141,13 @@ int	command_simple_exec(t_parse *parse, t_envp *env_c, int builtin_idx)
 	pipe로 연결되어 있지 않더라도 builtin-command가 아니라면
 	fork 후 execve함수를 통해 실행해야함.
 */
-void	command_excute(t_analyze *alz, t_envp *env_c)
+void	command_excute(t_analyze *alz, t_envp *env_c, t_stdio *heredoc)
 {
 	t_parse		*parse;
 	int			builtin_idx;
 
+	if (heredoc->lst_size)
+		heredoc_process(heredoc);
 	if (is_include_pipe(alz))
 		command_fork(alz, env_c);
 	else

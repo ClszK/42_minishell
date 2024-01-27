@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   generate.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 01:43:32 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/27 00:38:47 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/27 17:11:31 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,5 @@ t_parse	*parse_elem_generate(int cmd_argc)
 	ft_memset(node->cmd_argv, 0, sizeof(char *) * (cmd_argc + 1));
 	node->cmd_path = NULL;
 	node->std_lst = stdio_init();
-	node->here_doc_lst = stdio_init();
 	return (node);
 }

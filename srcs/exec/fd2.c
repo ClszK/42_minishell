@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fd2.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 22:10:30 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/26 22:12:23 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/27 19:41:34 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,8 @@ int	simple_fd_open(int *fd, t_parse *parse)
 		perror("minishell: ");
 		return (EXIT_FAILURE);
 	}
-	fd[2] = std_to_fd(parse->here_doc_lst->head->next);
+	fd[2] = std_to_fd(parse->std_lst->head->next);
 	if (fd[2] < 0)
-		return (EXIT_FAILURE);
-	fd[3] = std_to_fd(parse->std_lst->head->next);
-	if (fd[3] < 0)
 		return (EXIT_FAILURE);
 	return (0);
 }
@@ -53,9 +50,32 @@ int	simple_fd_close(int *fd)
 	}
 	if (fd[2])
 		close(fd[2]);
-	if (fd[3])
-		close(fd[3]);
 	close(fd[STDIN_FILENO]);
 	close(fd[STDOUT_FILENO]);
 	return (0);
+}
+
+void	heredoc_process(t_node *heredoc_node)
+{
+	t_token	*heredoc;
+	int		status;
+	pid_t	pid;
+	int		tmp_fd;
+	char	*tmp_name;
+
+	while (heredoc_node->elem)
+	{
+		heredoc = heredoc_node->elem;
+		tmp_fd = tmpfile_create(&tmp_name);
+		pid = fork();
+		if (pid < 0)
+			perror_exit("minishell");
+		else if (pid == 0)
+			child_heredoc_process(heredoc->str, tmp_fd);
+		wait(&status);
+		close(tmp_fd);
+		free(heredoc->str);
+		heredoc->str = tmp_name;
+		heredoc_node = heredoc_node->next;
+	}
 }

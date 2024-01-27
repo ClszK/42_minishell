@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 22:03:02 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/27 14:48:38 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/27 18:21:56 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,12 @@ void	pipe_parrent_init(t_pinfo *info, int pos)
 /*
 	t_stdio 연결리스트 안에 있는 파이프 처리 함수.
 */
-void	pipe_std_dup(t_stdio *std, t_pinfo *info, int pos, int stdin_fd)
+void	pipe_std_dup(t_stdio *std, t_pinfo *info, int pos)
 {
 	t_token	*token;
 
 	token = std->head->next->elem;
-	if (stdin_fd == 0 && token && token->type == PIPE_IN)
+	if (token && token->type == PIPE_IN)
 	{
 		if (dup2(info->pfd[(pos - 1) % 2][STDIN_FILENO], STDIN_FILENO) < 0)
 			exit(EXIT_FAILURE);

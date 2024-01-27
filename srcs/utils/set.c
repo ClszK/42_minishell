@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 04:10:53 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/27 00:45:41 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/27 16:59:49 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,13 @@ void	analyze_init(t_analyze *alz)
 		exit(errno);
 }
 
+void	heredoc_init(t_stdio *heredoc)
+{
+	errno = 0;
+	if (dlst_init(heredoc))
+		exit(errno);
+}
+
 t_stdio	*stdio_init(void)
 {
 	t_stdio	*lst;
@@ -42,4 +49,5 @@ void	shinfo_init(t_shinfo *sh)
 	sh->rline = NULL;
 	cmdline_init(&sh->cmdline);
 	analyze_init(&sh->alz);
+	heredoc_init(&sh->heredoc);
 }

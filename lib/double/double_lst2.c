@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   double_lst2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 21:28:15 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/23 05:37:27 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/27 19:43:01 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	dlst_rev_print(struct s_lst *lst, void (*print)(void*))
 	}
 }
 
-int		dlst_delete(struct s_lst *lst, \
+int	dlst_delete(struct s_lst *lst, \
 					void (*del)(void*), int (*find)(void*, void*), void *cmp)
 {
 	t_node	*del_node;

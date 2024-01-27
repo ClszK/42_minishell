@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   double_lst.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 23:57:30 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/26 18:55:52 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/27 18:24:11 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	dlst_del_all(struct s_lst *lst, void (*del)(void*))
 	node = lst->head;
 	while (node)
 	{
-		if (node->elem)
+		if (node->elem && del)
 			del(node->elem);
 		next = node->next;
 		free(node);

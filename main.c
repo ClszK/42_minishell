@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 18:29:34 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/27 13:39:28 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/27 19:35:24 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ int	test_printf_parse(void *elem)
 	printf("\n	CMD_ARGV\n\n");
 	for (int i = 0; parse->cmd_argv[i] ; i++)
 		printf("		%s%%\n", parse->cmd_argv[i]);
-	printf("\n	HERE_DOC\n\n");
-	dlst_print(parse->here_doc_lst, test_printf_token);
 	printf("\n	STD_LST\n\n");
 	dlst_print(parse->std_lst, test_printf_token);
 	printf("\n");
@@ -69,7 +67,6 @@ int main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		errno = 0;
-		
 		shinfo_init(&sh);
 		if (isatty(fileno(stdin)))
 			sh.rline = readline("minishell$ ");
@@ -84,7 +81,7 @@ int main(int argc, char **argv, char **envp)
 			exit (sh.env_c.last_stat);
 		add_history(sh.rline);
 		if (sh.rline && !command_preprocessing(&sh))
-			command_excute(&sh.alz, &sh.env_c);
+			command_excute(&sh.alz, &sh.env_c, &sh.heredoc);
 		shinfo_free(&sh, NULL);
 		delete_heredoc();
     }

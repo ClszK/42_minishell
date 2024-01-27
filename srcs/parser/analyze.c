@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   analyze.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 01:46:42 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/27 11:44:31 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/27 19:38:41 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,11 @@ int	analyze_cmd_argc(t_node *token_node)
 	TYPE이 파이프를 제외한 연산자이면 stdio에 추가하는데 여기서
 	here_doc만 따로 here_doc 연결리스트에 담고 나머지는 stdio에 담는다.
 */
-int	analyze_token_parse(t_node *token_node, t_parse *parse, int *i)
+int	analyze_token_parse(t_node *token_node, t_parse *parse, \
+							int *i, t_stdio *heredoc)
 {
 	t_token		*token;
+	t_token		*token_cpy;
 
 	errno = 0;
 	token = token_node->elem;
@@ -70,12 +72,10 @@ int	analyze_token_parse(t_node *token_node, t_parse *parse, int *i)
 		*i += 1;
 		return (0);
 	}
-	if (token->type == OUTPUT || token->type == APPEND || token->type == INPUT)
-		dlst_add_last(parse->std_lst, \
-						token_elem_cpy(token_node->next->elem, token->type));
-	else if (token->type == HEREDOC)
-		dlst_add_last(parse->here_doc_lst, \
-						token_elem_cpy(token_node->next->elem, token->type));
+	token_cpy = token_elem_cpy(token_node->next->elem, token->type);
+	dlst_add_last(parse->std_lst, token_cpy);
+	if (token->type == HEREDOC)
+		dlst_add_last(heredoc, token_cpy);
 	return (1);
 }
 
@@ -90,7 +90,7 @@ int	analyze_token_parse(t_node *token_node, t_parse *parse, int *i)
 	stdio는 PIPEIN이 담긴다.
 */
 t_node	*analyze_parse_create(t_analyze *alz, t_node *token_node, \
-								t_parse *parse)
+								t_parse *parse, t_stdio *heredoc)
 {
 	int	i;
 
@@ -103,7 +103,7 @@ t_node	*analyze_parse_create(t_analyze *alz, t_node *token_node, \
 	}
 	while (token_node->elem && !is_pipe_node(token_node))
 	{
-		if (analyze_token_parse(token_node, parse, &i))
+		if (analyze_token_parse(token_node, parse, &i, heredoc))
 			token_node = token_node->next;
 		token_node = token_node->next;
 	}
@@ -151,7 +151,7 @@ enum e_type	analyze_syntax_valid(t_cmdline *cmdline)
 	처음에 syntax가 오류일 때를 체크함.
 	이후 cmdline을 순회하면서 로직 실행.
 */
-int	analyze_start(t_analyze *alz, t_cmdline *cmdline)
+int	analyze_start(t_analyze *alz, t_cmdline *cmdline, t_stdio *heredoc)
 {
 	t_node		*node;
 	t_parse		*parse;
@@ -166,12 +166,13 @@ int	analyze_start(t_analyze *alz, t_cmdline *cmdline)
 	{
 		cmd_argc = analyze_cmd_argc(node);
 		parse = parse_elem_generate(cmd_argc);
-		node = analyze_parse_create(alz, node, parse);
-		if (parse->here_doc_lst->lst_size > 16)
-		{
-			print_builtin_error(NULL, NULL, "maximum here-document count exceeded\n");
-			exit(2);
-		}
+		node = analyze_parse_create(alz, node, parse, heredoc);
+	}
+	if (heredoc->lst_size > 16)
+	{
+		print_builtin_error(NULL, NULL, \
+						"maximum here-document count exceeded\n");
+		exit(2);
 	}
 	return (0);
 }

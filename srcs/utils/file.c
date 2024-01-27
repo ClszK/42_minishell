@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 21:19:42 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/27 14:42:09 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/27 19:38:08 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	open_file(char *filename, int mode)
 /*
 	임시 파일 생성된 fd를 통해 표준 입력으로 받아온 값을 파일에 작성.
 */
-void	stdin_heredoc(char *end_id, int tmp_fd)
+void	child_heredoc_process(char *end_id, int tmp_fd)
 {
 	char	*rline;
 	size_t	len;
@@ -91,7 +91,7 @@ void	stdin_heredoc(char *end_id, int tmp_fd)
 			!ft_strncmp(rline, end_id, len))
 		{
 			free(rline);
-			return ;
+			exit(0);
 		}
 		write(tmp_fd, rline, ft_strlen(rline));
 		write(tmp_fd, "\n", 1);
@@ -107,7 +107,7 @@ int	open_append(char *filename, int fd)
 	errno = 0;
 	if (is_file_access(filename, W_OK))
 	{
-		errno  = 0;
+		errno = 0;
 		fd = open(filename, O_WRONLY | O_APPEND | O_CREAT, 0644);
 		if (errno)
 		{
@@ -127,13 +127,13 @@ void	delete_heredoc(void)
 	char			tmp_path[255];
 	size_t			tmp_size;
 
-	dir_info = opendir("/Users/ljh/Documents/42_minishell/tmp/");
+	dir_info = opendir("/Users/jeholee/Documents/42_minishell/tmp/");
 	if (!dir_info)
 		return ;
 	dir_entry = readdir(dir_info);
 	while (dir_entry)
 	{
-		ft_strcpy(tmp_path, "/Users/ljh/Documents/42_minishell/tmp/");
+		ft_strcpy(tmp_path, "/Users/jeholee/Documents/42_minishell/tmp/");
 		if (!ft_strncmp("here_doc_tmp", dir_entry->d_name, 12))
 		{
 			tmp_size = ft_strlen(tmp_path) + ft_strlen(dir_entry->d_name) + 1;
