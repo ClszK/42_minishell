@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fd2.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 22:10:30 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/28 01:44:10 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/28 05:07:28 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ int	heredoc_process(t_node *heredoc_node, t_envp *env_c)
 		wait(&status);
 		signal(SIGINT, sigint_handler);
 		env_c->last_stat = ((*(int *)&(status)) >> 8) & 0x000000ff;
+		ft_putendl_fd("?????????????", 2);
 		if (env_c->last_stat == 1)
 			return (1);
 		close(tmp_fd);
