@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 21:18:12 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/27 15:20:56 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/27 17:02:04 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,35 +15,35 @@
 /*
 	here_doc 처리하는 함수.
 */
-int	here_doc_fork(t_stdio *heredoc, char *eof)
-{
-	int		fd;
-	char	*tmp_name;
-	t_pinfo	info;
-	t_node	*node;
+// int	here_doc_fork(t_stdio *heredoc, char *eof)
+// {
+// 	int		fd;
+// 	char	*tmp_name;
+// 	t_pinfo	info;
+// 	t_node	*node;
 
-	node = heredoc->head->next;
-	while (node->elem)
-	{
-		errno = 0;
-		info.pid = fork();
-		if (info.pid < 0)
-			perror_exit("minishell");
-		else if (info.pid == 0)
-			here_doc_process(eof);
-		pipe_parrent_init(&info, i);
-		node = node->next;
-	}
-	fd = tmpfile_create(&tmp_name);
-	if (fd < 0)
-		perror("HEREDOC");
-	stdin_heredoc(eof, fd);
-	close(fd);
-	fd = open_file(tmp_name, R_OK);
-	unlink(tmp_name);
-	free(tmp_name);
-	return (fd);
-}
+// 	node = heredoc->head->next;
+// 	while (node->elem)
+// 	{
+// 		errno = 0;
+// 		info.pid = fork();
+// 		if (info.pid < 0)
+// 			perror_exit("minishell");
+// 		else if (info.pid == 0)
+// 			here_doc_process(eof);
+// 		pipe_parrent_init(&info, i);
+// 		node = node->next;
+// 	}
+// 	fd = tmpfile_create(&tmp_name);
+// 	if (fd < 0)
+// 		perror("HEREDOC");
+// 	stdin_heredoc(eof, fd);
+// 	close(fd);
+// 	fd = open_file(tmp_name, R_OK);
+// 	unlink(tmp_name);
+// 	free(tmp_name);
+// 	return (fd);
+// }
 
 int	here_doc_process(char *eof)
 {
