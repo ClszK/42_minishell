@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 18:29:34 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/27 21:00:28 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/27 22:43:07 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,6 @@ int main(int argc, char **argv, char **envp)
 		add_history(sh.rline);
 		if (sh.rline && !command_preprocessing(&sh))
 			command_excute(&sh.alz, &sh.env_c, &sh.heredoc);
-		else
-			test_leak();
 		shinfo_free(&sh, NULL);
 		delete_heredoc();
     }
