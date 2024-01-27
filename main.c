@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 18:29:34 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/27 19:35:24 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/27 21:00:28 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,28 +68,25 @@ int main(int argc, char **argv, char **envp)
 	{
 		errno = 0;
 		shinfo_init(&sh);
-		if (isatty(fileno(stdin)))
-			sh.rline = readline("minishell$ ");
-		else
-		{
-			line = get_next_line(fileno(stdin));
-			sh.rline = ft_strtrim(line, "\n");
-			free(line);
-		}
-		// sh.rline = readline("minishell$ ");
+		// if (isatty(fileno(stdin)))
+		// 	sh.rline = readline("minishell$ ");
+		// else
+		// {
+		// 	line = get_next_line(fileno(stdin));
+		// 	sh.rline = ft_strtrim(line, "\n");
+		// 	free(line);
+		// }
+		sh.rline = readline("minishell$ ");
 		if (sh.rline == NULL)
 			exit (sh.env_c.last_stat);
 		add_history(sh.rline);
 		if (sh.rline && !command_preprocessing(&sh))
 			command_excute(&sh.alz, &sh.env_c, &sh.heredoc);
+		else
+			test_leak();
 		shinfo_free(&sh, NULL);
 		delete_heredoc();
     }
-	set_terminal(0);
+	// set_terminal(0);
 	return (0);
 }
-
-
-// dlst_print(&sh->cmdline, test_printf_token);
-
-// bash: maximum here-document count exceeded

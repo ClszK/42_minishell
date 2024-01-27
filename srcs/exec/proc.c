@@ -6,7 +6,7 @@
 /*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:43:21 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/27 02:26:01 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/27 21:01:48 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,11 +105,18 @@ void	child_process(t_parse *parse, t_envp *env_c, int i, t_pinfo *info)
 	builtin_idx = is_builtin_command(parse->cmd_path);
 	dup_std_fd(info, parse, i);
 	if (builtin_idx)
+	{
+		test_leak();
 		exit(command_excute_builtin(parse, env_c, builtin_idx - 1, 1));
+	}
 	envp = envp_split(env_c);
 	if (parse->cmd_path == NULL)
+	{
+		test_leak();
 		exit(env_c->last_stat);
+	}
 	errno = 0;
+	test_leak();
 	execve(parse->cmd_path, parse->cmd_argv, envp);
 	exit(EXIT_FAILURE);
 }

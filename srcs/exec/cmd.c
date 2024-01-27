@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:06:38 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/27 20:16:46 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/27 21:00:40 by ljh              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,7 @@ void	command_excute(t_analyze *alz, t_envp *env_c, t_stdio *heredoc)
 		else
 			command_fork(alz, env_c);
 	}
+	test_leak();
 }
 
 /*
