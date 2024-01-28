@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 22:10:30 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/28 22:52:18 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/28 23:58:35 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,11 @@ int	heredoc_process(t_node *heredoc_node, t_envp *env_c, int status, int tmp_fd)
 			child_heredoc_process(heredoc->str, tmp_fd);
 		wait(&status);
 		close(tmp_fd);
+		free(heredoc->str);
 		signal(SIGINT, sigint_handler);
 		env_c->last_stat = ((*(int *)&(status)) >> 8) & 0x000000ff;
 		if (env_c->last_stat == 1)
 			return (1);
-		free(heredoc->str);
 		heredoc->str = tmp_name;
 		heredoc_node = heredoc_node->next;
 	}
