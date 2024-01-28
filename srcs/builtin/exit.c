@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 18:02:46 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/27 20:31:04 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/29 01:11:58 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ int	builtin_exit(t_parse *parse, int is_fork)
 	long	exit_num;
 	char	*argv;
 
-	if (!is_fork && (ft_putstr_fd("exit", STDERR_FILENO) || \
-		ft_putstr_fd("\n", STDERR_FILENO)))
+	if (!is_fork && (ft_putstr_fd("exit", STDOUT_FILENO) || \
+		ft_putstr_fd("\n", STDOUT_FILENO)))
 		return (1);
 	if (parse->cmd_argv[1] == NULL)
 		exit(0);

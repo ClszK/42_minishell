@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 18:29:34 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/28 22:42:48 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/29 01:08:48 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,10 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		shinfo_init(&sh);
+		errno = 0;
 		sh.rline = readline("minishell$ ");
-		if (sh.rline == NULL)
-		{	
+		if (sh.rline == NULL && !errno)
+		{
 			restore_signal();
 			set_sigterm();
 		}

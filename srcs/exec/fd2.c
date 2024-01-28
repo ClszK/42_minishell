@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 22:10:30 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/28 23:58:35 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/29 01:18:55 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	simple_fd_open(int *fd, t_parse *parse)
 	fd[STDOUT_FILENO] = dup(STDOUT_FILENO);
 	if (fd[STDIN_FILENO] < 0 || fd[STDOUT_FILENO] < 0)
 	{
-		perror("minishell: ");
+		perror("minishell");
 		return (EXIT_FAILURE);
 	}
 	fd[2] = std_to_fd(parse->std_lst->head->next);
@@ -45,13 +45,28 @@ int	simple_fd_close(int *fd)
 	if (dup2(fd[STDIN_FILENO], STDIN_FILENO) < 0 || \
 		dup2(fd[STDOUT_FILENO], STDOUT_FILENO) < 0)
 	{
-		perror("minishell: ");
+		perror("minishell");
 		return (EXIT_FAILURE);
 	}
 	if (fd[2])
 		close(fd[2]);
 	close(fd[STDIN_FILENO]);
 	close(fd[STDOUT_FILENO]);
+	return (0);
+}
+
+int	heredoc_last_stat(t_envp *env_c, t_token *heredoc, \
+						char *tmp_name, int status)
+{
+	env_c->last_stat = ((*(int *)&(status)) >> 8) & 0x000000ff;
+	if (env_c->last_stat == 1)
+	{
+		free(tmp_name);
+		signal(SIGINT, sigint_handler);
+		return (1);
+	}
+	free(heredoc->str);
+	heredoc->str = tmp_name;
 	return (0);
 }
 
@@ -62,6 +77,7 @@ int	heredoc_process(t_node *heredoc_node, t_envp *env_c, int status, int tmp_fd)
 	char	*tmp_name;
 
 	signal(SIGINT, SIG_IGN);
+	errno = 0;
 	while (heredoc_node->elem)
 	{
 		heredoc = heredoc_node->elem;
@@ -73,13 +89,10 @@ int	heredoc_process(t_node *heredoc_node, t_envp *env_c, int status, int tmp_fd)
 			child_heredoc_process(heredoc->str, tmp_fd);
 		wait(&status);
 		close(tmp_fd);
-		free(heredoc->str);
-		signal(SIGINT, sigint_handler);
-		env_c->last_stat = ((*(int *)&(status)) >> 8) & 0x000000ff;
-		if (env_c->last_stat == 1)
+		if (heredoc_last_stat(env_c, heredoc, tmp_name, status))
 			return (1);
-		heredoc->str = tmp_name;
 		heredoc_node = heredoc_node->next;
 	}
+	signal(SIGINT, sigint_handler);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 22:53:21 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/28 22:59:29 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/29 01:10:26 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	set_sigterm(void)
 {
-	ft_putstr_fd("\033[1A", STDERR_FILENO);
-	ft_putstr_fd("\033[11C", STDERR_FILENO);
-	ft_putstr_fd("exit\n", STDERR_FILENO);
+	ft_putstr_fd("\033[1A", STDOUT_FILENO);
+	ft_putstr_fd("\033[11C", STDOUT_FILENO);
+	ft_putstr_fd("exit\n", STDOUT_FILENO);
 	exit(0);
 }
 

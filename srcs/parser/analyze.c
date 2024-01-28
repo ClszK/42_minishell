@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 01:46:42 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/27 19:38:41 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/28 23:53:40 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,7 @@ int	analyze_start(t_analyze *alz, t_cmdline *cmdline, t_stdio *heredoc)
 	{
 		print_builtin_error(NULL, NULL, \
 						"maximum here-document count exceeded\n");
+		restore_signal();
 		exit(2);
 	}
 	return (0);
