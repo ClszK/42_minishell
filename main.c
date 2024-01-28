@@ -6,16 +6,46 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 18:29:34 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/28 22:01:22 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/28 22:42:48 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	main(int argc, char **argv, char **envp)
+{
+	t_shinfo	sh;
+
+	if (argc != 1)
+	{
+		print_builtin_error(argv[1], "Usage", "./minishell\n");
+		exit(1);
+	}
+	envp_init(envp, &sh.env_c);
+	set_signal();
+	while (1)
+	{
+		shinfo_init(&sh);
+		sh.rline = readline("minishell$ ");
+		if (sh.rline == NULL)
+		{	
+			restore_signal();
+			set_sigterm();
+		}
+		add_history(sh.rline);
+		if (sh.rline && !command_preprocessing(&sh))
+			command_excute(&sh.alz, &sh.env_c, &sh.heredoc);
+		shinfo_free(&sh, NULL);
+		delete_heredoc();
+	}
+}
+
+/*
 int	test_printf_token(void *elem)
 {
 	t_token	*token;
-	char	*str[] = {"NONE", "WORD", "PIPE", "OUTPUT", "APPEND", "INPUT", "HEREDOC", "NEWLN", "PIPE_IN", "PIPE_OUT"};
+	char	*str[] = {"NONE", "WORD", "PIPE", "OUTPUT", "APPEND", \
+				"INPUT", "HEREDOC", "NEWLN", "PIPE_IN", "PIPE_OUT"};
 
 	token = (t_token *)elem;
 	if (token == NULL)
@@ -40,55 +70,4 @@ int	test_printf_parse(void *elem)
 	printf("\n");
 	return (0);
 }
-
-void	test_leak(void)
-{
-	char	*test;
-	char	*pid;
-	char	*str = "leaks -quiet ";
-
-	pid = ft_itoa(getpid());
-	test = malloc(sizeof(char) * (ft_strlen(str) + ft_strlen(pid) + 1));
-	ft_strcpy(test, str);
-	ft_strlcat(test, pid, 1000);
-	system(test);
-	free(pid);
-	free(test);
-}
-
-int main(int argc, char **argv, char **envp)
-{
-	t_shinfo	sh;
-	char		*line;
-
-	(void)argc;
-	(void)argv;
-	envp_init(envp, &sh.env_c);
-	set_signal();
-	while (1)
-	{
-		errno = 0;
-		shinfo_init(&sh);
-		if (isatty(fileno(stdin)))
-			sh.rline = readline("minishell$ ");
-		else
-		{
-			line = get_next_line(fileno(stdin));
-			sh.rline = ft_strtrim(line, "\n");
-			free(line);
-		}
-		// sh.rline = readline("minishell$ ");
-		if (sh.rline == NULL && !errno)
-		{	
-			restore_signal();
-			set_sigterm();
-		}
-		add_history(sh.rline);
-		if (sh.rline && !command_preprocessing(&sh))
-			command_excute(&sh.alz, &sh.env_c, &sh.heredoc);
-		shinfo_free(&sh, NULL);
-		delete_heredoc();
-    }
-	// set_terminal(0);
-	return (0);
-}
+*/

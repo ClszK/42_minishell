@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fd2.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 22:10:30 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/28 05:07:28 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/28 22:52:18 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,10 @@ int	simple_fd_close(int *fd)
 	return (0);
 }
 
-int	heredoc_process(t_node *heredoc_node, t_envp *env_c)
+int	heredoc_process(t_node *heredoc_node, t_envp *env_c, int status, int tmp_fd)
 {
 	t_token	*heredoc;
-	int		status;
 	pid_t	pid;
-	int		tmp_fd;
 	char	*tmp_name;
 
 	signal(SIGINT, SIG_IGN);
@@ -74,12 +72,11 @@ int	heredoc_process(t_node *heredoc_node, t_envp *env_c)
 		else if (pid == 0)
 			child_heredoc_process(heredoc->str, tmp_fd);
 		wait(&status);
+		close(tmp_fd);
 		signal(SIGINT, sigint_handler);
 		env_c->last_stat = ((*(int *)&(status)) >> 8) & 0x000000ff;
-		ft_putendl_fd("?????????????", 2);
 		if (env_c->last_stat == 1)
 			return (1);
-		close(tmp_fd);
 		free(heredoc->str);
 		heredoc->str = tmp_name;
 		heredoc_node = heredoc_node->next;

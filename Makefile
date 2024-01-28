@@ -1,10 +1,8 @@
 NAME			=	minishell
 CC				=	cc
-CFLAGS			=	-Wall -Wextra
-# R_FLAGS			=	-lreadline -L${HOME}/.brew/opt/readline/lib#-L${HOME}/.brew/opt/readline/lib
-# ROBJ_FLAGS		=	-I${HOME}/.brew/opt/readline/include #-I${HOME}/.brew/opt/readline/include
-R_FLAGS			=	-lreadline -L/opt/homebrew/opt/readline/lib#-L${HOME}/.brew/opt/readline/lib
-ROBJ_FLAGS		=	-I/opt/homebrew/opt/readline/include #-I${HOME}/.brew/opt/readline/include
+CFLAGS			=	-Wall -Wextra -Werror
+R_FLAGS			=	-lreadline -L${HOME}/.brew/opt/readline/lib
+ROBJ_FLAGS		=	-I${HOME}/.brew/opt/readline/include
 
 LIB_DIR			=	lib/libft
 LIB				=	-L$(LIB_DIR) -lft
@@ -21,7 +19,6 @@ SRCS_PARSER		=	analyze.c\
 
 SRCS_EXEC		=	fd.c\
 					fd2.c\
-					signal.c\
 					proc.c\
 					pipe.c\
 					cmd.c
@@ -34,6 +31,8 @@ SRCS_UTILS		=	utils.c\
 					print.c\
 					generate.c\
 					free.c\
+					signal.c\
+					signal2.c\
 					find.c\
 					file.c
 
@@ -64,22 +63,22 @@ HEADERS_PATH	=	includes
 all:	$(NAME)
 
 $(NAME)	:	$(OBJS) $(addprefix includes/, ${HEADERS})
-	@make -C $(LIB_DIR)
-	@$(CC) $(CFLAGS) $(R_FLAGS) $(LIB) $(OBJS) -o $(NAME)
+	make -C $(LIB_DIR)
+	$(CC) $(CFLAGS) $(R_FLAGS) $(LIB) $(OBJS) -o $(NAME)
 
 %.o	:	%.c
-	@$(CC) $(CFLAGS) $(ROBJ_FLAGS) -c $< -o $@ -I$(HEADERS_PATH) -g
+	$(CC) $(CFLAGS) $(ROBJ_FLAGS) -c $< -o $@ -I$(HEADERS_PATH) -g
 
 clean:
-	@rm -rf $(OBJS)
-	@make clean -C $(LIB_DIR)
+	rm -rf $(OBJS)
+	make clean -C $(LIB_DIR)
 
 fclean: clean
-	@rm -rf $(NAME)
-	@make fclean -C $(LIB_DIR)
+	rm -rf $(NAME)
+	make fclean -C $(LIB_DIR)
 
 re: 
-	@make fclean
-	@make all
+	make fclean
+	make all
 
 .PHONY : all clean fclean re 

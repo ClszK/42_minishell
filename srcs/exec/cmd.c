@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:06:38 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/28 05:08:21 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/28 22:52:27 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ void	command_excute(t_analyze *alz, t_envp *env_c, t_stdio *heredoc)
 
 	if (heredoc->lst_size)
 	{
-		if (heredoc_process(heredoc->head->next, env_c))
+		if (heredoc_process(heredoc->head->next, env_c, 0, 0))
 			return ;
 	}
 	if (is_include_pipe(alz))

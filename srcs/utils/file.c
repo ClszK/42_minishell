@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 21:19:42 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/28 22:16:36 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/28 22:59:14 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	tmpfile_create(char **tmp_name)
 	int		fd;
 
 	i = 0;
-	tmp = "./tmp/here_doc_tmp";
+	tmp = ".here_doc_tmp";
 	errno = 0;
 	while (++i < 2147483647)
 	{
@@ -89,7 +89,7 @@ void	child_heredoc_process(char *end_id, int tmp_fd)
 		rline = get_next_line(STDIN_FILENO);
 		if (rline == NULL && errno != 0)
 			perror_exit("minishell");
-		if (rline == NULL || 
+		if (rline == NULL || \
 			(len == ft_strlen(rline) - 1 && \
 			!ft_strncmp(rline, end_id, len)))
 		{
@@ -129,14 +129,14 @@ void	delete_heredoc(void)
 	char			tmp_path[255];
 	size_t			tmp_size;
 
-	dir_info = opendir("/Users/jeholee/Documents/42_minishell/tmp/");
+	dir_info = opendir(".");
 	if (!dir_info)
 		return ;
 	dir_entry = readdir(dir_info);
 	while (dir_entry)
 	{
-		ft_strcpy(tmp_path, "/Users/jeholee/Documents/42_minishell/tmp/");
-		if (!ft_strncmp("here_doc_tmp", dir_entry->d_name, 12))
+		ft_strcpy(tmp_path, "");
+		if (!ft_strncmp(".here_doc_tmp", dir_entry->d_name, 13))
 		{
 			tmp_size = ft_strlen(tmp_path) + ft_strlen(dir_entry->d_name) + 1;
 			ft_strlcat(tmp_path, dir_entry->d_name, tmp_size);

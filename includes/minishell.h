@@ -6,7 +6,7 @@
 /*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 08:10:11 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/28 03:26:32 by jeholee          ###   ########.fr       */
+/*   Updated: 2024/01/28 23:09:47 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,34 +19,20 @@
 # define SQUOTE_ERROR 8
 # define DQUOTE_ERROR 9
 
-# define READ_FD 0
-# define WRITE_FD 1
-
-# define FD_IN 2
-# define FD_OUT 3
-
 # include <stdio.h>
 # include <readline/readline.h>
-# include <readline/history.h>		// readline add_history 등 
-# include <stdio.h> 				// printf  perror
-# include <stdlib.h> 				// malloc free exit getenv 
-# include <unistd.h> 				// write access read close fork getcwd 
-									// chdir unlink execve dup dup2
-									// pipe isatty ttyname ttyslot
-# include <fcntl.h>					// open 
-# include <sys/types.h>				// pid_t
-# include <sys/wait.h>				// wait
-# include <signal.h>				// signal kill sigaction sigemptyset 
-									// sigaddset 
-# include <sys/stat.h>				// stat lstat fstat
-# include <dirent.h>				// opendir readdir closedir
-# include <string.h>				// strerror 
-# include <errno.h>					// errno
-# include <sys/ioctl.h>				// ioctl 
-# include <termios.h>				// tcsetattr tcgetattr 
-# include <curses.h>
-# include <term.h>					// tgetent tgetflag tgetnum tgetstr
-									// tgoto tputs
+# include <readline/history.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h> 
+# include <fcntl.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <signal.h>
+# include <dirent.h>
+# include <string.h>
+# include <errno.h>
+# include <termios.h>
 
 # include "double_lst.h"
 
@@ -216,7 +202,8 @@ void		dup_std_fd(t_pinfo *info, t_parse *parse, int i);
 int			simple_fd_open(int *fd, t_parse *parse);
 int			simple_fd_close(int *fd);
 void		child_heredoc_process(char *eof, int tmp_fd);
-int			heredoc_process(t_node *heredoc_node, t_envp *env_c);
+int			heredoc_process(t_node *heredoc_node, t_envp *env_c, \
+											int status, int tmp_fd);
 
 /* builtin */
 int			builtin_echo(t_parse *parse);
@@ -247,10 +234,6 @@ void		map_oldpwd_find(t_envp *env_c, t_node *env_node);
 char		*expand_env_find(t_envp *env_c, char *str);
 int			find_char(char *str, char c);
 
-/* builtin_utils.c */
-int			check_export_key(char *key);
-int			check_unset_key(char *key);
-
 /* pipe.c */
 int			pipe_init(t_pinfo *pinfo, int cmd_argc);
 void		pipe_close(t_pinfo *info, int pos);
@@ -268,10 +251,5 @@ void		set_signal_child(void);
 void		is_fork_signal(int status, int last_status);
 void		heredoc_handler(int signo);
 void		heredoc_signal(void);
-
-/* test in main.c */
-void		test_leak(void);
-int			test_printf_parse(void *elem);
-int			test_printf_token(void *elem);
 
 #endif
