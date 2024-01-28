@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 18:29:34 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/28 05:15:19 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/28 22:01:22 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,15 +69,15 @@ int main(int argc, char **argv, char **envp)
 	{
 		errno = 0;
 		shinfo_init(&sh);
-		// if (isatty(fileno(stdin)))
-		// 	sh.rline = readline("minishell$ ");
-		// else
-		// {
-		// 	line = get_next_line(fileno(stdin));
-		// 	sh.rline = ft_strtrim(line, "\n");
-		// 	free(line);
-		// }
-		sh.rline = readline("minishell$ ");
+		if (isatty(fileno(stdin)))
+			sh.rline = readline("minishell$ ");
+		else
+		{
+			line = get_next_line(fileno(stdin));
+			sh.rline = ft_strtrim(line, "\n");
+			free(line);
+		}
+		// sh.rline = readline("minishell$ ");
 		if (sh.rline == NULL && !errno)
 		{	
 			restore_signal();

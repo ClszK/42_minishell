@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   proc.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:43:21 by jeholee           #+#    #+#             */
-/*   Updated: 2024/01/28 05:25:35 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/28 22:00:17 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void	wait_child(t_pinfo *info, t_envp *env_c, int cmd_cnt)
 	while (++i < cmd_cnt)
 	{
 		info->pid = wait(&status);
+		while (info->pid == -1)
+			info->pid = wait(&status);
 		if (info->last_pid == info->pid)
 			info->last_status = status;
 	}
