@@ -1,8 +1,10 @@
 NAME			=	minishell
 CC				=	cc
 CFLAGS			=	-Wall -Wextra
-R_FLAGS			=	-lreadline -L${HOME}/.brew/opt/readline/lib#-L${HOME}/.brew/opt/readline/lib
-ROBJ_FLAGS		=	-I${HOME}/.brew/opt/readline/include #-I${HOME}/.brew/opt/readline/include
+# R_FLAGS			=	-lreadline -L${HOME}/.brew/opt/readline/lib#-L${HOME}/.brew/opt/readline/lib
+# ROBJ_FLAGS		=	-I${HOME}/.brew/opt/readline/include #-I${HOME}/.brew/opt/readline/include
+R_FLAGS			=	-lreadline -L/opt/homebrew/opt/readline/lib#-L${HOME}/.brew/opt/readline/lib
+ROBJ_FLAGS		=	-I/opt/homebrew/opt/readline/include #-I${HOME}/.brew/opt/readline/include
 
 LIB_DIR			=	lib/libft
 LIB				=	-L$(LIB_DIR) -lft
