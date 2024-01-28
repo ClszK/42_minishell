@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh <ljh@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jeholee <jeholee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 18:02:39 by ljh               #+#    #+#             */
-/*   Updated: 2024/01/27 01:38:44 by ljh              ###   ########.fr       */
+/*   Updated: 2024/01/28 21:48:59 by jeholee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ int	builtin_cd(t_parse *parse, t_envp *env_c)
 {
 	char	*path;
 
+	if (parse->cmd_argv[1] && parse->cmd_argv[1][0] == '\0')
+		return (0);
 	if (parse->cmd_argv[1] == NULL || !ft_strcmp(parse->cmd_argv[1], "--"))
 	{
 		path = expand_env_find(env_c, "HOME");
